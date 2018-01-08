@@ -22,6 +22,7 @@ from .routers import router
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('', include('core.urls')),
 ]
 
 if settings.DEBUG:

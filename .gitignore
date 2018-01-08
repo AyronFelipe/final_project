@@ -40,8 +40,8 @@ coverage
 .grunt
 
 # Bower dependency directory (https://bower.io/)
-bower_components
-components
+bower_components/
+components/
 
 # node-waf configuration
 .lock-wscript
@@ -74,5 +74,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# webpack generated files
+assets/bundles/
+webpack-stats.json
 
 # End of https://www.gitignore.io/api/node,django
