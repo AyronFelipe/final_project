@@ -10,3 +10,13 @@ class CreationAndUpdateMixin(models.Model):
     class Meta:
 
         abstract = True
+
+
+class PhoneMixin(models.Model):
+
+    phone = models.CharField(_('phone'), blank=True, null=True, max_length=13)
+    cell_phone = models.CharField(_('cell_phone'), blank=True, null=True, max_length=14)
+
+    class Meta:
+
+        abstract = True

@@ -1,6 +1,8 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var CreateReactClass = require('create-react-class')
+
+import React from 'react'
+import ReactDom from 'react-dom'
+import CreateReactClass from 'create-react-class'
+import $ from 'jquery'
 
 var Hello = CreateReactClass({
     render: function(){

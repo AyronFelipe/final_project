@@ -18,12 +18,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
+from accounts.viewsets import PersonViewSet
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('', include('core.urls')),
+    path('admin/', admin.site.urls, name='admin'),
+    path('api/', include(router.urls), name='api'),
+    path('api/persons/', PersonViewSet.as_view(), name='persons'),
+    path('', include('core.urls'), name='core'),
 ]
+
 
 if settings.DEBUG:
    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
