@@ -18,13 +18,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
-from accounts.viewsets import PersonViewSet
+from accounts.viewsets import PersonViewSet, InstitutionViewSet
 
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('api/', include(router.urls), name='api'),
     path('api/persons/', PersonViewSet.as_view(), name='persons'),
+    path('api/institutions/', InstitutionViewSet.as_view(), name='institutions'),
     path('', include('core.urls'), name='core'),
 ]
 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from .mixins import CreationAndUpdateMixin, PhoneMixin
+from .mixins import CreationAndUpdateMixin, PhoneMixin, AddressMixin
 from django.utils.translation import ugettext_lazy as _
 from .managers import UserManager
 
@@ -21,7 +21,7 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin):
         verbose_name_plural = _('users')
 
 
-class Person(User, PhoneMixin):
+class Person(User, PhoneMixin, AddressMixin):
 
     first_name = models.CharField(_('first name'), max_length=255, blank=True)
     last_name = models.CharField(_('last name'), max_length=255, blank=True)
@@ -32,3 +32,17 @@ class Person(User, PhoneMixin):
 
         verbose_name = _('person')
         verbose_name_plural = _('persons')
+
+
+class Institution(User, PhoneMixin, AddressMixin):
+
+    name = models.CharField(_('institution name'), max_length=255, blank=True)
+    cnpj = models.CharField(_('cnpj'), max_length=18)
+    slug = models.SlugField(max_length=50, blank=True, null=True, unique=True)
+    objectives = models.TextField(_('objectives'), blank=True, null=True)
+
+    class Meta:
+
+        verbose_name = _('institution')
+        verbose_name_plural = _('instituions')
+

@@ -15,7 +15,18 @@ class CreationAndUpdateMixin(models.Model):
 class PhoneMixin(models.Model):
 
     phone = models.CharField(_('phone'), blank=True, null=True, max_length=13)
-    cell_phone = models.CharField(_('cell_phone'), blank=True, null=True, max_length=14)
+    cell_phone = models.CharField(_('cell phone'), blank=True, null=True, max_length=14)
+
+    class Meta:
+
+        abstract = True
+
+
+class AddressMixin(models.Model):
+
+    neighborhood = models.CharField(_('neighborhood'), max_length=255, null=True, blank=True)
+    street = models.CharField(_('street'), max_length=255, null=True, blank=True)
+    number = models.IntegerField(_('number'), null=True, blank=True)
 
     class Meta:
 
