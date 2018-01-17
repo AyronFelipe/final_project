@@ -2,8 +2,26 @@ from rest_framework import generics, viewsets, permissions
 from .models import User, Person, Institution
 from .serializers import UserSerializer, PersonSerializer, InstitutionSerializer
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from rest_framework import status
+from rest_framework.decorators import api_view
+from django.contrib.auth import authenticate
 
+
+@api_view(["POST"])
+def login(request):
+    
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    user = authenticate(request, username=email, password=password)
+    if user is not None:
+        if user.is_active:
+            token = Token.objects.get(user=user)
+            request.session['auth'] = token.key
+            # Redirecionar para a doações
+            return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     '''
