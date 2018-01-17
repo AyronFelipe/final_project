@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import Person, Institution
-
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth import authenticate
 
 User = get_user_model()
 

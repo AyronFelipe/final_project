@@ -3,7 +3,6 @@ from decouple import config, Csv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', cast=bool)
@@ -11,8 +10,6 @@ DEBUG = config('DEBUG', cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 AUTH_USER_MODEL = 'accounts.User'
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #third party apps
     'rest_framework',
+    'rest_framework.authtoken',
     'djangobower',
     'django_filters',
     'webpack_loader',
@@ -60,6 +58,16 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+)
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 WSGI_APPLICATION = 'project_settings.wsgi.application'
 
 STATIC_URL = '/static/'
@@ -74,9 +82,6 @@ WEBPACK_LOADER = {
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
-
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -99,9 +104,6 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."),)
 
 BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
 
-# Password validation
-# https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -118,10 +120,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.0/topics/i18n/
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LANGUAGE_CODE = 'en-us'
 
