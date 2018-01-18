@@ -7,7 +7,9 @@ import $ from 'jquery'
 var Hello = CreateReactClass({
     render: function(){
         return (
-            <h1>Hello World!</h1>
+            <div className="card-panel teal lighten-2">
+                Hello World!
+            </div>
         );
     }
 });

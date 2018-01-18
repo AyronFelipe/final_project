@@ -10,16 +10,19 @@ from django.contrib.auth import authenticate
 
 @api_view(["POST"])
 def login(request):
+    '''
+    Login de usuário retorna token de autorização e o status 200
+    Como colocar o Token no Header??
+    '''
     
     email = request.POST.get('email')
     password = request.POST.get('password')
     user = authenticate(request, username=email, password=password)
     if user is not None:
         if user.is_active:
-            token = Token.objects.get(user=user)
+            token, created = Token.objects.get_or_create(user=user)
             request.session['auth'] = token.key
-            # Redirecionar para a doações
-            return Response(status=status.HTTP_200_OK)
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
         
 
@@ -28,6 +31,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     Listagem dos usuários
     '''
 
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -37,6 +41,7 @@ class PersonViewSet(viewsets.ReadOnlyModelViewSet):
     Listagem das Pessoas
     '''
 
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
 
@@ -46,6 +51,7 @@ class InstitutionViewSet(viewsets.ReadOnlyModelViewSet):
     Listagem das Instituições
     '''
 
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Institution.objects.all()
     serializer_class = InstitutionSerializer
 
