@@ -5,6 +5,7 @@ import CreateReactClass from 'create-react-class'
 import $ from 'jquery'
 import Header from './header'
 import Main from './main'
+import Footer from './footer'
 
 class App extends React.Component{
     render(){
@@ -12,6 +13,7 @@ class App extends React.Component{
             <div>
                 <Header />
                 <Main />   
+                <Footer />
             </div>
         )
     }
