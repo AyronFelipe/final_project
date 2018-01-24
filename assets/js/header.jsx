@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import CreateReactClass from 'create-react-class'
-import $ from 'jquery'
 import { sideNav } from '../../components/bower_components/materialize/dist/js/materialize.min.js'
 
 export default class Header extends React.Component{

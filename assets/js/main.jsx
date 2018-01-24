@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import CreateReactClass from 'create-react-class'
-import $ from 'jquery'
 
 export default class Main extends React.Component{
 
