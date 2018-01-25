@@ -10,6 +10,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', include('core.urls'), name='core'),
+    path('accounts/', include('accounts.urls'), name='accounts'),
     path('login/', login, name='login'),
     path('api/', include(router.urls), name='api'),
     path('api/new-person/', CreatePersonViewSet.as_view(), name='new-person'),

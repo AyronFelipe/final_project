@@ -2,11 +2,12 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import CreateReactClass from 'create-react-class'
 import { sideNav } from '../../components/bower_components/materialize/dist/js/materialize.min.js'
+import { Link} from 'react-router-dom'
 
 export default class Header extends React.Component{
 
     componentDidMount(){
-        $('.button-collapse').sideNav();
+        $('.button-collapse').sideNav()
     }
 
     render(){
@@ -23,7 +24,7 @@ export default class Header extends React.Component{
                                         <li><a href="#como-funciona">Como Funciona?</a></li>
                                         <li><a href="#comecar">Começar</a></li>
                                         <li><a href="#quem-somos">Quem Somos?</a></li>
-                                        <li><a href="#!">Login</a></li>
+                                        <li><Link to="/accounts/login"><button className="btn waves-effect waves-light indigo accent-2 wihte-text">Login</button></Link></li>
                                     </ul>
                                 </div>
                             </div>
@@ -31,9 +32,6 @@ export default class Header extends React.Component{
                     </nav>
                 </div>
                 <ul className="side-nav" id="mobile-demo">
-                    <li><a href="#como-funciona">Como Funciona?</a></li>
-                    <li><a href="#comecar">Começar</a></li>
-                    <li><a href="#quem-somos">Quem Somos?</a></li>
                     <li><a href="#!">Login</a></li>
                 </ul>
             </header>
