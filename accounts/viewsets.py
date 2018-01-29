@@ -22,7 +22,8 @@ def login(request):
         if user.is_active:
             token, created = Token.objects.get_or_create(user=user)
             request.session['auth'] = token.key
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
+            auth = "Token " + token.key
+            return Response({'token': token.key}, status=status.HTTP_200_OK, headers={'Authorization': auth},)
     return Response(status=status.HTTP_401_UNAUTHORIZED)
         
 
