@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', include('core.urls'), name='core'),
     path('accounts/', include('accounts.urls'), name='accounts'),
+    path('donations/', include('donations.urls'), name='donations'),
     path('login/', login, name='login'),
     path('api/', include(router.urls), name='api'),
     path('api/new-person/', CreatePersonViewSet.as_view(), name='new-person'),

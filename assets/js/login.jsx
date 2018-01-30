@@ -12,9 +12,10 @@ export default class Login extends React.Component{
             data: $('#login-form').serialize(),
             success: function(data){
                 console.log(data.token)
+                window.location.href = "/donations/"
             },
-            error: function(xhr, status, err){
-                console.log(status, err)
+            error: function(request, status, err){
+                $("#error-message").html("<p>" + request.responseJSON.message +"</p>")
             }
         })
     }
@@ -28,6 +29,7 @@ export default class Login extends React.Component{
                             <div className="card-content">
                                 <div className="white-text center-align"><h1>Nome do Projeto</h1></div>
                                 <span className="card-title">Digite seus dados</span>
+                                <div id="error-message" className="red-text"></div>
                                 <div className="row">
                                     <div className="input-field col s12">
                                         <label htmlFor="email" className="white-text">Email</label>
