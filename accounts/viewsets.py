@@ -12,7 +12,6 @@ from django.contrib.auth import authenticate
 def login(request):
     '''
     Login de usuário retorna token de autorização e o status 200
-    Como colocar o Token no Header??
     '''
     data = {}
     email = request.POST.get('email')
@@ -24,9 +23,7 @@ def login(request):
         if user is not None:
             if user.is_active:
                 token, created = Token.objects.get_or_create(user=user)
-                request.session['auth'] = token.key
-                auth = "Token " + token.key
-                return Response({'token': token.key}, status=status.HTTP_200_OK, headers={'Authorization': auth},)
+                return Response({'token': token.key}, status=status.HTTP_200_OK, )
             else:
                 data["message"] = "O usuário ainda não foi ativo, por favor verifique seu email para poder ativa-lo"
         else:

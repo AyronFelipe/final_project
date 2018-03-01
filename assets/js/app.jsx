@@ -8,6 +8,8 @@ import Footer from './footer'
 import '../css/main.css'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Login from './login'
+import Person from './person'
+import Institution from './institution'
 
 class Initial extends React.Component{
     render(){
@@ -27,6 +29,8 @@ class App extends React.Component{
             <div>
                 <Route exact path="/" component={ Initial } />
                 <Route path="/accounts/login" component={ Login } />
+                <Route path="/accounts/new-person" component={ Person } />
+                <Route path="/accounts/new-institution" component={ Institution } />
             </div>
         )
     }
