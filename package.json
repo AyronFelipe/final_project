@@ -28,6 +28,7 @@
     "babel-preset-react": "^6.24.1",
     "create-react-class": "^15.6.2",
     "css-loader": "^0.28.9",
+    "inputmask": "^3.3.11",
     "jquery": "^3.2.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
