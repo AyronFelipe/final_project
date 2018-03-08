@@ -23,7 +23,7 @@ def login(request):
         if user is not None:
             if user.is_active:
                 token, created = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key}, status=status.HTTP_200_OK, )
+                return Response({'token': token.key}, status=status.HTTP_200_OK, headers={'Authorization': 'Token ' + token.key})
             else:
                 data["message"] = "O usuário ainda não foi ativo, por favor verifique seu email para poder ativa-lo"
         else:

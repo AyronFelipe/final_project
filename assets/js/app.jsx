@@ -1,7 +1,5 @@
-
 import React from 'react'
 import ReactDom from 'react-dom'
-import CreateReactClass from 'create-react-class'
 import Header from './header'
 import Main from './main'
 import Footer from './footer'
@@ -41,5 +39,5 @@ ReactDom.render((
         <div>
             <App />
         </div>
-    </BrowserRouter>), document.getElementById('app')
+    </BrowserRouter>), document.getElementById('main')
 );
