@@ -5,8 +5,8 @@ const BundleTracker = require('webpack-bundle-tracker')
 module.exports = {
     context: __dirname,
     entry: {
-        main: './assets/js/app',
-        app: './assets/js/home'
+        app: './assets/js/app',
+        home: './assets/js/home'
     },
     output: {
         path: path.resolve('./assets/bundles/'),

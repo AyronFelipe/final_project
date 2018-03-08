@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 
-class Main extends React.Component{
+class Home extends React.Component{
     render(){
         return(
             <h1>Olá mundo!</h1>
@@ -10,5 +10,5 @@ class Main extends React.Component{
 }
 
 ReactDom.render(
-    <Main />, document.getElementById('app')
+    <Home />, document.getElementById('home')
 )

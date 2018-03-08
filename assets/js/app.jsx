@@ -39,5 +39,5 @@ ReactDom.render((
         <div>
             <App />
         </div>
-    </BrowserRouter>), document.getElementById('main')
+    </BrowserRouter>), document.getElementById('app')
 );
