@@ -13,16 +13,14 @@ export default class Person extends React.Component{
 
     render(){
         return(
-            <div className="deep-purple white-text">
+            <div className="white purple-text">
                 <div className="row">
-                    <div className="col s10 push-s1">
-                        <h4 className="center-align">E aí, tranquilo? Põe as suas informações aí embaixo para gente poder cadastrar você!</h4>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="container">
-                        <div className="col s12">
-                            <form id="form-person">
+                    <div className="col s12">
+                        <div className="col s10 push-s1">
+                            <h4 className="center-align">E aí, tranquilo? Põe as suas informações aí embaixo para gente poder cadastrar você!</h4>
+                        </div>
+                        <div className="container">
+                            <form action="POST">
                                 <h5>Informações de Login</h5>
                                 <div className="row">
                                     <div className="input-field col s6">
@@ -82,7 +80,7 @@ export default class Person extends React.Component{
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col s12 offset-s10">
+                                    <div className="col s12 right-align">
                                         <button className="btn-large waves-effect waves-light indigo accent-2 wihte-text">Salvar</button>
                                     </div>
                                 </div>
