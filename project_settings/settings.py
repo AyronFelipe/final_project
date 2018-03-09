@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     #third party apps
     'rest_framework',
     'rest_framework.authtoken',
-    'djangobower',
     'django_filters',
     'webpack_loader',
     #local apps
@@ -93,20 +92,6 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-
-STATICFILES_FINDERS = (
-    'djangobower.finders.BowerFinder',
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
-
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."),)
-
-BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
-
-BOWER_INSTALLED_APPS = (
-    'materialize',
-)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

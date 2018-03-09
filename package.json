@@ -28,12 +28,15 @@
     "babel-preset-react": "^6.24.1",
     "create-react-class": "^15.6.2",
     "css-loader": "^0.28.9",
+    "file-loader": "^1.1.11",
     "inputmask": "^3.3.11",
     "jquery": "^3.2.1",
+    "materialize-css": "^0.100.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "style-loader": "^0.19.1",
+    "url-loader": "^1.0.1",
     "webpack": "^3.10.0",
     "webpack-bundle-tracker": "^0.2.1"
   }

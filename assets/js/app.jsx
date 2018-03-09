@@ -8,6 +8,8 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import Login from './login'
 import Person from './person'
 import Institution from './institution'
+import 'materialize-css'
+import 'materialize-css/dist/css/materialize.min.css'
 
 class Initial extends React.Component{
     render(){
