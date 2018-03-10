@@ -3,6 +3,11 @@ import Footer from './footer'
 
 export default class Login extends React.Component{
 
+    constructor(props){
+        super(props);
+        this.login = this.login.bind(this);
+    }
+
     login(){
         $.ajax({
             url: '/login/',
@@ -10,12 +15,12 @@ export default class Login extends React.Component{
             dataType: 'json',
             data: $('#login-form').serialize(),
             success: function(data){
-                window.location.href = "/donations/"
+                window.location.href = "/donations/";
             },
             error: function(request, status, err){
-                $("#error-message").html("<p>" + request.responseJSON.message +"</p>")
+                $("#error-message").html("<p>" + request.responseJSON.message +"</p>");
             }
-        })
+        });
     }
 
     render(){
@@ -47,6 +52,6 @@ export default class Login extends React.Component{
                 </div>
                 <Footer />
             </div>
-        )
+        );
     }
 }
