@@ -1,6 +1,7 @@
 import React from 'react'
 import Footer from './footer'
 import Inputmask from 'inputmask'
+import Dateapicker from './dateapicker'
 
 export default class Person extends React.Component{
 
@@ -14,19 +15,19 @@ export default class Person extends React.Component{
             url: '/api/new-person/',
             type: 'POST',
             dataType: 'json',
-            data: $("#person-form"),
+            data: $("#person-form").serialize(),
             success: function(data){
                 window.location.href = "/donations/";
             },
             error: function(request, status, err){
-                console.log(status);
+                console.log(request, status, err);
+                $("#error-message").html("<p>"+ request.responseText +"</p>");
             }
         });
     }
 
     componentDidMount(){
         Inputmask("999.999.999-99", { showMaskOnHover: false }).mask($("#cpf"))
-        Inputmask("99/99/9999", { showMaskOnHover: false }).mask($("#birthday"))
         Inputmask("(99)9999-9999", { showMaskOnHover: false }).mask($("#phone"))
         Inputmask("(99)\\99999-9999", { showMaskOnHover: false }).mask($("#cell_phone"))
     }
@@ -40,7 +41,8 @@ export default class Person extends React.Component{
                             <h4 className="center-align">E aí, tranquilo? Põe as suas informações aí embaixo para gente poder cadastrar você!</h4>
                         </div>
                         <div className="container">
-                            <form action="POST" id="person-form">
+                            <div className="red-text" id="error-message"></div>
+                            <form id="person-form">
                                 <h5>Informações de Login</h5>
                                 <div className="row">
                                     <div className="input-field col s6">
@@ -68,10 +70,7 @@ export default class Person extends React.Component{
                                         <input id="cpf" name="cpf" type="text" />
                                         <label htmlFor="cpf">CPF</label>
                                     </div>
-                                    <div className="input-field col s6">
-                                        <input id="birthday" name="birthday" type="text" />
-                                        <label htmlFor="birthday">Data de nascimento</label>
-                                    </div>
+                                    <Dateapicker name="birthday" />
                                 </div>
                                 <h5>Contato</h5>
                                 <div className="row">
@@ -101,7 +100,7 @@ export default class Person extends React.Component{
                                 </div>
                                 <div className="row">
                                     <div className="col s12 right-align">
-                                        <button className="btn-large waves-effect waves-light indigo accent-2 wihte-text" onClick="{ this.savePerson }">Salvar</button>
+                                        <button type="button" className="btn-large waves-effect waves-light indigo accent-2 wihte-text" onClick={ this.savePerson }>Salvar</button>
                                     </div>
                                 </div>
                             </form>

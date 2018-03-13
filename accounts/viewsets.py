@@ -77,7 +77,8 @@ class CreatePersonViewSet(generics.CreateAPIView):
             person = Person(email=instance.get('email'), is_active=instance.get('is_active'), first_name=instance.get('first_name'), last_name=instance.get('last_name'), cpf=instance.get('cpf'), birthday=instance.get('birthday'), phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), neighborhood=instance.get('neighborhood'), street=instance.get('street'), number=instance.get('number'))
             person.set_password(instance.get('password'))
             person.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            token, created = Token.objects.get_or_create(user=person)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers={'Authorization': 'Token ' + token.key})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

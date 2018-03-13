@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from .models import Person, Institution
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate
+from django.conf import settings
 
 User = get_user_model()
 
@@ -18,7 +19,7 @@ class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ['email', 'password', 'is_active', 'first_name', 'last_name', 'cpf', 'birthday', 'phone', 'cell_phone', 'neighborhood', 'street', 'number']
+        fields = ['email', 'password', 'is_active', 'first_name', 'last_name', 'cpf', 'phone', 'cell_phone', 'neighborhood', 'street', 'number', 'birthday']
 
 
 class InstitutionSerializer(serializers.ModelSerializer):
