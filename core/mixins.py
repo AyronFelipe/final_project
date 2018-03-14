@@ -33,6 +33,7 @@ class AddressMixin(models.Model):
     unity = models.CharField(_('unity'), null=True, blank=True, max_length=255)
     ibge = models.CharField('IBGE', null=True, blank=True, max_length=255)
     gia = models.CharField('gia', null=True, blank=True, max_length=255)
+    cep = models.CharField('CEP', max_length=255)
 
     class Meta:
 
