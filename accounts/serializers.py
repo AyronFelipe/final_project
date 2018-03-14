@@ -19,7 +19,7 @@ class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ['email', 'password', 'is_active', 'first_name', 'last_name', 'cpf', 'phone', 'cell_phone', 'neighborhood', 'street', 'number', 'birthday']
+        fields = ['email', 'password', 'is_active', 'first_name', 'last_name', 'cpf', 'phone', 'cell_phone', 'neighborhood', 'street', 'number', 'birthday', 'cep', 'complement', 'city', 'uf']
 
 
 class InstitutionSerializer(serializers.ModelSerializer):

@@ -27,6 +27,12 @@ class AddressMixin(models.Model):
     neighborhood = models.CharField(_('neighborhood'), max_length=255, null=True, blank=True)
     street = models.CharField(_('street'), max_length=255, null=True, blank=True)
     number = models.IntegerField(_('number'), null=True, blank=True)
+    complement = models.CharField(_('complement'), null=True, blank=True, max_length=255)
+    city = models.CharField(_('city'), null=True, blank=True, max_length=255)
+    uf = models.CharField('UF', null=True, blank=True, max_length=2)
+    unity = models.CharField(_('unity'), null=True, blank=True, max_length=255)
+    ibge = models.CharField('IBGE', null=True, blank=True, max_length=255)
+    gia = models.CharField('gia', null=True, blank=True, max_length=255)
 
     class Meta:
 

@@ -2,6 +2,7 @@ import React from 'react'
 import Footer from './footer'
 import Inputmask from 'inputmask'
 import Dateapicker from './dateapicker'
+import Address from './address'
 
 export default class Person extends React.Component{
 
@@ -83,21 +84,7 @@ export default class Person extends React.Component{
                                         <label htmlFor="cell_phone">Telefone celular</label>
                                     </div>
                                 </div>
-                                <h5>Residência</h5>
-                                <div className="row">
-                                    <div className="input-field col s4">
-                                        <input id="neighborhood" name="neighborhood" type="text" />
-                                        <label htmlFor="neighborhood">Bairro</label>
-                                    </div>
-                                    <div className="input-field col s4">
-                                        <input id="street" name="street" type="text" />
-                                        <label htmlFor="street">Rua</label>
-                                    </div>
-                                    <div className="input-field col s4">
-                                        <input id="number" name="number" type="text" />
-                                        <label htmlFor="number">Número</label>
-                                    </div>
-                                </div>
+                                <Address />
                                 <div className="row">
                                     <div className="col s12 right-align">
                                         <button type="button" className="btn-large waves-effect waves-light indigo accent-2 wihte-text" onClick={ this.savePerson }>Salvar</button>

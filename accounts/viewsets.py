@@ -74,7 +74,7 @@ class CreatePersonViewSet(generics.CreateAPIView):
         serializer = PersonSerializer(data=request.data)
         if serializer.is_valid():
             instance = serializer.validated_data
-            person = Person(email=instance.get('email'), is_active=instance.get('is_active'), first_name=instance.get('first_name'), last_name=instance.get('last_name'), cpf=instance.get('cpf'), birthday=instance.get('birthday'), phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), neighborhood=instance.get('neighborhood'), street=instance.get('street'), number=instance.get('number'))
+            person = Person(email=instance.get('email'), is_active=instance.get('is_active'), first_name=instance.get('first_name'), last_name=instance.get('last_name'), cpf=instance.get('cpf'), birthday=instance.get('birthday'), phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), neighborhood=instance.get('neighborhood'), street=instance.get('street'), number=instance.get('number'), cep=instance.get("cep"), uf=instance.get("uf"), cidade=instance.get("cidade"), complement=instance.get("complement"))
             person.set_password(instance.get('password'))
             person.save()
             token, created = Token.objects.get_or_create(user=person)
