@@ -12,6 +12,7 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin):
 
     email = models.EmailField(_('email address'), unique=True,)
     is_active = models.BooleanField(_('active'), default=False,)
+    photo = models.ImageField(_('photo'), upload_to='users/photos/', null=True, blank=True)
 
     objects = UserManager()
 

@@ -3,6 +3,7 @@ import Footer from './footer'
 import Inputmask from 'inputmask'
 import Dateapicker from './dateapicker'
 import Address from './address'
+import Dropzone from './dropzone'
 
 export default class Person extends React.Component{
 
@@ -18,7 +19,7 @@ export default class Person extends React.Component{
             dataType: 'json',
             data: $("#person-form").serialize(),
             success: function(data){
-                window.location.href = "/donations/";
+                //window.location.href = "/donations/";
             },
             error: function(request, status, err){
                 console.log(request, status, err);
@@ -44,6 +45,11 @@ export default class Person extends React.Component{
                         <div className="container">
                             <div className="red-text" id="error-message"></div>
                             <form id="person-form">
+                                <div className="row">
+                                    <div className="col s6">
+                                        <Dropzone />
+                                    </div>
+                                </div>
                                 <h5>Informações de Login</h5>
                                 <div className="row">
                                     <div className="input-field col s6">
