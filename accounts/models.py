@@ -29,7 +29,7 @@ class Person(User, PhoneMixin, AddressMixin):
 
     first_name = models.CharField(_('first name'), max_length=255, blank=True)
     last_name = models.CharField(_('last name'), max_length=255, blank=True)
-    cpf = models.CharField(_('cpf'), max_length=14)
+    cpf = models.CharField(_('cpf'), max_length=14, unique=True,)
     birthday = models.DateField(_('birthday'), blank=True)
 
     class Meta:

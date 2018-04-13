@@ -1,21 +1,276 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">  
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <title>Projeto</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Projeto Email Forms">
+        <meta name="keywords" content="Projeto">
+        <style type="text/css">
+            body{
+      		    font:14px/20px 'Helvetica', Arial, sans-serif;
+      		    margin:0;
+      			padding:75px 0 0 0;
+      			text-align:center;
+      			-webkit-text-size-adjust:none;
+      		}
+      	    p{
+      			padding:0 0 10px 0;
+      		}
+      		h1 img{
+      			max-width:100%;
+      			height:auto !important;
+      			vertical-align:bottom;
+      		}
+      		h2{
+      			font-size:22px;
+      			line-height:28px;
+      			margin:0 0 12px 0;
+      		}
+      		h3{
+      			margin:0 0 12px 0;
+      		}
+      		.headerBar{
+      			background:none;
+      			padding:0;
+      			border:none;
+      		}
+      		.wrapper{
+      			width:600px;
+      			margin:0 auto 10px auto;
+      			text-align:left;
+      		}
+      		input.button{
+      			border:none !important;
+      		}
+      		.button{
+      			display:inline-block;
+      			font-weight:500;
+      			font-size:16px;
+      			line-height:42px;
+      			font-family:'Helvetica', Arial, sans-serif;
+      			width:auto;
+      			white-space:nowrap;
+      			height:42px;
+      			margin:12px 5px 12px 0;
+      			padding:0 22px;
+      			text-decoration:none;
+      			text-align:center;
+      			cursor:pointer;
+      			border:0;
+      			border-radius:3px;
+      			vertical-align:top;
+      		}
+      		.button span{
+      			display:inline;
+      			font-family:'Helvetica', Arial, sans-serif;
+      			text-decoration:none;
+      			font-weight:500;
+      			font-style:normal;
+      			font-size:16px;
+      			line-height:42px;
+      			cursor:pointer;
+      			border:none;
+      		}
+      		.rounded6{
+      			border-radius:6px;
+      		}
+      		.poweredWrapper{
+      			padding:20px 0;
+      			width:560px;
+      			margin:0 auto;
+      		}
+      		.poweredBy{
+      			display:block;
+      		}
+      		span.or{
+      			display:inline-block;
+      			height:32px;
+      			line-height:32px;
+      			padding:0 5px;
+      			margin:5px 5px 0 0;
+      		}
+      		.clear{
+      			clear:both;
+      		}
+      		.profile-list{
+      			display:block;
+      			margin:15px 20px;
+      			padding:0;
+      			list-style:none;
+      			border-top:1px solid #eee;
+      		}
+      		.profile-list li{
+      			display:block;
+      			margin:0;
+      			padding:5px 0;
+      			border-bottom:1px solid #eee;
+      		}
+      		html[dir=rtl] .wrapper,html[dir=rtl] .container,html[dir=rtl] label{
+      			text-align:right !important;
+      		}
+      		html[dir=rtl] ul.interestgroup_field label{
+      			padding:0;
+      		}
+      		html[dir=rtl] ul.interestgroup_field input{
+      			margin-left:5px;
+      		}
+      		html[dir=rtl] .hidden-from-view{
+      			right:-5000px;
+      			left:auto;
+      		}
+      		body,#bodyTable{
+      			background-color:#512da8;
+      		}
+      		h1{
+      			font-size:28px;
+      			line-height:110%;
+      			margin-bottom:30px;
+      			margin-top:0;
+      			padding:0;
+      		}
+      		#templateContainer{
+      			background-color:#512da8;
+      		}
+      		#templateBody{
+      			background-color:#512da8;
+      		}
+      		.bodyContent{
+      			line-height:150%;
+      			font-family:Helvetica;
+      			font-size:14px;
+      			color:#ffffff;
+      			padding:20px;
+      		}
+      		a:link,a:active,a:visited,a{
+      			color:#f3f3f3;
+      		}
+      		.button:link,.button:active,.button:visited,.button,.button span{
+      			background-color:#ffffff !important;
+      			color:#512da8 !important;
+      		}
+      		.button:hover{
+      			background-color:#000000 !important;
+      			color:#ffffff !important;
+      		}
+      		label{
+      			line-height:150%;
+      			font-family:Helvetica;
+      			font-size:16px;
+      			color:#ffffff;
+      		}
+      		.field-group input,select,textarea,.dijitInputField{
+      			font-family:Helvetica;
+      			color:#333333 !important;
+      		}
+      		.asterisk{
+      			color:#111111;
+      			font-size:20px;
+      		}
+      		label .asterisk{
+      			visibility:hidden;
+      		}
+      		.indicates-required{
+      			display:none;
+      		}
+      		.field-help{
+      			color:#777;
+      		}
+      		.error,.errorText{
+      			color:#ffffff;
+      			font-weight:bold;
+      		}
+      	    @media (max-width: 620px){
+                body{
+                    width:100%;
+                    -webkit-font-smoothing:antialiased;
+                    padding:10px 0 0 0 !important;
+                    min-width:300px !important;
+                }
+            }@media (max-width: 620px){
+      		    .wrapper,.poweredWrapper{
+                    width:auto !important;
+                    max-width:600px !important;
+                    padding:0 10px;
+      		    }
+      
+            }@media (max-width: 620px){
+      		    #templateContainer,#templateBody,#templateContainer table{
+      			    width:100% !important;
+                    -moz-box-sizing:border-box;
+                    -webkit-box-sizing:border-box;
+                    box-sizing:border-box;
+      		    }
+            }@media (max-width: 620px){
+                .addressfield span{
+                    width:auto;
+                    float:none;
+                    padding-right:0;
+                }
+            }@media (max-width: 620px){
+      		    .captcha{
+      			    width:auto;
+      			    float:none;
+      		    }
+            }
+        </style>
     </head>
-    <body class="deep-purple darken-2 white-text">
-        <div class="row">
-            <div class="col s12">
-                <div class="container">
-                    Olá, {{ user }},
-                </div>
-            </div>
-        </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    </body>
+  
+    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="font: 14px/20px 'Helvetica', Arial, sans-serif;margin: 0;padding: 75px 0 0 0;text-align: center;-webkit-text-size-adjust: none;background-color: #512da8;">
+        <center>
+            <table border="0" cellpadding="20" cellspacing="0" height="100%" width="100%" id="bodyTable" style="background-color: #512da8;">
+                <tr>
+                    <td align="center" valign="top">
+                        <!-- // BEGIN CONTAINER -->
+                        <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer" class="rounded6" style="border-radius: 6px;background-color: #512da8;">
+                            <tr>
+                                <td align="center" valign="top">
+                                    <!-- // BEGIN BODY -->
+                                    <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody" class="rounded6" style="border-radius: 6px;background-color: #512da8;">
+                                        <tr>
+                                            <td align="left" valign="top" class="bodyContent" style="line-height: 150%;font-family: Helvetica;font-size: 14px;color: #ffffff;padding: 20px;">
+                                                <h2 style="font-size: 22px;line-height: 28px;margin: 0 0 12px 0;">Confirmação de endereço de e-mail</h2>
+                                                <a class="button" href="{{ protocol }}://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}" style="color: #512da8 !important;display: inline-block;font-weight: 500;font-size: 16px;line-height: 42px;font-family: 'Helvetica', Arial, sans-serif;width: auto;white-space: nowrap;height: 42px;margin: 12px 5px 12px 0;padding: 0 22px;text-decoration: none;text-align: center;cursor: pointer;border: 0;border-radius: 3px;vertical-align: top;background-color: #ffffff !important;">
+                                                    <span style="display: inline;font-family: 'Helvetica', Arial, sans-serif;text-decoration: none;font-weight: 500;font-style: normal;font-size: 16px;line-height: 42px;cursor: pointer;border: none;background-color: #ffffff !important;color: #512da8 !important;">
+                                                        Ativar conta
+                                                    </span>
+                                                </a>
+                                                <br>
+                                                <div>
+                                                    <p style="padding: 0 0 10px 0;">Se você recebeu esse email por engano, simplesmente delete-o. Sua conta não será ativada se se você não clicar no botão de confirmação acima.</p>
+                                                    <p style="padding: 0 0 10px 0;">Se você está tendo problemas com o botão acima, copie e cole a URL dada no seu browser.</p>
+                                                </div>
+                                                <span itemscope itemtype="http://schema.org/EmailMessage">
+                                                    <span itemprop="description" content="We need to confirm your email address."></span>
+                                                    <span itemprop="action" itemscope itemtype="http://schema.org/ConfirmAction">
+                                                        <meta itemprop="name" content="Confirm Subscription"> <span itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+                                                        <meta itemprop="url" content="https://foundermantras.us7.list-manage.com/subscribe/smartmail-confirm?u=1b74d38c8380f562118a12b0b&id=8fde0ceecc&e=d060b89991&inline=true">
+                                                        <link itemprop="method" href="http://schema.org/HttpRequestMethod/POST">
+                                                    </span>
+                                                </span>
+                          </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!-- END BODY \\ -->
+                                </td>
+                            </tr>
+              <tr>
+                <td align="center" valign="top">
+                  <!-- // BEGIN FOOTER -->
+                  <table border="0" cellpadding="20" cellspacing="0" width="600">
+                    <tr>
+                      <td align="center" valign="top"></td>
+                    </tr>
+                  </table>
+                  <!-- END FOOTER \\ -->
+                </td>
+              </tr>
+            </table>
+            <!-- END CONTAINER \\ -->
+          </td>
+        </tr>
+      </table>
+    </center>
+  </body>
 </html>

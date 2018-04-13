@@ -8,10 +8,10 @@ from django.contrib.auth import authenticate
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from core.tokens import account_activation_token
-from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.conf import settings
+from core.utils import send_mail_template
 
 
 @api_view(["POST"])
@@ -87,21 +87,15 @@ class CreatePersonViewSet(generics.CreateAPIView):
                 street=instance.get('street'), number=instance.get('number'), cep=instance.get("cep"), 
                 uf=instance.get("uf"), city=instance.get("city"), complement=instance.get("complement"))
             person.set_password(instance.get('password'))
-            person.save()
+            #person.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your blog account.'
-            message = render_to_string(
-                'emails/activate_email.html',
-                {
-                    'user': person,
-                    'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(person.pk)),
-                    'token': account_activation_token.make_token(person),
-                }
-            )
-            to_email = instance.get('email')
-            email = EmailMessage(mail_subject, message, from_email=settings.DEFAULT_FROM_EMAIL, to=[to_email])
-            email.send()
+            subject = "Ative sua conta"
+            context = {}
+            context['user'] = person
+            context['domain'] = current_site.domain
+            context['uid'] = urlsafe_base64_encode(force_bytes(person.pk)).decode()
+            context['token'] = account_activation_token.make_token(person)
+            send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
             return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -127,18 +121,13 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
             institution.set_password(instance.get('password'))
             institution.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your blog account.'
-            message = render_to_string(
-                'emails/activate_email.html',
-                {
-                    'user': institution,
-                    'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(institution.pk)),
-                    'token': account_activation_token.make_token(institution),
-                }
-            )
-            to_email = instance.get('email')
-            email = EmailMessage(mail_subject, message, to=[to_email])
-            email.send()
+            subject = "Ative sua conta"
+            context = {}
+            context['user'] = institution
+            context['domain'] = current_site.domain
+            context['uid'] = urlsafe_base64_encode(force_bytes(institution.pk)).decode()
+            context['token'] = account_activation_token.make_token(institution)
+            context['protocol'] = 'https' if request.is_secure() else 'http',
+            send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

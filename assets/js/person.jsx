@@ -19,7 +19,8 @@ export default class Person extends React.Component{
             dataType: 'json',
             data: $("#person-form").serialize(),
             success: function(data){
-                //window.location.href = "/donations/";
+                alert("mostrar uma mensagem estilosa dizendo que um email foi enviado para o email do cadastrante");
+                alert("salvou");
             },
             error: function(request, status, err){
                 console.log(request, status, err);

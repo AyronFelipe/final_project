@@ -18,10 +18,10 @@ export default class Main extends React.Component{
                             <h5 className="center-align">Comece agora a fazer parte de nossa comunidade e a ajudar aqueles que estão precisando</h5>
                             <div className="row">
                                 <div className="col s6">
-                                    <Link to="/accounts/new-person"><button className="btn-large waves-effect waves-light indigo accent-2 wihte-text">Sou uma pessoa normal. Quero ajudar!</button></Link>
+                                    <Link to="/accounts/new-person/"><button className="btn-large waves-effect waves-light indigo accent-2 wihte-text">Sou uma pessoa normal. Quero ajudar!</button></Link>
                                 </div>
                                 <div className="col s6">
-                                    <Link to="/accounts/new-institution"><button className="btn-large waves-effect waves-light indigo accent-2 wihte-text">Sou uma empresa. Quero ajudar!</button></Link>
+                                    <Link to="/accounts/new-institution/"><button className="btn-large waves-effect waves-light indigo accent-2 wihte-text">Sou uma empresa. Quero ajudar!</button></Link>
                                 </div>
                             </div>
                         </div>
