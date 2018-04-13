@@ -8,6 +8,20 @@ export default class Login extends React.Component{
         this.login = this.login.bind(this);
     }
 
+    componentDidMount(){
+        $("#email").keyup(function(e){
+            if(e.keyCode == 13){
+                $("#password").focus();
+            }
+        })
+
+        $("#password").keyup(function(e){
+            if(e.keyCode == 13){
+                $("#login-button").click();
+            }
+        })
+    }
+
     login(){
         $.ajax({
             url: '/login/',
@@ -45,7 +59,7 @@ export default class Login extends React.Component{
                                 </div>
                             </div>
                             <div className="card-action right-align">
-                                <button type="button" className="btn waves-effect waves-light indigo accent-2 white-text" onClick={ this.login }>Entrar</button>
+                                <button type="button" id="login-button" className="btn waves-effect waves-light indigo accent-2 white-text" onClick={ this.login }>Entrar</button>
                             </div>
                         </form>
                     </div>

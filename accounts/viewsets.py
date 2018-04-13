@@ -12,6 +12,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.conf import settings
 from core.utils import send_mail_template
+from django.db import transaction
 
 
 @api_view(["POST"])
@@ -86,17 +87,18 @@ class CreatePersonViewSet(generics.CreateAPIView):
                 phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), neighborhood=instance.get('neighborhood'), 
                 street=instance.get('street'), number=instance.get('number'), cep=instance.get("cep"), 
                 uf=instance.get("uf"), city=instance.get("city"), complement=instance.get("complement"))
-            person.set_password(instance.get('password'))
-            #person.save()
-            current_site = get_current_site(request)
-            subject = "Ative sua conta"
-            context = {}
-            context['user'] = person
-            context['domain'] = current_site.domain
-            context['uid'] = urlsafe_base64_encode(force_bytes(person.pk)).decode()
-            context['token'] = account_activation_token.make_token(person)
-            send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
-            return Response(serializer.data, status=status.HTTP_201_CREATED,)
+            with transaction.atomic():
+                person.set_password(instance.get('password'))
+                person.save()
+                current_site = get_current_site(request)
+                subject = "Ative sua conta"
+                context = {}
+                context['user'] = person
+                context['domain'] = current_site.domain
+                context['uid'] = urlsafe_base64_encode(force_bytes(person.pk)).decode()
+                context['token'] = account_activation_token.make_token(person)
+                send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
+                return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

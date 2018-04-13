@@ -13,6 +13,9 @@ export default class Person extends React.Component{
     }
 
     savePerson(){
+        $("#person-form").find(":input").each(function(){
+            $(this).siblings('span.error-message').html('');
+        });
         $.ajax({
             url: '/api/new-person/',
             type: 'POST',
@@ -23,8 +26,16 @@ export default class Person extends React.Component{
                 alert("salvou");
             },
             error: function(request, status, err){
-                console.log(request, status, err);
-                $("#error-message").html("<p>"+ request.responseText +"</p>");
+                if (err == 'Bad Request'){
+                    for(const [key, value] of Object.entries(request.responseJSON)){
+                        $("#person-form").find(":input").each(function(){
+                            name = $(this).attr("name");
+                            if(name===key){
+                                $(this).siblings('span.error-message').html('<p>'+value+'</p>');
+                            }
+                        });
+                    }
+                }
             }
         });
     }
@@ -46,20 +57,17 @@ export default class Person extends React.Component{
                         <div className="container">
                             <div className="red-text" id="error-message"></div>
                             <form id="person-form">
-                                <div className="row">
-                                    <div className="col s6">
-                                        <Dropzone />
-                                    </div>
-                                </div>
                                 <h5>Informações de Login</h5>
                                 <div className="row">
                                     <div className="input-field col s6">
-                                        <input id="email" name="email" type="text" />
+                                        <input id="email" name="email" type="text" className="validate" />
                                         <label htmlFor="email">Email</label>
+                                        <span className="error-message red-text"></span>
                                     </div>
                                     <div className="input-field col s6">
                                         <input id="password" name="password" type="password" />
                                         <label htmlFor="email">Senha</label>
+                                        <span className="error-message red-text"></span>
                                     </div> 
                                 </div>
                                 <h5>Informações pessoais</h5>
@@ -67,16 +75,19 @@ export default class Person extends React.Component{
                                     <div className="input-field col s6">
                                         <input id="first_name" name="first_name" type="text" />
                                         <label htmlFor="first_name">Nome</label>
+                                        <span className="error-message red-text"></span>
                                     </div>
                                     <div className="input-field col s6">
                                         <input id="last_name" name="last_name" type="text" />
                                         <label htmlFor="last_name">Sobrenome</label>
+                                        <span className="error-message red-text"></span>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s6">
                                         <input id="cpf" name="cpf" type="text" />
                                         <label htmlFor="cpf">CPF</label>
+                                        <span className="error-message red-text"></span>
                                     </div>
                                     <Dateapicker name="birthday" />
                                 </div>
@@ -85,10 +96,12 @@ export default class Person extends React.Component{
                                     <div className="input-field col s6">
                                         <input id="phone" name="phone" type="text"/>
                                         <label htmlFor="phone">Telefone residêncial</label>
+                                        <span className="error-message red-text"></span>
                                     </div>
                                     <div className="input-field col s6">
                                         <input id="cell_phone" name="cell_phone" type="text"/>
                                         <label htmlFor="cell_phone">Telefone celular</label>
+                                        <span className="error-message red-text"></span>
                                     </div>
                                 </div>
                                 <Address />
