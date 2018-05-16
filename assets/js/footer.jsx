@@ -3,6 +3,11 @@ import ReactDom from 'react-dom'
 import CreateReactClass from 'create-react-class'
 
 export default class Footer extends React.Component{
+
+    getYear(){
+        return new Date().getFullYear();
+    }
+
     render(){
         return(
             <footer className="page-footer deep-purple darken-2 white-text">
@@ -25,7 +30,7 @@ export default class Footer extends React.Component{
                 </div>
                 <div className="footer-copyright">
                     <div className="container">
-                        © 2018 Copyright
+                        © {this.getYear()} Copyright
                         <a className="grey-text text-lighten-4 right" href="#!">Desenvolvido por Ayron</a>
                     </div>
                 </div>
