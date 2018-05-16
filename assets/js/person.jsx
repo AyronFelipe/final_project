@@ -3,7 +3,7 @@ import Footer from './footer'
 import Inputmask from 'inputmask'
 import Dateapicker from './dateapicker'
 import Address from './address'
-import Dropzone from './dropzone'
+import { Link } from 'react-router-dom'
 
 export default class Person extends React.Component{
 
@@ -22,8 +22,7 @@ export default class Person extends React.Component{
             dataType: 'json',
             data: $("#person-form").serialize(),
             success: function(data){
-                alert("mostrar uma mensagem estilosa dizendo que um email foi enviado para o email do cadastrante");
-                alert("salvou");
+                $('#modal-confirmacao').modal('open');
             },
             error: function(request, status, err){
                 if (err == 'Bad Request'){
@@ -44,11 +43,25 @@ export default class Person extends React.Component{
         Inputmask("999.999.999-99", { showMaskOnHover: false }).mask($("#cpf"))
         Inputmask("(99)9999-9999", { showMaskOnHover: false }).mask($("#phone"))
         Inputmask("(99)\\99999-9999", { showMaskOnHover: false }).mask($("#cell_phone"))
+        $('#modal-confirmacao').modal({
+            dismissible: false,
+        });
     }
 
     render(){
         return(
             <div className="white purple-text">
+                <div className="modal" id="modal-confirmacao">
+                    <div className="modal-content">
+                        <h4>Cadastro realizado com sucesso!</h4>
+                        <blockquote>Enviamos para o e-mail informado a confirmação do seu cadastro. Por favor verifique seu e-mail antes de realizar login.</blockquote>
+                    </div>
+                    <div className="modal-footer">
+                        <Link to="/">
+                            <button className="modal-action modal-close btn waves-effect waves-light indigo accent-2 wihte-text">Tudo bem!</button>
+                        </Link>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col s12">
                         <div className="col s10 push-s1">
