@@ -13,6 +13,7 @@ from django.utils.encoding import force_bytes, force_text
 from django.conf import settings
 from core.utils import send_mail_template
 from django.db import transaction
+from rest_framework.authtoken.models import Token
 
 
 @api_view(["POST"])
