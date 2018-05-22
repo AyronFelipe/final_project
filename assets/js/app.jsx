@@ -26,7 +26,7 @@ class Initial extends React.Component{
 class App extends React.Component{
     render(){
         return(
-            <div>
+            <div className="deep-purple white-text">
                 <Route exact path="/" component={ Initial } />
                 <Route path="/accounts/login" component={ Login } />
                 <Route path="/accounts/new-person" component={ Person } />

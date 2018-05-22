@@ -108,7 +108,7 @@ export default class Person extends React.Component{
                                 <div className="row">
                                     <div className="input-field col s6">
                                         <input id="phone" name="phone" type="text"/>
-                                        <label htmlFor="phone">Telefone residêncial</label>
+                                        <label htmlFor="phone">Telefone residencial</label>
                                         <span className="error-message red-text"></span>
                                     </div>
                                     <div className="input-field col s6">

@@ -90,13 +90,13 @@ class CreatePersonViewSet(generics.CreateAPIView):
             with transaction.atomic():
                 person.set_password(instance.get('password'))
                 person.save()
-                current_site = get_current_site(request)
                 subject = "Ative sua conta"
                 context = {}
                 context['user'] = person
-                context['domain'] = current_site.domain
+                context['domain'] = get_current_site(request).domain
                 context['uid'] = urlsafe_base64_encode(force_bytes(person.pk)).decode()
                 context['token'] = account_activation_token.make_token(person)
+                context['protocol'] = 'https' if request.is_secure() else 'http'
                 send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -129,7 +129,7 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
             context['domain'] = current_site.domain
             context['uid'] = urlsafe_base64_encode(force_bytes(institution.pk)).decode()
             context['token'] = account_activation_token.make_token(institution)
-            context['protocol'] = 'https' if request.is_secure() else 'http',
+            context['protocol'] = 'https' if request.is_secure() else 'http'
             send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
