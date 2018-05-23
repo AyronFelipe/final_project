@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from .managers import UserManager
 
 
-class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin):
+class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixin, AddressMixin):
 
     email = models.EmailField(_('email address'), unique=True,)
     is_active = models.BooleanField(_('active'), default=False,)
@@ -25,7 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin):
         verbose_name_plural = _('users')
 
 
-class Person(User, PhoneMixin, AddressMixin):
+class Person(User):
 
     first_name = models.CharField(_('first name'), max_length=255, blank=True)
     last_name = models.CharField(_('last name'), max_length=255, blank=True)
@@ -38,7 +38,7 @@ class Person(User, PhoneMixin, AddressMixin):
         verbose_name_plural = _('persons')
 
 
-class Institution(User, PhoneMixin, AddressMixin):
+class Institution(User):
 
     name = models.CharField(_('institution name'), max_length=255, blank=True)
     cnpj = models.CharField(_('cnpj'), max_length=18)
