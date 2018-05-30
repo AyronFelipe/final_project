@@ -54,7 +54,7 @@ export default class Address extends React.Component{
     render(){
         return(
             <div>
-                <h5>Endereço</h5>
+                <h5>{ this.props.legend }</h5>
                 <div className="row">
                     <div className="input-field col s6">
                         <input type="text" name="cep" id="cep"/>

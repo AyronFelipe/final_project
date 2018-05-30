@@ -6,13 +6,14 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from core.mixins import CreationAndUpdateMixin, PhoneMixin, AddressMixin
 from django.utils.translation import ugettext_lazy as _
 from .managers import UserManager
+from core.utils import img_path
 
 
 class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixin, AddressMixin):
 
     email = models.EmailField(_('email address'), unique=True,)
     is_active = models.BooleanField(_('active'), default=False,)
-    photo = models.ImageField(_('photo'), upload_to='users/photos/', null=True, blank=True)
+    photo = models.ImageField(_('photo'), upload_to=img_path, null=True, blank=True)
 
     objects = UserManager()
 
@@ -23,6 +24,18 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
 
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    def get_name(self):
+
+        if self.person:
+            return self.person.first_name
+        elif self.institution:
+            return self.institution.name
+        return None
+
+    def __str__(self):
+
+        return self.get_name()
 
 
 class Person(User):
@@ -37,6 +50,10 @@ class Person(User):
         verbose_name = _('person')
         verbose_name_plural = _('persons')
 
+    def __str__(self):
+
+        return self.first_name
+
 
 class Institution(User):
 
@@ -49,6 +66,10 @@ class Institution(User):
 
         verbose_name = _('institution')
         verbose_name_plural = _('instituions')
+
+    def __str__(self):
+
+        return self.name
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

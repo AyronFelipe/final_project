@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from core.mixins import CreationAndUpdateMixin, PhoneMixin, AddressMixin
 from django.utils.translation import ugettext_lazy as _
+from core.utils import img_path
+from datetime import datetime
+from django.template.defaultfilters import slugify
 
 
 class Donation(CreationAndUpdateMixin, AddressMixin):
@@ -11,9 +14,11 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     slug = models.SlugField(max_length=50, blank=True, null=True, unique=True)
     donator = models.ForeignKey(get_user_model(), related_name='donator', on_delete=models.CASCADE)
     receiver = models.ForeignKey(get_user_model(), related_name='receiver', null=True, blank=True, on_delete=models.SET_NULL)
-    validity = models.DateTimeField(blank=True, null=True)
+    validity = models.DateField(blank=True, null=True)
+    validity_hour = models.TimeField(blank=True, null=True)
     is_valid = models.BooleanField(default=False)
     is_accepted = models.BooleanField(default=False)
+    photo = models.ImageField(_('photo'), upload_to=img_path, null=True, blank=True)
 
     class Meta:
 
@@ -28,7 +33,7 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     def save(self):
 
         super(Donation, self).save()
-        date = datetime.datetime.today()
+        date = datetime.today()
         self.slug = 'DONA.%i-%i-%i.%i-%s' % (
             date.year, date.month, date.day, self.id, slugify(self.name)
         )

@@ -31,7 +31,7 @@ def login(request):
         if user is not None:
             if user.is_active:
                 token, created = Token.objects.get_or_create(user=user)
-                return Response({'token': token.key}, status=status.HTTP_200_OK, headers={'Authorization': 'Token ' + token.key})
+                return Response({'token': token.key}, status=status.HTTP_200_OK)
             else:
                 data["message"] = "O usuário ainda não foi ativo, por favor verifique seu email para poder ativa-lo"
         else:
@@ -123,11 +123,10 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
                 number=instance.get('number'))
             institution.set_password(instance.get('password'))
             institution.save()
-            current_site = get_current_site(request)
             subject = "Ative sua conta"
             context = {}
             context['user'] = institution
-            context['domain'] = current_site.domain
+            context['domain'] = get_current_site(request).domain
             context['uid'] = urlsafe_base64_encode(force_bytes(institution.pk)).decode()
             context['token'] = account_activation_token.make_token(institution)
             context['protocol'] = 'https' if request.is_secure() else 'http'

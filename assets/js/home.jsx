@@ -4,6 +4,8 @@ import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
+import Donations from './donations'
+import Donation from './donation'
 
 class Home extends React.Component{
 
@@ -23,26 +25,8 @@ class Home extends React.Component{
                                         <a href="#" className="brand-logo">Nome do Projeto</a>
                                         <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
                                         <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                            <li>
-                                                <Link to="/ayron">Ayron</Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/felipe">Felipe</Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/carvalho">Carvalho</Link>
-                                            </li>
                                         </ul>
                                         <ul className="side-nav" id="mobile-demo">
-                                            <li>
-                                                <Link to="/ayron">Ayron</Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/felipe">Felipe</Link>
-                                            </li>
-                                            <li>
-                                                <Link to="/carvalho">Carvalho</Link>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -50,36 +34,11 @@ class Home extends React.Component{
                         </nav>
                     </header>
                     <main>
-                        <Route path="/ayron" component={ Ayron } />
-                        <Route path="/felipe" component={ Felipe } />
-                        <Route path="/carvalho" component={ Carvalho } />
+                        <Route exact path="/donations/" component={ Donations } />
+                        <Route path="/donations/new-donation/" component={ Donation } />
                     </main>
                 </div>
             </BrowserRouter>
-        )
-    }
-}
-
-class Ayron extends React.Component{
-    render(){
-        return(
-            <h1>Ayron</h1>
-        )
-    }
-}
-
-class Felipe extends React.Component{
-    render(){
-        return(
-            <h1>Felipe</h1>
-        )
-    }
-}
-
-class Carvalho extends React.Component{
-    render(){
-        return(
-            <h1>Carvalho</h1>
         )
     }
 }

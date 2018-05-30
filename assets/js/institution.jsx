@@ -105,7 +105,7 @@ export default class Institution extends React.Component{
                                             <span className="error-message red-text"></span>
                                         </div>
                                     </div>
-                                    <Address/>
+                                    <Address legend="Endereço" />
                                     <div className="row">
                                         <div className="col s12 right-align">
                                             <button type="button" className="btn-large waves-effect waves-light indigo accent-2 wihte-text" onClick={ this.savePerson }>Salvar</button>

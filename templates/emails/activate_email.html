@@ -119,6 +119,15 @@
                                         <tr>
                                             <td align="left" valign="top" class="bodyContent" style="line-height: 150%;font-family: Helvetica;font-size: 14px;color: #ffffff;padding: 20px;">
                                                 <h2 style="font-size: 22px;line-height: 28px;margin: 0 0 12px 0;">Confirmação de endereço de e-mail</h2>
+                                                <br>
+                                                <div>
+                                                    <p style="padding: 0 0 10px 0;">
+                                                        Olá, {{ user }}.
+                                                    </p>
+                                                    <p style="padding: 0 0 10px 0;">
+                                                        Clique no botão abaixo para validar seu usuário e começar a ajudar.
+                                                    </p>
+                                                </div>
                                                 <a class="button" href="{{ protocol }}://{{ domain }}{% url 'accounts:activate' uidb64=uid token=token %}" style="color: #512da8 !important;display: inline-block;font-weight: 500;font-size: 16px;line-height: 42px;font-family: 'Helvetica', Arial, sans-serif;width: auto;white-space: nowrap;height: 42px;margin: 12px 5px 12px 0;padding: 0 22px;text-decoration: none;text-align: center;cursor: pointer;border: 0;border-radius: 3px;vertical-align: top;background-color: #ffffff !important;" target="_blank">
                                                     <span style="display: inline;font-family: 'Helvetica', Arial, sans-serif;text-decoration: none;font-weight: 500;font-style: normal;font-size: 16px;line-height: 42px;cursor: pointer;border: none;background-color: #ffffff !important;color: #512da8 !important;">
                                                         Ativar conta

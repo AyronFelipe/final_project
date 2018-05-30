@@ -29,6 +29,7 @@ export default class Login extends React.Component{
             dataType: 'json',
             data: $('#login-form').serialize(),
             success: function(data){
+                console.log(data);
                 window.location.href = "/donations/";
             },
             error: function(request, status, err){
