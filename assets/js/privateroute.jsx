@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, Switch } from 'react-router-dom'
 import Login from './login'
 
 export default class PrivateRoute extends React.Component{
@@ -9,13 +9,16 @@ export default class PrivateRoute extends React.Component{
         const {component: Component, authenticated, ...rest} = this.props;
 
         return(
-            <Route
-                {...rest}
-                render={props => authenticated === true 
-                    ? (<Component {...props} />)
-                    : (<Redirect to={{pathname: '/accounts/login/', state: {from: props.location}}} />)
-                 }
-            />
+            <Switch>              
+                <Route
+                    {...rest}
+                    render={props => authenticated === true 
+                        ? (<Component {...props} />)
+                        : (<Redirect to={{pathname: '/accounts/login/', state: {from: props.location}}} />)
+                     }
+                />
+                <Route exact path="/accounts/login/" component={ Login } />
+            </Switch>
         )
     }
 }
