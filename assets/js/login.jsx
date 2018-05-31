@@ -22,15 +22,19 @@ export default class Login extends React.Component{
         })
     }
 
-    login(){
+    login(cb){
         $.ajax({
             url: '/login/',
             type: 'POST',
             dataType: 'json',
             data: $('#login-form').serialize(),
             success: function(data){
-                console.log(data);
-                window.location.href = "/donations/";
+                cb({
+                    authenticate: true,
+                    token: data.token
+                })
+                console.log(authenticate, token)
+                //window.location.href = "/donations/";
             },
             error: function(request, status, err){
                 $("#error-message").html("<p>" + request.responseJSON.message +"</p>");

@@ -6,8 +6,14 @@ import '../css/main.css'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import Donations from './donations'
 import Donation from './donation'
+import PrivateRoute from './privateroute'
 
 class Home extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.state = {authenticated: false}
+    }
 
     componentDidMount(){
         $('.button-collapse').sideNav()
@@ -34,8 +40,8 @@ class Home extends React.Component{
                         </nav>
                     </header>
                     <main>
-                        <Route exact path="/donations/" component={ Donations } />
-                        <Route path="/donations/new-donation/" component={ Donation } />
+                        <PrivateRoute exact authenticated={ this.state.authenticated } path="/donations/" component={ Donations } />
+                        <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
                     </main>
                 </div>
             </BrowserRouter>

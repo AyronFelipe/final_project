@@ -29,7 +29,7 @@ module.exports = {
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react']
+                    presets: ['react', 'stage-3']
                 }
             },
             {
