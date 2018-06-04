@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import CreateReactClass from 'create-react-class'
 import { Link} from 'react-router-dom'
+import NameProject from './nameproject'
 
 export default class Header extends React.Component{
 
@@ -17,7 +18,7 @@ export default class Header extends React.Component{
                         <div className="row">
                             <div className="col l12 m12 s12">
                                 <div className="nav-wrapper">
-                                    <a href="#!" className="brand-logo">Nome Projeto</a>
+                                    <a href="#!" className="brand-logo"><NameProject /></a>
                                     <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
                                     <ul className="right hide-on-med-and-down">
                                         <li><a href="#como-funciona">Como Funciona?</a></li>

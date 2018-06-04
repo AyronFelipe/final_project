@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import CreateReactClass from 'create-react-class'
+import NameProject from './nameproject'
 
 export default class Footer extends React.Component{
 
@@ -14,7 +15,7 @@ export default class Footer extends React.Component{
                 <div className="container">
                     <div className="row">
                         <div className="col l6 s12">
-                            <h5 className="white-text">Nome do Projeto</h5>
+                            <h5 className="white-text"><NameProject /></h5>
                             {/* <p className="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p> */}
                         </div>
                         <div className="col l4 offset-l2 s12">

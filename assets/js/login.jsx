@@ -1,6 +1,7 @@
 import React from 'react'
 import Footer from './footer'
 import { storageToken, isAuthenticated } from './auth'
+import NameProject from './nameproject'
 
 export default class Login extends React.Component{
 
@@ -48,7 +49,7 @@ export default class Login extends React.Component{
                     <div className="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
                         <form id="login-form">
                             <div className="card-content">
-                                <div className="white-text center-align"><h1>Nome do Projeto</h1></div>
+                                <div className="white-text center-align"><h1><NameProject /></h1></div>
                                 <span className="card-title">Digite seus dados</span>
                                 <div id="error-message" className="red-text"></div>
                                 <div className="row">
