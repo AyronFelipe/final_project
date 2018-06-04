@@ -22,7 +22,6 @@ class CreateDonationViewSet(generics.CreateAPIView):
 
     def post(self, request):
         serializer = DonationSerializer(data=request.data)
-        import pdb; pdb.set_trace()
         if serializer.is_valid():
             instance = serializer.validated_data
             donation = Donation(
@@ -40,8 +39,7 @@ class CreateDonationViewSet(generics.CreateAPIView):
                 complement=instance.get("complement")
             )
             with transaction.atomic():
-                #donation.donator = request.user
-                donation.donator = User.objects.last()
+                donation.donator = request.user
                 donation.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -55,3 +53,4 @@ class DonationViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.AllowAny,)
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
+

@@ -16,19 +16,32 @@ export default class Donation extends React.Component{
         $("#donation-form").find("input, textarea").each(function(){
             $(this).siblings('span.error-message').html('');
         })
+        let form = new FormData($("#donation-form").get(0));
         $.ajax({
             url: '/api/new-donation/',
             type: 'POST',
             dataType: 'json',
-            data: $("#donation-form").serialize(),
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
             headers: {
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-                alert('Salvou!');
+                window.location.href = '/donations/';
             },
             error: function(request, status, err){
-                console.log(request, status, err);
+                if (err == 'Bad Request'){
+                    for(const [key, value] of Object.entries(request.responseJSON)){
+                        $("#donation-form").find(":input").each(function(){
+                            name = $(this).attr("name");
+                            if(name===key){
+                                $(this).siblings('span.error-message').html('<p>'+value+'</p>');
+                            }
+                        });
+                    }
+                }
             }
         })
     }
