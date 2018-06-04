@@ -14,6 +14,9 @@ from django.conf import settings
 from core.utils import send_mail_template
 from django.db import transaction
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 @api_view(["POST"])
@@ -26,16 +29,16 @@ def login(request):
     password = request.POST.get('password')
     user = authenticate(request, username=email, password=password)
     if email == '' or password == '':
-        data["message"] = "Os campos não podem estar em branco"
+        data["message"] = "Os campos não podem estar em branco."
     else:
         if user is not None:
             if user.is_active:
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key}, status=status.HTTP_200_OK)
             else:
-                data["message"] = "O usuário ainda não foi ativo, por favor verifique seu email para poder ativa-lo"
+                data["message"] = "O usuário ainda não foi ativo, por favor verifique seu email para poder ativa-lo."
         else:
-            data["message"] = "Um dos campos foi preenchido incorretamente" 
+            data["message"] = "Um dos campos foi preenchido incorretamente."
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
         
 

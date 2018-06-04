@@ -9,7 +9,7 @@ export default class PrivateRoute extends React.Component{
         const {component: Component, authenticated, ...rest} = this.props;
 
         return(
-            <Switch>              
+            <div>
                 <Route
                     {...rest}
                     render={props => authenticated === true 
@@ -17,8 +17,7 @@ export default class PrivateRoute extends React.Component{
                         : (<Redirect to={{pathname: '/accounts/login/', state: {from: props.location}}} />)
                      }
                 />
-                <Route exact path="/accounts/login/" component={ Login } />
-            </Switch>
+            </div>
         )
     }
 }

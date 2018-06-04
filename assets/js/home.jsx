@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Link } from 'react-router-dom'
 import Donations from './donations'
 import Donation from './donation'
 import PrivateRoute from './privateroute'
+import Login from './login'
 
 class Home extends React.Component{
 
@@ -40,6 +41,7 @@ class Home extends React.Component{
                         </nav>
                     </header>
                     <main>
+                        <Route exact path="/accounts/login/" component={ Login } />
                         <PrivateRoute exact authenticated={ this.state.authenticated } path="/donations/" component={ Donations } />
                         <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
                     </main>
