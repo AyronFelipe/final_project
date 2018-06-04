@@ -3,6 +3,7 @@ import Dateapicker from './dateapicker'
 import Address from './address'
 import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
+import { storageToken } from './auth'
 
 export default class Donation extends React.Component{
 
@@ -20,6 +21,9 @@ export default class Donation extends React.Component{
             type: 'POST',
             dataType: 'json',
             data: $("#donation-form").serialize(),
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
             success: function(data){
                 alert('Salvou!');
             },
@@ -83,7 +87,7 @@ export default class Donation extends React.Component{
                         <h4 className="center-align">Cadastre abaixo as informações sobre a sua doação!</h4>
                     </div>
                     <div className="container">
-                        <form id="donation-form" enctype="multipart/form-data">
+                        <form id="donation-form" encType="multipart/form-data">
                             <div className="row">
                                 <div className="input-field col s6">
                                     <input id="name" name="name" type="text" className="validate" />
@@ -115,7 +119,7 @@ export default class Donation extends React.Component{
                             </div>
                             <div className="row">
                                 <div className="col s12 right-align">
-                                    <button type="button" className="btn-large waves-effect waves-light indigo accent-2 wihte-text" onClick={ this.saveDonation }>Salvar</button>
+                                    <button type="button" className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={ this.saveDonation }>Salvar</button>
                                 </div>
                             </div>
                         </form>

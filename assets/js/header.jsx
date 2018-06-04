@@ -23,7 +23,7 @@ export default class Header extends React.Component{
                                         <li><a href="#como-funciona">Como Funciona?</a></li>
                                         <li><a href="#comecar">Começar</a></li>
                                         <li><a href="#quem-somos">Quem Somos?</a></li>
-                                        <li><Link to="/accounts/login/"><button className="btn waves-effect waves-light indigo accent-2 wihte-text">Login</button></Link></li>
+                                        <li><Link to="/accounts/login/"><button className="btn waves-effect waves-light indigo accent-2 white-text">Login</button></Link></li>
                                     </ul>
                                 </div>
                             </div>

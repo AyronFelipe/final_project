@@ -3,6 +3,7 @@ import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'
 import { Link } from 'react-router-dom'
+import { storageToken } from './auth'
 
 export default class Donations extends React.Component{
 
@@ -16,6 +17,9 @@ export default class Donations extends React.Component{
             url: '/api/donations/',
             dataType: 'json',
             type: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
             success: function(data){
                 this.setState({ donations: data })
             }.bind(this),
@@ -36,7 +40,7 @@ export default class Donations extends React.Component{
                                 <div className="card">
                                     <div className="card-image">
                                         <img src={ donation.photo } />
-                                        <a class="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i class="material-icons">menu</i></a>
+                                        <a className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></a>
                                     </div>
                                     <div className="card-content">
                                         <span className="card-title">{ donation.name }</span>
@@ -49,7 +53,7 @@ export default class Donations extends React.Component{
                 }
                 <div className="fixed-action-btn">
                     <Link to="/donations/new-donation/">
-                        <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 wihte-text pulse" title="Adcionar uma doação">
+                        <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
                             <i className="material-icons">add</i>
                         </button>
                     </Link>
