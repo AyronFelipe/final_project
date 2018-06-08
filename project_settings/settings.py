@@ -1,4 +1,5 @@
 import os
+import django_heroku
 from decouple import config, Csv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -122,6 +123,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
 
 MEDIA_URL = '/media/'
 

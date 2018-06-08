@@ -75,7 +75,6 @@ typings/
 .env
 
 # webpack generated files
-assets/bundles/
 webpack-stats.json
 
 # End of https://www.gitignore.io/api/node,django
