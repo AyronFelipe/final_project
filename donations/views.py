@@ -13,3 +13,10 @@ def new_donation(request):
     template_name = "donations/new_donation.html"
     context = {}
     return render(request, template_name, context)
+
+
+def donation_detail(request, slug):
+
+    template_name = "donations/donation_detail.html"
+    context = {}
+    return render(request, template_name, context)

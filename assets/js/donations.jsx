@@ -4,6 +4,7 @@ import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'
 import { Link } from 'react-router-dom'
 import { storageToken } from './auth'
+import DonationDetail from './donationdetail'
 
 export default class Donations extends React.Component{
 
@@ -32,21 +33,22 @@ export default class Donations extends React.Component{
     render(){
         return(
             <div>
-                <br/><br/>
                 {this.state.donations.map(function(donation){
                     return(
                         <div className="row" key={ donation.pk }>
                             <div className="col s6 offset-s3">
-                                <div className="card">
-                                    <div className="card-image">
-                                        <img src={ donation.photo } />
-                                        <a className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></a>
+                                <Link to={ '/donations/donation/'+donation.slug+'/' }>
+                                    <div className="card hoverable">
+                                        <div className="card-image">
+                                            <img src={ donation.photo } />
+                                            <button className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></button>
+                                        </div>
+                                        <div className="card-content">
+                                            <span className="card-title">{ donation.name }</span>
+                                            <p>{ donation.description }</p>
+                                        </div>
                                     </div>
-                                    <div className="card-content">
-                                        <span className="card-title">{ donation.name }</span>
-                                        <p>{ donation.description }</p>
-                                    </div>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                     )})

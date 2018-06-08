@@ -20,6 +20,8 @@ class Home extends React.Component{
 
     componentDidMount(){
         $('.button-collapse').sideNav()
+        $('ul.tabs').tabs();
+        $('.indicator').css('background-color', '#512da8');
     }
 
     render(){
@@ -31,8 +33,26 @@ class Home extends React.Component{
                     </header>
                     <main>
                         <Route exact path="/accounts/login/" component={ Login } />
-                        <PrivateRoute exact authenticated={ this.state.authenticated } path="/donations/" component={ Donations } />
-                        <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
+                        <div className="row">
+                            <div className="col s12">
+                                <br/>
+                                <ul className="tabs">
+                                    <li className="tab col s5 offset-s1"><a className="active purple-text" href="#doacoes">Doações</a></li>
+                                    <li className="tab col s5"><a className="purple-text" href="#pedidos">Pedidos</a></li>
+                                </ul>
+                            </div>
+                            <div id="doacoes">
+                                <PrivateRoute exact authenticated={ this.state.authenticated } path="/donations/" component={ Donations } />
+                                <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
+                            </div>
+                            <div id="pedidos">
+                                <div className="row">
+                                    <div className="col s12">
+                                        <h4>Aqui vão ficar os pedidos</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>            
                     </main>
                 </div>
             </BrowserRouter>
