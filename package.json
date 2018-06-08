@@ -4,12 +4,7 @@
   "description": "Projeto DRF + REACT",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm run build"
-  },
-  "engines": {
-    "node": "6.10.2",
-    "npm": "3.10.10"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
