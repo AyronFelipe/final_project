@@ -87,7 +87,7 @@ WEBPACK_LOADER = {
     }
 }
 
-if not DEBUG:
+if DEBUG:
     DATABASES = {
         'default': dj_database_url.config(
             default=config('DATABASE_URL')
