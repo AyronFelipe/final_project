@@ -4,7 +4,8 @@
   "description": "Projeto DRF + REACT",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js --progress --colors"
+    "build": "webpack --config webpack.config.js --progress --colors",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
