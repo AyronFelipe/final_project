@@ -2,6 +2,7 @@ import React from 'react'
 import Footer from './footer'
 import Inputmask from 'inputmask'
 import Address from './address'
+import { Link } from 'react-router-dom'
 
 export default class Institution extends React.Component{
 
@@ -51,6 +52,18 @@ export default class Institution extends React.Component{
                     </div>
                 </div>
                 <div className="white purple-text">
+                    <br/><br/>
+                    <div className="row">
+                        <div className="col s12">
+                            <div className="col s10 push-s1">
+                                <Link to="/">
+                                    <button title="Voltar para a página inicial" className="btn-floating btn-large waves-effect waves-light indigo accent-2 white-text">
+                                        <i className="material-icons">arrow_back</i>
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                     <div className="row">
                         <div className="col s12">
                             <div className="col s10 push-s1">

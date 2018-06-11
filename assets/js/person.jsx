@@ -62,6 +62,18 @@ export default class Person extends React.Component{
                         </Link>
                     </div>
                 </div>
+                <br/><br/>
+                <div className="row">
+                    <div className="col s12">
+                        <div className="col s10 push-s1">
+                            <Link to="/">
+                                <button title="Voltar para a página inicial" className="btn-floating btn-large waves-effect waves-light indigo accent-2 white-text">
+                                    <i className="material-icons">arrow_back</i>
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
                 <div className="row">
                     <div className="col s12">
                         <div className="col s10 push-s1">

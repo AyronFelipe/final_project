@@ -2,6 +2,7 @@ import React from 'react'
 import Footer from './footer'
 import { storageToken, isAuthenticated } from './auth'
 import NameProject from './nameproject'
+import { Link } from 'react-router-dom'
 
 export default class Login extends React.Component{
 
@@ -45,6 +46,18 @@ export default class Login extends React.Component{
     render(){
         return(
             <div className="deep-purple darken-2">
+                <br/><br/>
+                <div className="row">
+                    <div className="col s12">
+                        <div className="col s10 push-s1">
+                            <Link to="/">
+                                <button title="Voltar para a página inicial" className="btn-floating btn-large waves-effect waves-light indigo accent-2 white-text">
+                                    <i className="material-icons">arrow_back</i>
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
                 <div className="valign-wrapper row">
                     <div className="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
                         <form id="login-form">
