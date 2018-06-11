@@ -108,7 +108,7 @@ else:
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 
 EMAIL_HOST = config('EMAIL_HOST')
 
