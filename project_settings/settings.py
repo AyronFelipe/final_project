@@ -7,7 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
@@ -87,7 +87,7 @@ WEBPACK_LOADER = {
     }
 }
 
-if DEBUG:
+if not DEBUG:
     DATABASES = {
         'default': dj_database_url.config(
             default=config('DATABASE_URL')
@@ -108,7 +108,7 @@ else:
 
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 
 EMAIL_HOST = config('EMAIL_HOST')
 
