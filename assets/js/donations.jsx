@@ -81,6 +81,13 @@ export default class Donations extends React.Component{
                                 </div>
                             )})
                         }
+                        <div className="fixed-action-btn">
+                            <Link to="/donations/new-donation/">
+                                <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
+                                    <i className="material-icons">add</i>
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                     <div id="pedidos">
                         <div className="row">
@@ -89,13 +96,6 @@ export default class Donations extends React.Component{
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="fixed-action-btn">
-                    <Link to="/donations/new-donation/">
-                        <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
-                            <i className="material-icons">add</i>
-                        </button>
-                    </Link>
                 </div>
             </div>
         )
