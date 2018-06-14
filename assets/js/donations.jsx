@@ -33,26 +33,44 @@ export default class Donations extends React.Component{
     render(){
         return(
             <div>
-                {this.state.donations.map(function(donation){
-                    return(
-                        <div className="row" key={ donation.pk }>
-                            <div className="col s6 offset-s3">
-                                <Link to={ '/donations/donation/'+donation.slug+'/' }>
-                                    <div className="card hoverable">
-                                        <div className="card-image">
-                                            <img src={ donation.photo } />
-                                            <button className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></button>
-                                        </div>
-                                        <div className="card-content">
-                                            <span className="card-title">{ donation.name }</span>
-                                            <p>{ donation.description }</p>
-                                        </div>
+                <div className="row">
+                    <div className="col s12">
+                        <br/>
+                        <ul className="tabs">
+                            <li className="tab col s5 offset-s1"><a className="active purple-text" href="#doacoes">Doações</a></li>
+                            <li className="tab col s5"><a className="purple-text" href="#pedidos">Pedidos</a></li>
+                        </ul>
+                    </div>
+                    <div id="doacoes">
+                        {this.state.donations.map(function(donation){
+                            return(
+                                <div className="row" key={ donation.pk }>
+                                    <div className="col s6 offset-s3">
+                                        <Link to={ '/donations/donation/'+donation.slug+'/' }>
+                                            <div className="card hoverable">
+                                                <div className="card-image">
+                                                    <img src={ donation.photo } />
+                                                    <button className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></button>
+                                                </div>
+                                                <div className="card-content">
+                                                    <span className="card-title">{ donation.name }</span>
+                                                    <p>{ donation.description }</p>
+                                                </div>
+                                            </div>
+                                        </Link>
                                     </div>
-                                </Link>
+                                </div>
+                            )})
+                        }
+                    </div>
+                    <div id="pedidos">
+                        <div className="row">
+                            <div className="col s12">
+                                <h4>Aqui vão ficar os pedidos</h4>
                             </div>
                         </div>
-                    )})
-                }
+                    </div>
+                </div>
                 <div className="fixed-action-btn">
                     <Link to="/donations/new-donation/">
                         <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
