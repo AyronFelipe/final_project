@@ -120,17 +120,17 @@ export default class Donation extends React.Component{
                         <div className="container">
                             <form id="donation-form" encType="multipart/form-data">
                                 <div className="row">
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="name" name="name" type="text" className="validate" />
                                         <label htmlFor="name">Nome</label>
                                         <span className="error-message red-text"></span>
                                     </div>
-                                    <div className="input-field col s3">
+                                    <div className="input-field col m3 s12">
                                         <input id="validity" name="validity" type="text" className="datepicker" />
                                         <label htmlFor="validity">Disponível até o dia</label>
                                         <span className="error-message red-text"></span>
                                     </div>
-                                    <div className="input-field col s3">
+                                    <div className="input-field col m3 s12">
                                         <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
                                         <label htmlFor="validity_hour">Disponível até às</label>
                                         <span className="error-message red-text"></span>

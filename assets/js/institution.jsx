@@ -18,7 +18,7 @@ export default class Institution extends React.Component{
             dataType: 'json',
             data: $("#institution-form"),
             success: function(data){
-                alert("mostrar uma mensagem estilosa dizendo que um email foi enviado para o email do cadastrante")
+                $('#modal-confirmacao').modal('open');
             },
             error: function(request, status, err){
                 if (err == 'Bad Request'){
@@ -40,18 +40,27 @@ export default class Institution extends React.Component{
         Inputmask("99.999.999/9999-99", { showMaskOnHover: false }).mask($("#cnpj"))
         Inputmask("(99)9999-9999", { showMaskOnHover: false }).mask($("#phone"))
         Inputmask("(99)\\99999-9999", { showMaskOnHover: false }).mask($("#cell_phone"))
+        $('#modal-confirmacao').modal({
+            dismissible: false,
+        });
     }
 
     render(){
         return(
             <div>
-                <div id="modal1" className="modal bottom-sheet">
-                    <div className="modal-content">
-                        <h4>Sucesso</h4>
-                        <p>Um email de ativação foi enviado para o seu email.</p>
-                    </div>
-                </div>
                 <div className="white purple-text">
+                    <div className="modal" id="modal-confirmacao">
+                        <div className="modal-content">
+                            <h4>Cadastro realizado com sucesso!</h4>
+                            <blockquote>Enviamos para o e-mail informado a confirmação do seu cadastro. Por favor verifique seu e-mail antes de realizar login.</blockquote>
+                        </div>
+                        <div className="modal-footer">
+                            <Link to="/">
+                                <button className="modal-action modal-close btn waves-effect waves-light indigo accent-2 white-text">Tudo bem!</button>
+                            </Link>
+                        </div>
+                    </div>
+
                     <br/><br/>
                     <div className="row">
                         <div className="col s12">
@@ -74,12 +83,12 @@ export default class Institution extends React.Component{
                                 <form id="institution-form">
                                     <h5>Informações de login</h5>
                                     <div className="row">
-                                        <div className="input-field col s6">
+                                        <div className="input-field col m6 s12">
                                             <input id="email" name="email" type="text" />
                                             <label htmlFor="email">Email</label>
                                             <span className="error-message red-text"></span>
                                         </div>
-                                        <div className="input-field col s6">
+                                        <div className="input-field col m6 s12">
                                             <input id="password" name="password" type="password" />
                                             <label htmlFor="email">Senha</label>
                                             <span className="error-message red-text"></span>
@@ -87,12 +96,12 @@ export default class Institution extends React.Component{
                                     </div>
                                     <h5>Informações sobre a instituição</h5>
                                     <div className="row">
-                                        <div className="input-field col s6">
+                                        <div className="input-field col m6 s12">
                                             <input type="text" id="name" name="name"/>
                                             <label htmlFor="name">Nome da instituição</label>
                                             <span className="error-message red-text"></span>
                                         </div>
-                                        <div className="input-field col s6">
+                                        <div className="input-field col m6 s12">
                                             <input type="text" id="cnpj" name="cnpj"/>
                                             <label htmlFor="name">CNPJ</label>
                                             <span className="error-message red-text"></span>
@@ -107,12 +116,12 @@ export default class Institution extends React.Component{
                                     </div>
                                     <h5>Contato</h5>
                                     <div className="row">
-                                        <div className="input-field col s6">
+                                        <div className="input-field col m6 s12">
                                             <input id="phone" name="phone" type="text"/>
                                             <label htmlFor="phone">Telefone fixo</label>
                                             <span className="error-message red-text"></span>
                                         </div>
-                                        <div className="input-field col s6">
+                                        <div className="input-field col m6 s12">
                                             <input id="cell_phone" name="cell_phone" type="text"/>
                                             <label htmlFor="cell_phone">Telefone celular</label>
                                             <span className="error-message red-text"></span>

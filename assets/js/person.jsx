@@ -84,12 +84,12 @@ export default class Person extends React.Component{
                             <form id="person-form">
                                 <h5>Informações de Login</h5>
                                 <div className="row">
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="email" name="email" type="text" className="validate" />
                                         <label htmlFor="email">Email</label>
                                         <span className="error-message red-text"></span>
                                     </div>
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="password" name="password" type="password" />
                                         <label htmlFor="email">Senha</label>
                                         <span className="error-message red-text"></span>
@@ -97,19 +97,19 @@ export default class Person extends React.Component{
                                 </div>
                                 <h5>Informações pessoais</h5>
                                 <div className="row">
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="first_name" name="first_name" type="text" />
                                         <label htmlFor="first_name">Nome</label>
                                         <span className="error-message red-text"></span>
                                     </div>
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="last_name" name="last_name" type="text" />
                                         <label htmlFor="last_name">Sobrenome</label>
                                         <span className="error-message red-text"></span>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="cpf" name="cpf" type="text" />
                                         <label htmlFor="cpf">CPF</label>
                                         <span className="error-message red-text"></span>
@@ -118,12 +118,12 @@ export default class Person extends React.Component{
                                 </div>
                                 <h5>Contato</h5>
                                 <div className="row">
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="phone" name="phone" type="text"/>
                                         <label htmlFor="phone">Telefone residencial</label>
                                         <span className="error-message red-text"></span>
                                     </div>
-                                    <div className="input-field col s6">
+                                    <div className="input-field col m6 s12">
                                         <input id="cell_phone" name="cell_phone" type="text"/>
                                         <label htmlFor="cell_phone">Telefone celular</label>
                                         <span className="error-message red-text"></span>

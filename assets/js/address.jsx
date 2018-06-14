@@ -56,41 +56,41 @@ export default class Address extends React.Component{
             <div>
                 <h5>{ this.props.legend }</h5>
                 <div className="row">
-                    <div className="input-field col s6">
+                    <div className="input-field col m6 s12">
                         <input type="text" name="cep" id="cep"/>
                         <label htmlFor="cep">CEP</label>
                         <span className="error-message red-text"></span>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s6">
+                    <div className="input-field col m6 s12">
                         <input type="text" name="uf" id="uf" placeholder="UF" readOnly/>
                         <label htmlFor="uf">UF</label>
                         <span className="error-message red-text"></span>
                     </div>
-                    <div className="input-field col s6">
+                    <div className="input-field col m6 s12">
                         <input type="text" name="city" id="city" placeholder="Cidade" readOnly/>
                         <label htmlFor="city">Cidade</label>
                         <span className="error-message red-text"></span>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="input-field col s3">
+                    <div className="input-field col m3 s12">
                         <input id="neighborhood" name="neighborhood" type="text" placeholder="Bairro" readOnly/>
                         <label htmlFor="neighborhood">Bairro</label>
                         <span className="error-message red-text"></span>
                     </div>
-                    <div className="input-field col s3">
+                    <div className="input-field col m3 s12">
                         <input id="street" name="street" type="text" placeholder="Rua" readOnly/>
                         <label htmlFor="street">Logradouro</label>
                         <span className="error-message red-text"></span>
                     </div>
-                    <div className="input-field col s3">
+                    <div className="input-field col m3 s12">
                         <input id="number" name="number" type="text" />
                         <label htmlFor="number">Número</label>
                         <span className="error-message red-text"></span>
                     </div>
-                    <div className="input-field col s3">
+                    <div className="input-field col m3 s12">
                         <input id="complement" name="complement" type="text" />
                         <label htmlFor="complement">Complemento</label>
                         <span className="error-message red-text"></span>
