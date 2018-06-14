@@ -20,8 +20,6 @@ class Home extends React.Component{
 
     componentDidMount(){
         $('.button-collapse').sideNav()
-        $('ul.tabs').tabs();
-        $('.indicator').css('background-color', '#512da8');
     }
 
     render(){

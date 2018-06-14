@@ -4,6 +4,7 @@ import Address from './address'
 import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
 import { storageToken } from './auth'
+import { Link } from 'react-router-dom'
 
 export default class Donation extends React.Component{
 
@@ -94,48 +95,66 @@ export default class Donation extends React.Component{
 
     render(){
         return(
-            <div className="row purple-text">
-                <div className="col s12">
-                    <div className="col s10 push-s1">
-                        <h4 className="center-align">Cadastre abaixo as informações sobre a sua doação!</h4>
+            <div>
+                <nav className="nav-extended deep-purple darken-2 white-text">
+                    <div className="row">
+                        <div className="col s12">
+                            <div className="col s10 push-s1">
+                                <div className="nav-content">
+                                    <span className="nav-title">Nova Doação</span>
+                                    <Link to="/donations/">
+                                        <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
+                                            <i className="material-icons">home</i>
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="container">
-                        <form id="donation-form" encType="multipart/form-data">
-                            <div className="row">
-                                <div className="input-field col s6">
-                                    <input id="name" name="name" type="text" className="validate" />
-                                    <label htmlFor="name">Nome</label>
-                                    <span className="error-message red-text"></span>
+                </nav>
+                <div className="row purple-text">
+                    <div className="col s12">
+                        <div className="col s10 push-s1">
+                            <h4 className="center-align">Cadastre abaixo as informações sobre a sua doação!</h4>
+                        </div>
+                        <div className="container">
+                            <form id="donation-form" encType="multipart/form-data">
+                                <div className="row">
+                                    <div className="input-field col s6">
+                                        <input id="name" name="name" type="text" className="validate" />
+                                        <label htmlFor="name">Nome</label>
+                                        <span className="error-message red-text"></span>
+                                    </div>
+                                    <div className="input-field col s3">
+                                        <input id="validity" name="validity" type="text" className="datepicker" />
+                                        <label htmlFor="validity">Disponível até o dia</label>
+                                        <span className="error-message red-text"></span>
+                                    </div>
+                                    <div className="input-field col s3">
+                                        <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
+                                        <label htmlFor="validity_hour">Disponível até às</label>
+                                        <span className="error-message red-text"></span>
+                                    </div>
                                 </div>
-                                <div className="input-field col s3">
-                                    <input id="validity" name="validity" type="text" className="datepicker" />
-                                    <label htmlFor="validity">Disponível até o dia</label>
-                                    <span className="error-message red-text"></span>
+                                <div className="row">
+                                    <div className="input-field col s12">
+                                        <textarea id="description" name="description" className="materialize-textarea"></textarea>
+                                        <label htmlFor="description">Uma descrição da sua doação (não seja breve)</label>
+                                        <span className="error-message red-text"></span>
+                                    </div>
                                 </div>
-                                <div className="input-field col s3">
-                                    <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
-                                    <label htmlFor="validity_hour">Disponível até às</label>
-                                    <span className="error-message red-text"></span>
+                                <Address legend="Endereço de coleta da doação" />
+                                <div className="row">
+                                    <h5>Coloque uma foto de sua doação</h5>
+                                    <input id="photo" name="photo" type="file" className="dropify" />
                                 </div>
-                            </div>
-                            <div className="row">
-                                <div className="input-field col s12">
-                                    <textarea id="description" name="description" className="materialize-textarea"></textarea>
-                                    <label htmlFor="description">Uma descrição da sua doação (não seja breve)</label>
-                                    <span className="error-message red-text"></span>
+                                <div className="row">
+                                    <div className="col s12 right-align">
+                                        <button type="button" className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={ this.saveDonation }>Salvar</button>
+                                    </div>
                                 </div>
-                            </div>
-                            <Address legend="Endereço de coleta da doação" />
-                            <div className="row">
-                                <h5>Coloque uma foto de sua doação</h5>
-                                <input id="photo" name="photo" type="file" className="dropify" />
-                            </div>
-                            <div className="row">
-                                <div className="col s12 right-align">
-                                    <button type="button" className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={ this.saveDonation }>Salvar</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

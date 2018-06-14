@@ -28,17 +28,36 @@ export default class Donations extends React.Component{
                 console.log(request, status, err);
             }
         });
+
+        $('ul.tabs').tabs();
+        
+        $('.indicator').css('background-color', '#512da8');
     }
 
     render(){
         return(
             <div>
+                <nav className="nav-extended deep-purple darken-2 white-text">
+                    <div className="row">
+                        <div className="col s12">
+                            <div className="col s10 push-s1">
+                                <div className="nav-content">
+                                    <span className="nav-title">Início</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
                 <div className="row">
                     <div className="col s12">
                         <br/>
                         <ul className="tabs">
-                            <li className="tab col s5 offset-s1"><a className="active purple-text" href="#doacoes">Doações</a></li>
-                            <li className="tab col s5"><a className="purple-text" href="#pedidos">Pedidos</a></li>
+                            <li className="tab col s5 offset-s1">
+                                <a className="active purple-text" href="#doacoes">Doações</a>
+                            </li>
+                            <li className="tab col s5">
+                                <a className="purple-text" href="#pedidos">Pedidos</a>
+                            </li>
                         </ul>
                     </div>
                     <div id="doacoes">
