@@ -15,7 +15,7 @@ class CreateDonationViewSet(generics.CreateAPIView):
     Criação de doações
     '''
 
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
     parser_classes = (MultiPartParser, FormParser)
@@ -50,7 +50,7 @@ class DonationViewSet(viewsets.ReadOnlyModelViewSet):
     Listagem das Instituições
     '''
 
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
 

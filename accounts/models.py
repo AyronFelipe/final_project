@@ -13,7 +13,7 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
 
     email = models.EmailField(_('email address'), unique=True,)
     is_active = models.BooleanField(_('active'), default=False,)
-    photo = models.ImageField(_('photo'), upload_to=img_path, null=True, blank=True)
+    photo = models.ImageField(_('photo'), upload_to=img_path, null=True, blank=True,)
 
     objects = UserManager()
 

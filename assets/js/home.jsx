@@ -6,6 +6,7 @@ import '../css/main.css'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import Donations from './donations'
 import Donation from './donation'
+import DonationDetail from './donationdetail'
 import PrivateRoute from './privateroute'
 import Login from './login'
 import { isAuthenticated } from './auth'
@@ -33,6 +34,7 @@ class Home extends React.Component{
                         <Route exact path="/accounts/login/" component={ Login } />
                         <PrivateRoute exact authenticated={ this.state.authenticated } path="/donations/" component={ Donations } />
                         <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
+                        <PrivateRoute authenticated={ this.state.authenticated } path="/donations/donation/:slug/" component={ DonationDetail } />
                     </main>
                 </div>
             </BrowserRouter>
