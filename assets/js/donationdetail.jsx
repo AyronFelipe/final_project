@@ -27,14 +27,17 @@ export default class DonationDetail extends React.Component{
                 console.log(request, status, err);
             }
         });
+        $(".carousel").carousel();
     }
 
     render(){
+        
         console.log(this.state.donation)
+
         const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY"
 
-        if( this.state.donation.photo!=undefined ){
-            let color = new Vibrant(this.state.donation.photo);
+        if( this.state.donation.main_photo!=undefined ){
+            let color = new Vibrant(this.state.donation.main_photo);
             color.getPalette((err, palette) => $("#content").css("background-color", palette.Vibrant.getHex()));
         }
         return(
@@ -63,7 +66,7 @@ export default class DonationDetail extends React.Component{
                                 <div className="card-content">
                                     <div className="row purple-text">
                                         <div className="col l5 m12 s12">
-                                            <img className="responsive-img" src={ this.state.donation.photo } />
+                                            <img className="responsive-img" src={ this.state.donation.main_photo } />
                                             <br/><br/>
                                             <span>Doação realizada por: <div className="chip">{ this.state.donation.donator }</div></span>
                                             <button className="btn-large waves-effect waves-light indigo accent-2 white-text" style={{width: '100%'}}>Solicitar esta doação</button>
@@ -83,8 +86,13 @@ export default class DonationDetail extends React.Component{
                                         </div>
                                     </div>
                                     <div className="row purple-text">
-                                        <div className="center-align">
-                                            <h4>Galeria de Imagens da Doação</h4>
+                                        <div className="col s12">
+                                            <div className="center-align">
+                                                <h4>Galeria de Imagens da Doação</h4>
+                                                <div className="carousel">
+                                                    <a className="carousel-item"><img src={ this.state.donation.photos } /></a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -29,7 +29,8 @@ class CreateDonationViewSet(generics.CreateAPIView):
                 description = instance.get('description'),
                 validity = instance.get('validity'),
                 validity_hour = instance.get('validity_hour'),
-                photo = instance.get('photo'),
+                main_photo = instance.get('main_photo'),
+                photos = instance.get('photos'),
                 neighborhood=instance.get('neighborhood'), 
                 street=instance.get('street'), 
                 number=instance.get('number'), 
@@ -53,4 +54,5 @@ class DonationViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
+    
 

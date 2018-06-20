@@ -68,7 +68,7 @@ export default class Donations extends React.Component{
                                         <Link to={ '/donations/donation/'+donation.slug+'/' }>
                                             <div className="card hoverable">
                                                 <div className="card-image">
-                                                    <img src={ donation.photo } />
+                                                    <img src={ donation.main_photo } />
                                                     <button className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></button>
                                                 </div>
                                                 <div className="card-content">

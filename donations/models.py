@@ -18,7 +18,8 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     validity_hour = models.TimeField(blank=True, null=True)
     is_valid = models.BooleanField(default=False)
     is_accepted = models.BooleanField(default=False)
-    photo = models.ImageField(_('photo'), upload_to=img_path, null=True, blank=True)
+    main_photo = models.ImageField(_('main photo'), upload_to=img_path, null=True, blank=True)
+    photos = models.ImageField(_('photos'), upload_to=img_path, null=True, blank=True)
 
     class Meta:
 

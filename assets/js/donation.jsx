@@ -145,8 +145,22 @@ export default class Donation extends React.Component{
                                 </div>
                                 <Address legend="Endereço de coleta da doação" />
                                 <div className="row">
-                                    <h5>Coloque uma foto de sua doação</h5>
-                                    <input id="photo" name="photo" type="file" className="dropify" />
+                                    <h5>Coloque a foto principal de sua doação</h5>
+                                    <input id="photo" name="main_photo" type="file" className="dropify" />
+                                </div>
+                                <div className="row">
+                                    <div className="col s12">
+                                         <h5>Coloque as outras fotos de sua doação</h5>
+                                         <div className="file-field input-field">
+                                            <div className="btn">
+                                                <span>Fotos</span>
+                                                <input type="file" name="photos" multiple />
+                                            </div>
+                                            <div className="file-path-wrapper">
+                                                <input className="file-path validate" type="text" placeholder="Coloque aqui as fotos do sua doação" />
+                                            </div>
+                                         </div>
+                                    </div>
                                 </div>
                                 <div className="row">
                                     <div className="col s12 right-align">

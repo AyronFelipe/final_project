@@ -14,6 +14,7 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
     email = models.EmailField(_('email address'), unique=True,)
     is_active = models.BooleanField(_('active'), default=False,)
     photo = models.ImageField(_('photo'), upload_to=img_path, null=True, blank=True,)
+    is_staff = models.BooleanField(_('is staff?'), default=False,)
 
     objects = UserManager()
 
