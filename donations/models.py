@@ -12,14 +12,13 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=50, blank=True, null=True, unique=True)
-    donator = models.ForeignKey(get_user_model(), related_name='donator', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(get_user_model(), related_name='receiver', null=True, blank=True, on_delete=models.SET_NULL)
+    donator = models.ForeignKey(get_user_model(), related_name='donated_donations', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(get_user_model(), related_name='received_donations', null=True, blank=True, on_delete=models.SET_NULL)
     validity = models.DateField(blank=True, null=True)
     validity_hour = models.TimeField(blank=True, null=True)
     is_valid = models.BooleanField(default=False)
     is_accepted = models.BooleanField(default=False)
     main_photo = models.ImageField(_('main photo'), upload_to=img_path, null=True, blank=True)
-    photos = models.ImageField(_('photos'), upload_to=img_path, null=True, blank=True)
 
     class Meta:
 

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { storageToken } from './auth'
 import * as Vibrant from 'node-vibrant'
+import Carousel from './carousel'
 
 export default class DonationDetail extends React.Component{
 
@@ -27,19 +28,29 @@ export default class DonationDetail extends React.Component{
                 console.log(request, status, err);
             }
         });
-        $(".carousel").carousel();
     }
 
     render(){
         
-        console.log(this.state.donation)
-
+        $("#bg").css({
+            "background-image": 'url("'+this.state.donation.main_photo+'")',
+            "background-repeat": 'no-repeat',
+            "background-size": '100% 100%',
+            "position": 'fixed',
+            "z-index": '-1',
+            "width": "100%",
+            "height": "100%",
+            "top": '0',
+            "filter": 'blur(5px)',
+            "opacity": '0.8'
+        })
         const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY"
 
         if( this.state.donation.main_photo!=undefined ){
             let color = new Vibrant(this.state.donation.main_photo);
-            color.getPalette((err, palette) => $("#content").css("background-color", palette.Vibrant.getHex()));
+            //color.getPalette((err, palette) => $("#content").css("background-color", palette.LightVibrant.getHex()));
         }
+
         return(
             <div id="content">
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -58,6 +69,7 @@ export default class DonationDetail extends React.Component{
                         </div>
                     </div>
                 </nav>
+                <div id="bg">aljdfhdhsdljfj</div>
                 <br/><br/>
                 <div className="row">
                     <div className="col s12">
@@ -85,16 +97,7 @@ export default class DonationDetail extends React.Component{
                                             <h4>Histórico da Doação</h4>
                                         </div>
                                     </div>
-                                    <div className="row purple-text">
-                                        <div className="col s12">
-                                            <div className="center-align">
-                                                <h4>Galeria de Imagens da Doação</h4>
-                                                <div className="carousel">
-                                                    <a className="carousel-item"><img src={ this.state.donation.photos } /></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Carousel list={ this.state.donation.photos } />
                                 </div>
                             </div>
                         </div>
