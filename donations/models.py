@@ -12,7 +12,7 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=50, blank=True, null=True, unique=True)
-    donator = models.ForeignKey(get_user_model(), related_name='donated_donations', on_delete=models.CASCADE)
+    donator = models.ForeignKey(get_user_model(), related_name='donated_donations', on_delete=models.CASCADE, null=True, blank=True,)
     receiver = models.ForeignKey(get_user_model(), related_name='received_donations', null=True, blank=True, on_delete=models.SET_NULL)
     validity = models.DateField(blank=True, null=True)
     validity_hour = models.TimeField(blank=True, null=True)

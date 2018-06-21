@@ -1,23 +1,18 @@
 import React from 'react'
 import Inputmask from 'inputmask'
+import 'materialize-css'
+import 'materialize-css/dist/css/materialize.min.css'
 
 export default class Address extends React.Component{
-
-    constructor(props){
-        super(props);
-        this.clearForm = this.clearForm.bind(this);
-    }
-
-    clearForm(){
-        $("#uf").val("");
-        $("#city").val("");
-        $("#neighborhood").val();
-        $("#street").val("");
-    }
 
     componentDidMount(){
 
         Inputmask("99999-999", { showMaskOnHover: false }).mask($("#cep"));
+
+        $("#uf").focus();
+        $("#city").focus();
+        $("#neighborhood").focus();
+        $("#street").focus();
 
         $("#cep").blur(function(){
             let cep = $(this).val().replace(/\D/g, '');
@@ -36,16 +31,25 @@ export default class Address extends React.Component{
                             $("#neighborhood").val(data.bairro);
                             $("#street").val(data.logradouro);
                         }else{
-                            this.clearForm();
+                            $("#uf").val("");
+                            $("#city").val("");
+                            $("#neighborhood").val("");
+                            $("#street").val("");
                             alert("CEP não encontrado.");
                         }
                     });
                 }else{
-                    this.clearForm();
+                    $("#uf").val("");
+                    $("#city").val("");
+                    $("#neighborhood").val("");
+                    $("#street").val("");
                     alert("CEP não encontrado.")
                 }
             }else{
-                this.clearForm();
+                $("#uf").val("");
+                $("#city").val("");
+                $("#neighborhood").val("");
+                $("#street").val("");
                 alert("CEP não encontrado.") 
             }
         });
