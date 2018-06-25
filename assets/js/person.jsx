@@ -4,6 +4,8 @@ import Inputmask from 'inputmask'
 import Dateapicker from './dateapicker'
 import Address from './address'
 import { Link } from 'react-router-dom'
+import 'dropify'
+import 'dropify/dist/css/dropify.min.css'
 
 export default class Person extends React.Component{
 
@@ -16,11 +18,15 @@ export default class Person extends React.Component{
         $("#person-form").find(":input").each(function(){
             $(this).siblings('span.error-message').html('');
         });
+        let form = new FormData($("#person-form").get(0));
         $.ajax({
             url: '/api/new-person/',
             type: 'POST',
             dataType: 'json',
-            data: $("#person-form").serialize(),
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
             success: function(data){
                 $('#modal-confirmacao').modal('open');
             },
@@ -45,6 +51,17 @@ export default class Person extends React.Component{
         Inputmask("(99)\\99999-9999", { showMaskOnHover: false }).mask($("#cell_phone"))
         $('#modal-confirmacao').modal({
             dismissible: false,
+        });
+        $('.dropify').dropify({
+            messages: {
+                'default': 'Arraste um arquivo aqui ou clique.',
+                'replace': 'Arraste um arquivo ou clique para substituir.',
+                'remove':  'Remover',
+                'error':   'Ooops, algo de errado aconteceu.'
+            },
+            tpl:{
+                message: '<div class="dropify-message"><span class="file-icon" /> <p class="center-align">{{ default }}</p></div>',
+            }
         });
     }
 
@@ -81,7 +98,13 @@ export default class Person extends React.Component{
                         </div>
                         <div className="container">
                             <div className="red-text" id="error-message"></div>
-                            <form id="person-form">
+                            <form id="person-form" encType="multipart/form-data">
+                                <div className="row">
+                                    <div className="col s12">
+                                        <h5>Coloque aqui a sua foto</h5>
+                                        <input id="photo" name="photo" type="file" className="dropify" />
+                                    </div>
+                                </div>
                                 <h5>Informações de Login</h5>
                                 <div className="row">
                                     <div className="input-field col m6 s12">

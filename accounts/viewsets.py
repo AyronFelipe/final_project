@@ -15,6 +15,8 @@ from core.utils import send_mail_template
 from django.db import transaction
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 User = get_user_model()
 
@@ -80,6 +82,7 @@ class CreatePersonViewSet(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
         serializer = PersonSerializer(data=request.data)
@@ -89,7 +92,7 @@ class CreatePersonViewSet(generics.CreateAPIView):
                 email=instance.get('email'), first_name=instance.get('first_name'), 
                 last_name=instance.get('last_name'), cpf=instance.get('cpf'), birthday=instance.get('birthday'), 
                 phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), neighborhood=instance.get('neighborhood'), 
-                street=instance.get('street'), number=instance.get('number'), cep=instance.get("cep"), 
+                street=instance.get('street'), number=instance.get('number'), cep=instance.get("cep"), photo=instance.get("photo"),
                 uf=instance.get("uf"), city=instance.get("city"), complement=instance.get("complement"))
             with transaction.atomic():
                 person.set_password(instance.get('password'))
