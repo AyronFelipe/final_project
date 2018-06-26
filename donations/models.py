@@ -34,8 +34,8 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
 
         super(Donation, self).save()
         date = datetime.today()
-        self.slug = 'DONA.%i-%i-%i.%i-%s' % (
-            date.year, date.month, date.day, self.id, slugify(self.name)
+        self.slug = 'DONA.%i-%i-%i.%i.%i-%s' % (
+            date.year, date.month, date.day, self.id, self.donator.pk, slugify(self.name)
         )
         super(Donation, self).save()
 

@@ -8,7 +8,7 @@ export default class DonationDetail extends React.Component{
 
      constructor(props){
         super(props);
-        this.state = { donation: [] };
+        this.state = { donation: [], user: [] };
     }
 
     componentDidMount(){
@@ -23,6 +23,21 @@ export default class DonationDetail extends React.Component{
             },
             success: function(data){
                 this.setState({ donation: data })
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            }
+        });
+
+        $.ajax({
+            url: '/api/users/'+slug.split('-')[2].split('.')[2]+'/',
+            dataType: 'json',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data){
+                this.setState({ user: data })
             }.bind(this),
             error: function(request, status, err){
                 console.log(request, status, err);
@@ -44,6 +59,7 @@ export default class DonationDetail extends React.Component{
             "filter": 'blur(5px)',
             "opacity": '0.8'
         })
+
         const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY"
 
         if( this.state.donation.main_photo!=undefined ){
@@ -69,7 +85,7 @@ export default class DonationDetail extends React.Component{
                         </div>
                     </div>
                 </nav>
-                <div id="bg">aljdfhdhsdljfj</div>
+                <div id="bg"></div>
                 <br/><br/>
                 <div className="row">
                     <div className="col s12">
@@ -80,7 +96,8 @@ export default class DonationDetail extends React.Component{
                                         <div className="col l5 m12 s12">
                                             <img className="responsive-img" src={ this.state.donation.main_photo } />
                                             <br/><br/>
-                                            <span>Doação realizada por: <div className="chip">{ this.state.donation.donator }</div></span>
+                                            <span>Doação realizada por: <div className="chip"><img src={ this.state.user.photo } alt="Contact Person" /> { this.state.donation.donator }</div></span>
+                                            <br />
                                             <button className="btn-large waves-effect waves-light indigo accent-2 white-text" style={{width: '100%'}}>Solicitar esta doação</button>
                                             <h4>Ponto de Encontro</h4>
                                             <div className="video-container">

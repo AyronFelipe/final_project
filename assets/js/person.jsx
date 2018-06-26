@@ -6,6 +6,7 @@ import Address from './address'
 import { Link } from 'react-router-dom'
 import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
+import DjangoCSRFToken from './djangocsrftoken'
 
 export default class Person extends React.Component{
 
@@ -99,6 +100,7 @@ export default class Person extends React.Component{
                         <div className="container">
                             <div className="red-text" id="error-message"></div>
                             <form id="person-form" encType="multipart/form-data">
+                                <DjangoCSRFToken />
                                 <div className="row">
                                     <div className="col s12">
                                         <h5>Coloque aqui a sua foto</h5>
