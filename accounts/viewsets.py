@@ -117,6 +117,7 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
     permission_classes = (permissions.AllowAny,)
     queryset = Institution.objects.all()
     serializer_class = InstitutionSerializer
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
         serializer = InstitutionSerializer(data=request.data)
@@ -126,7 +127,7 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
                 email=instance.get('email'), name=instance.get('name'), cnpj=instance.get('cnpj'), 
                 phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), 
                 neighborhood=instance.get('neighborhood'), street=instance.get('street'), 
-                number=instance.get('number'))
+                number=instance.get('number'), photo=instance.get("photo"),)
             institution.set_password(instance.get('password'))
             institution.save()
             subject = "Ative sua conta"

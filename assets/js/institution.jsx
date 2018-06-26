@@ -3,6 +3,9 @@ import Footer from './footer'
 import Inputmask from 'inputmask'
 import Address from './address'
 import { Link } from 'react-router-dom'
+import 'dropify'
+import 'dropify/dist/css/dropify.min.css'
+import DjangoCSRFToken from './djangocsrftoken'
 
 export default class Institution extends React.Component{
 
@@ -80,7 +83,14 @@ export default class Institution extends React.Component{
                             </div>
                             <div className="container">
                                 <div className="red-text" id="error-message"></div>
-                                <form id="institution-form">
+                                <form id="institution-form" encType="multipart/form-data">
+                                    <DjangoCSRFToken />
+                                    <div className="row">
+                                        <div className="col s12">
+                                            <h5>Coloque aqui a sua foto</h5>
+                                            <input id="photo" name="photo" type="file" className="dropify" />
+                                        </div>
+                                    </div>
                                     <h5>Informações de login</h5>
                                     <div className="row">
                                         <div className="input-field col m6 s12">
