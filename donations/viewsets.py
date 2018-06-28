@@ -42,8 +42,6 @@ class CreateDonationViewSet(generics.CreateAPIView):
             with transaction.atomic():
                 donation.donator = request.user
                 donation.save()
-                data = {}
-                data['donation'] = donation
                 for photo in request.FILES.getlist('photos'):
                     Photo.objects.create(image_file=photo, donation=donation)
                 return Response(data, status=status.HTTP_201_CREATED,)
