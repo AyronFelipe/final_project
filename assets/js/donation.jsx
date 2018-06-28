@@ -29,7 +29,7 @@ export default class Donation extends React.Component{
             headers: {
                 'Authorization': 'Token ' + localStorage.token
             },
-            success: function(){
+            success: function(data){
                 window.location.href = '/donations/';
             },
             error: function(request, status, err){

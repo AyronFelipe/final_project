@@ -8,7 +8,7 @@ from core.mixins import CreationAndUpdateMixin
 class Photo(CreationAndUpdateMixin):
 
     image_file = models.ImageField(_('file'), upload_to=img_path, null=True, blank=True)
-    donation = models.ForeignKey(Donation, null=True, blank=True, related_name="photos", on_delete=models.SET_NULL)
+    donation = models.ForeignKey(Donation, null=True, blank=True, related_name="photos", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _('photo')
