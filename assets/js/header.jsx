@@ -32,7 +32,7 @@ export default class Header extends React.Component{
                     </nav>
                 </div>
                 <ul className="side-nav" id="mobile-demo">
-                    <li><a href="#!">Login</a></li>
+                    <li><Link to="/accounts/login/"><button className="btn waves-effect waves-light indigo accent-2 white-text">Login</button></Link></li>
                 </ul>
             </header>
         )

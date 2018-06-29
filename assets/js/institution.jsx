@@ -46,6 +46,17 @@ export default class Institution extends React.Component{
         $('#modal-confirmacao').modal({
             dismissible: false,
         });
+        $('.dropify').dropify({
+            messages: {
+                'default': 'Arraste um arquivo aqui ou clique.',
+                'replace': 'Arraste um arquivo ou clique para substituir.',
+                'remove':  'Remover',
+                'error':   'Ooops, algo de errado aconteceu.'
+            },
+            tpl:{
+                message: '<div class="dropify-message"><span class="file-icon" /> <p class="center-align">{{ default }}</p></div>',
+            }
+        });
     }
 
     render(){
