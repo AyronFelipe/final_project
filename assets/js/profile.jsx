@@ -1,6 +1,9 @@
 import React from 'react'
 import { storageToken } from './auth'
 import { Link } from 'react-router-dom'
+import 'materialize-css'
+import 'materialize-css/dist/css/materialize.min.css'
+import '../css/profile.css'
 
 export default class Profile extends React.Component{
 
@@ -30,30 +33,66 @@ export default class Profile extends React.Component{
     render(){
         const user = this.state.user
         const child = this.state.user.child
-        console.log(child)
         if (child == undefined) {
             return(
+                <div>
+                    <nav className="nav-extended deep-purple darken-2 white-text">
+                        <div className="row">
+                            <div className="col s12">
+                                <div className="col s10 push-s1">
+                                    <div className="nav-content">
+                                        <span className="nav-title">
+                                            Perfil do Usuário 
+                                            <div className="preloader-wrapper small active">
+                                                <div className="spinner-layer spinner-green-only">
+                                                    <div className="circle-clipper left">
+                                                        <div className="circle"></div>
+                                                    </div>
+                                                    <div className="gap-patch">
+                                                        <div className="circle"></div>
+                                                    </div>
+                                                    <div className="circle-clipper right">
+                                                        <div className="circle"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </span>
+                                        <Link to="/donations/">
+                                            <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
+                                                <i className="material-icons">home</i>
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <div className="center-align">
+                        <div className="preloader-wrapper big active">
+                            <div className="spinner-layer spinner-blue-only">
+                                <div className="circle-clipper left">
+                                    <div className="circle"></div>
+                                </div>
+                                <div className="gap-patch">
+                                    <div className="circle"></div>
+                                </div>
+                                <div className="circle-clipper right">
+                                    <div className="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+        return(
+            <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
                     <div className="row">
                         <div className="col s12">
                             <div className="col s10 push-s1">
                                 <div className="nav-content">
-                                    <span className="nav-title">
-                                        Perfil do Usuário 
-                                        <div className="preloader-wrapper small active">
-                                            <div className="spinner-layer spinner-green-only">
-                                                <div className="circle-clipper left">
-                                                    <div className="circle"></div>
-                                                </div>
-                                                <div className="gap-patch">
-                                                    <div className="circle"></div>
-                                                </div>
-                                                <div className="circle-clipper right">
-                                                    <div className="circle"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </span>
+                                    <span className="nav-title">Perfil do Usuário { child.first_name }</span>
                                     <Link to="/donations/">
                                         <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
                                             <i className="material-icons">home</i>
@@ -64,25 +103,26 @@ export default class Profile extends React.Component{
                         </div>
                     </div>
                 </nav>
-            )
-        }
-        return(
-            <nav className="nav-extended deep-purple darken-2 white-text">
+                <br/><br/>
                 <div className="row">
                     <div className="col s12">
-                        <div className="col s10 push-s1">
-                            <div className="nav-content">
-                                <span className="nav-title">Perfil do Usuário { child.first_name }</span>
-                                <Link to="/donations/">
-                                    <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
-                                        <i className="material-icons">home</i>
-                                    </button>
-                                </Link>
+                        <div className="col s8 push-s2">
+                            <div className="card">
+                                <div className="card-image">
+                                    <img  src={ '/static/images/section-BG-dark.jpg' } />
+                                </div>
+                                <div className="card-content">
+                                    <div className="row">
+                                        <div className="col s4 profile-pic">
+                                            <img src={ user.photo } className="circle responsive-img" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </nav>
+            </div>
         )
     }
 }
