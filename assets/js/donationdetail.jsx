@@ -6,7 +6,7 @@ import Carousel from './carousel'
 
 export default class DonationDetail extends React.Component{
 
-     constructor(props){
+    constructor(props){
         super(props);
         this.state = { donation: [], user: [] };
     }
@@ -67,6 +67,10 @@ export default class DonationDetail extends React.Component{
             //color.getPalette((err, palette) => $("#content").css("background-color", palette.LightVibrant.getHex()));
         }
 
+        let date = new Date(this.state.donation.validity)
+
+        let local_date = date.toLocaleDateString()
+
         return(
             <div id="content">
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -96,7 +100,9 @@ export default class DonationDetail extends React.Component{
                                         <div className="col l5 m12 s12">
                                             <img className="responsive-img" src={ this.state.donation.main_photo } />
                                             <br/><br/>
-                                            <span>Doação realizada por: <div className="chip"><img src={ this.state.user.photo } alt="Contact Person" /> { this.state.donation.donator }</div></span>
+                                            <Link to={ '/accounts/profile/'+this.state.user.id+'/' }>
+                                                <span>Doação realizada por: <div className="chip"><img src={ this.state.user.photo } alt="Contact Person" /> { this.state.donation.donator }</div></span>
+                                            </Link>
                                             <br />
                                             <button className="btn-large waves-effect waves-light indigo accent-2 white-text" style={{width: '100%'}}>Solicitar esta doação</button>
                                             <h4>Ponto de Encontro</h4>
@@ -111,7 +117,7 @@ export default class DonationDetail extends React.Component{
                                                 <span>{ this.state.donation.description }</span>
                                             </p>
                                             <br/>
-                                            <h4>Histórico da Doação</h4>
+                                            <p><strong>Validade: </strong>Você só pode solicitar essa doação até o dia <span className="red-text">{ local_date }</span>  até às <span className="red-text">{ this.state.donation.validity_hour }</span></p>
                                         </div>
                                     </div>
                                     <Carousel list={ this.state.donation.photos } />

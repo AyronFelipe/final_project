@@ -29,6 +29,13 @@ def new_institution(request):
     return render(request, template_name, context)
 
 
+def profile(request, id):
+
+    template_name = 'accounts/profile.html'
+    context = {}
+    return render(request, template_name, context)
+
+
 def activate(request, uidb64, token):
 
     context = {}

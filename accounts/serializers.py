@@ -10,20 +10,54 @@ User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
 
+    child = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = [
+            'cell_phone',
+            'cep',
+            'city',
+            'complement',
+            'email',
+            'id',
+            'is_active',
+            'neighborhood',
+            'number',
+            'phone',
+            'photo',
+            'street',
+            'uf',
+            'child',
+        ]
+
+    def get_child(self, obj):
+
+        if hasattr(obj, 'institution'):
+            serializer = InstitutionSerializer(obj.institution)
+        serializer = PersonSerializer(obj.person)
+        return serializer.data
+
 
 
 class PersonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Person
-        fields = ['email', 'password', 'is_active', 'first_name', 'last_name', 'cpf', 'phone', 'cell_phone', 'neighborhood', 'street', 'number', 'birthday', 'cep', 'complement', 'city', 'uf', 'photo']
+        fields = [
+            'first_name', 
+            'last_name',
+            'cpf', 
+            'birthday',
+        ]
 
 
 class InstitutionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Institution
-        fields = ['email', 'password', 'is_active', 'name', 'cnpj', 'phone', 'cell_phone', 'neighborhood', 'street', 'number', 'photo']
+        fields = [
+            'name', 
+            'cnpj', 
+            'objectives',
+        ]

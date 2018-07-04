@@ -75,6 +75,11 @@ export default class Donations extends React.Component{
                                                     <div className="card-content">
                                                         <span className="card-title">{ donation.name }</span>
                                                         <p>{ donation.description }</p>
+                                                        <br/>
+                                                        <div className="divider"></div>
+                                                        <br/>
+                                                        <p><strong>Validade: </strong>{ donation.validity } até às { donation.validity_hour }</p>
+                                                        <p><strong>Doada por: </strong>{ donation.donator }</p>
                                                     </div>
                                                 </div>
                                             </Link>

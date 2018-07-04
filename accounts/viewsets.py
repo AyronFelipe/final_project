@@ -48,27 +48,25 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     Listagem dos usuários
     '''
-
     permission_classes = (permissions.IsAuthenticated,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 
 class PersonViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     Listagem das Pessoas
     '''
-
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-
+    
 
 class InstitutionViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     Listagem das Instituições
     '''
-
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Institution.objects.all()
     serializer_class = InstitutionSerializer
@@ -78,7 +76,6 @@ class CreatePersonViewSet(generics.CreateAPIView):
     '''
     Criação de pessoas/usuários
     '''
-
     permission_classes = (permissions.AllowAny,)
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
