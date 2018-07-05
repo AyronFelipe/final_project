@@ -87,7 +87,6 @@ export default class Profile extends React.Component{
         }
         let date = new Date(child.birthday)
         let local_date = date.toLocaleDateString()
-        console.log(this.state.user)
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
