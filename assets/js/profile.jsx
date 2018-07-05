@@ -85,6 +85,9 @@ export default class Profile extends React.Component{
                 </div>
             )
         }
+        let date = new Date(child.birthday)
+        let local_date = date.toLocaleDateString()
+        console.log(this.state.user)
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -109,17 +112,56 @@ export default class Profile extends React.Component{
                         <div className="col s8 push-s2">
                             <div className="card">
                                 <div className="card-image">
-                                    <img  src={ '/static/images/section-BG-dark.jpg' } />
+                                    <img  src={ '/static/images/section-BG-dark.jpg' }  style={{ height: '450px' }} className="hide-on-med-and-down" />
+                                    <img src={ user.photo } className="show-on-medium-and-down hide-on-med-and-up" />
                                 </div>
                                 <div className="card-content">
                                     <div className="row">
-                                        <div className="col s4 profile-pic">
-                                            <img src={ user.photo } className="circle responsive-img" />
+                                        <div className="col xl8 profile-pic">
+                                            <img src={ user.photo } style={{ width: '236px', height: '236px' }} className="circle responsive-img hide-on-med-and-down" />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col m4 s12">
+                                            <h4 className="card-title">{ child.first_name } { child.last_name }</h4>
+                                            <p className="medium-small grey-text">Confiável</p>
+                                        </div>
+                                        <div className="col m4 s12 center-align">
+                                            <h4 className="card-title">{ user.donations_count }</h4>
+                                            <p className="medium-small grey-text">Doação(ões) cadastrada(s)</p>
+                                        </div>
+                                        <div className="col m4 s12 center-align">
+                                            <h4 className="card-title">{ user.donations_accepted }</h4>
+                                            <p className="medium-small grey-text">Doação(ões) concretizada(s)</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col s8 push-s2">
+                        <div className="col m12 l4">
+                            <ul className="collection">
+                                <li className="collection-item">
+                                    <i className="material-icons">person</i> CPF: { child.cpf }
+                                </li>
+                                <li className="collection-item">
+                                    <i className="material-icons">email</i> E-mail: { user.email }
+                                </li>
+                                <li className="collection-item">
+                                    <i className="material-icons">call</i> Contato: { user.cell_phone } / { user.phone }
+                                </li>
+                                <li className="collection-item">
+                                    <i className="material-icons">cake</i> Aniversário: { local_date }
+                                </li>
+                                <li className="collection-item">
+                                    <i className="material-icons">home</i> Endereço: { user.street } Nº { user.number }, { user.cep }, { user.city } - { user.uf }
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="col m12 l8"></div>
                     </div>
                 </div>
             </div>

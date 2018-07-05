@@ -44,7 +44,7 @@ class CreateDonationViewSet(generics.CreateAPIView):
                 donation.save()
                 for photo in request.FILES.getlist('photos'):
                     Photo.objects.create(image_file=photo, donation=donation)
-                return Response(data, status=status.HTTP_201_CREATED,)
+                return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

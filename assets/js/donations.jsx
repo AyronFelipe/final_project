@@ -63,6 +63,8 @@ export default class Donations extends React.Component{
                         </div>
                         <div id="doacoes">
                             {this.state.donations.map(function(donation){
+                                let date = new Date(donation.validity)
+                                let local_date = date.toLocaleDateString()
                                 return(
                                     <div className="row" key={ donation.pk }>
                                         <div className="col s6 offset-s3">
@@ -78,7 +80,7 @@ export default class Donations extends React.Component{
                                                         <br/>
                                                         <div className="divider"></div>
                                                         <br/>
-                                                        <p><strong>Validade: </strong>{ donation.validity } até às { donation.validity_hour }</p>
+                                                        <p><strong>Validade: </strong>{ local_date} até às { donation.validity_hour }</p>
                                                         <p><strong>Doada por: </strong>{ donation.donator }</p>
                                                     </div>
                                                 </div>
@@ -132,7 +134,6 @@ export default class Donations extends React.Component{
                         </ul>
                     </div>
                     <div id="doacoes">
-                        
                         <div className="row">
                             <div className="col s12 center-align">
                                 <div className="valign-wrapper row">
