@@ -10,6 +10,48 @@ export default class Profile extends React.Component{
     constructor(props){
         super(props)
         this.state = { user: [] }
+        this.handleRender = this.handleRender.bind(this)
+    }
+
+    handleRender(user, child, local_date){
+        let collection
+        if(child.cpf){
+            collection = 
+            <ul className="collection">
+                <li className="collection-item">
+                    <i className="material-icons">person</i> CPF: { child.cpf }
+                </li>
+                <li className="collection-item">
+                    <i className="material-icons">email</i> E-mail: { user.email }
+                </li>
+                <li className="collection-item">
+                    <i className="material-icons">call</i> Contato: { user.cell_phone } / { user.phone }
+                </li>
+                <li className="collection-item">
+                    <i className="material-icons">cake</i> Aniversário: { local_date }
+                </li>
+                <li className="collection-item">
+                    <i className="material-icons">home</i> Endereço: { user.street } Nº { user.number }, { user.cep }, { user.city } - { user.uf }
+                </li>
+            </ul>
+        }else{
+            collection = 
+            <ul className="collection">
+                <li className="collection-item">
+                    <i className="material-icons">domain</i> CNPJ: { child.cnpj }
+                </li>
+                <li className="collection-item">
+                    <i className="material-icons">email</i> E-mail: { user.email }
+                </li>
+                <li className="collection-item">
+                    <i className="material-icons">call</i> Contato: { user.cell_phone } / { user.phone }
+                </li>
+                <li className="collection-item">
+                    <i className="material-icons">home</i> Endereço: { user.street } Nº { user.number }, { user.cep }, { user.city } - { user.uf }
+                </li>
+            </ul>
+        }
+        return collection;
     }
 
     componentDidMount(){
@@ -88,7 +130,7 @@ export default class Profile extends React.Component{
         let date = new Date(child.birthday)
         let local_date = date.toLocaleDateString()
         return(
-            <div>
+            <div className="purple-text">
                 <nav className="nav-extended deep-purple darken-2 white-text">
                     <div className="row">
                         <div className="col s12">
@@ -142,23 +184,7 @@ export default class Profile extends React.Component{
                 <div className="row">
                     <div className="col s8 push-s2">
                         <div className="col m12 l4">
-                            <ul className="collection">
-                                <li className="collection-item">
-                                    <i className="material-icons">person</i> CPF: { child.cpf }
-                                </li>
-                                <li className="collection-item">
-                                    <i className="material-icons">email</i> E-mail: { user.email }
-                                </li>
-                                <li className="collection-item">
-                                    <i className="material-icons">call</i> Contato: { user.cell_phone } / { user.phone }
-                                </li>
-                                <li className="collection-item">
-                                    <i className="material-icons">cake</i> Aniversário: { local_date }
-                                </li>
-                                <li className="collection-item">
-                                    <i className="material-icons">home</i> Endereço: { user.street } Nº { user.number }, { user.cep }, { user.city } - { user.uf }
-                                </li>
-                            </ul>
+                            { this.handleRender(user, child, local_date) }
                         </div>
                         <div className="col m12 l8"></div>
                     </div>
