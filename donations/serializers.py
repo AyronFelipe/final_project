@@ -5,7 +5,7 @@ from core.serializers import PhotoSerializer
 
 class DonationSerializer(serializers.ModelSerializer):
 
-    donator = serializers.StringRelatedField()
+    donator = serializers.SerializerMethodField()
     photos = PhotoSerializer(many=True, read_only=True)
 
     class Meta:
@@ -28,3 +28,10 @@ class DonationSerializer(serializers.ModelSerializer):
             'slug',
             'photos'
         ]
+
+    def get_donator(self, obj):
+
+        if hasattr(obj, 'donator'):
+            if hasattr(obj.donator, 'institution'):
+                return obj.donator.institution.name
+            return obj.donator.person.first_name
