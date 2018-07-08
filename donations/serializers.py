@@ -39,6 +39,8 @@ class DonationSerializer(serializers.ModelSerializer):
 
 class SolicitationSerializer(serializers.ModelSerializer):
 
+    owner = serializers.SerializerMethodField()
+
     class Meta:
         model = Solicitation
         fields = [
@@ -47,4 +49,11 @@ class SolicitationSerializer(serializers.ModelSerializer):
             'validity_hour',
             'is_accepted',
             'slug',
-        ] 
+        ]
+
+    def get_owner(self, obj):
+
+        if hasattr(obj, 'owner'):
+            if hasattr(obj.owner, 'institution'):
+                return obj.owner.institution.name
+            return obj.owner.person.first_name
