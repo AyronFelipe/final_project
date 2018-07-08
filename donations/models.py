@@ -42,11 +42,12 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
 
 class Solicitation(CreationAndUpdateMixin):
 
-    owner = models.ForeignKey(get_user_model(), related_name='solicitations', on_delete=models.CASCADE)
+    owner = models.ForeignKey(get_user_model(), related_name='solicitations', on_delete=models.CASCADE, null=True, blank=True)
     validity = models.DateField(blank=True, null=True)
     validity_hour = models.TimeField(blank=True, null=True)
     is_accepted = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
+    donation = models.ForeignKey(Donation, related_name='solicitations', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
 
@@ -66,8 +67,4 @@ class Solicitation(CreationAndUpdateMixin):
             date.year, date.month, date.day, self.id, self.owner.pk
         )
         super(Solicitation, self).save()
-
-
-
-
 

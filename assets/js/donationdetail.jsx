@@ -12,8 +12,11 @@ export default class DonationDetail extends React.Component{
     }
 
     componentDidMount(){
+        
         let pathname = window.location.pathname;
+        
         let slug = pathname.split('/')[3];
+        
         $.ajax({
             url: '/api/donations/'+slug.split('-')[2].split('.')[1]+'/',
             dataType: 'json',
@@ -43,6 +46,21 @@ export default class DonationDetail extends React.Component{
                 console.log(request, status, err);
             }
         });
+
+        $('.modal').modal();
+
+        $('.timepicker').pickatime({
+            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: false, // Use AM/PM or 24-hour format
+            donetext: 'OK', // text for done-button
+            cleartext: 'Limpar', // text for clear-button
+            canceltext: 'Cancelar', // Text for cancel-button,
+            container: undefined, // ex. 'body' will append picker to body
+            autoclose: false, // automatic close timepicker
+            ampmclickable: true, // make AM PM clickable
+            aftershow: function(){} //Function for after opening timepicker
+        })
     }
 
     render(){
@@ -70,6 +88,26 @@ export default class DonationDetail extends React.Component{
         let date = new Date(this.state.donation.validity)
 
         let local_date = date.toLocaleDateString()
+
+        $(".datepicker").pickadate({
+            selectMonths: true, 
+            selectYears: 50, 
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true,
+            formatSubmit: 'yyyy-mm-dd',
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'], 
+            editable: false,
+            hiddenName: true,
+            min: true,
+            max: date,
+            showMonthsFull: true,
+            showWeekdaysShort: true,
+        })
 
         return(
             <div id="content">
@@ -104,7 +142,7 @@ export default class DonationDetail extends React.Component{
                                                 <span>Doação realizada por: <div className="chip"><img src={ this.state.user.photo } alt="Contact Person" /> { this.state.donation.donator }</div></span>
                                             </Link>
                                             <br />
-                                            <button className="btn-large waves-effect waves-light indigo accent-2 white-text" style={{width: '100%'}}>Solicitar esta doação</button>
+                                            <button className="btn-large waves-effect waves-light indigo accent-2 white-text modal-trigger" data-target="modal-solicitation" style={{width: '100%'}}>Solicitar esta doação</button>
                                             <h4>Ponto de Encontro</h4>
                                             <div className="video-container">
                                                 <iframe width="450" height="350" frameBorder="0" style={{border:0}} src={`https://www.google.com/maps/embed/v1/place?q=${this.state.donation.cep},${this.state.donation.neighborhood},${this.state.donation.street},${this.state.donation.number},+Brasil&key=${API_KEY}`} allowFullScreen></iframe>
@@ -125,6 +163,31 @@ export default class DonationDetail extends React.Component{
                             </div>
                         </div>
                     </div>
+                </div>
+                <div id="modal-solicitation" className="modal">
+                    <div className="modal-content">
+                        <form id="solicitation-form">
+                            <div className="row">
+                                <h4>Cadastro de Solicitação para a Doação { this.state.donation.name }</h4>
+                                <div className="input-field col s12">
+                                    <input id="validity" name="validity" type="text" className="datepicker" />
+                                    <label htmlFor="validity">Sua solicitação vale até o dia</label>
+                                    <span className="error-message red-text"></span>                          
+                                </div>
+                                <div className="input-field col s12">
+                                    <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
+                                    <label htmlFor="validity_hour">Sua solicitação vale até às</label>
+                                    <span className="error-message red-text"></span>
+                                </div>
+                            </div>
+                            <br/><br/>
+                        </form>
+                    </div>
+                    <div className="modal-footer">
+                        <button className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</button>
+                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text">Salvar solicitação</button>
+                    </div>
+                    <br/>
                 </div>
             </div>
         )

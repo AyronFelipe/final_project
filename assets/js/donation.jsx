@@ -1,5 +1,4 @@
 import React from 'react'
-import Dateapicker from './dateapicker'
 import Address from './address'
 import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
