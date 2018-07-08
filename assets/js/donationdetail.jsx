@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { storageToken } from './auth'
 import * as Vibrant from 'node-vibrant'
 import Carousel from './carousel'
-import { storageToken } from './auth'
 
 export default class DonationDetail extends React.Component{
 
