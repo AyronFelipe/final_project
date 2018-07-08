@@ -3,12 +3,44 @@ import { Link } from 'react-router-dom'
 import { storageToken } from './auth'
 import * as Vibrant from 'node-vibrant'
 import Carousel from './carousel'
+import { storageToken } from './auth'
 
 export default class DonationDetail extends React.Component{
 
     constructor(props){
         super(props);
         this.state = { donation: [], user: [] };
+        this.saveSolicitation = this.saveSolicitation.bind(this);
+    }
+
+    saveSolicitation(){
+        $('#solicitation-form').find('input').each(function(){
+            $(this).siblings('span.error-message').html('');
+        })
+        $.ajax({
+            url: '/api/new-solicitation/',
+            type: 'POST',
+            data: $('#solicitation-form').serialize(),
+            dataType: 'json',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data){
+                //faz algo
+            },
+            error: function(request, status, err){
+                if (err == 'Bad Request'){
+                    for(const [key, value] of Object.entries(request.responseJSON)){
+                        $("#solicitation-form").find(":input").each(function(){
+                            name = $(this).attr("name");
+                            if(name===key){
+                                $(this).siblings('span.error-message').html('<p>'+value+'</p>');
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     componentDidMount(){
@@ -185,7 +217,7 @@ export default class DonationDetail extends React.Component{
                     </div>
                     <div className="modal-footer">
                         <button className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</button>
-                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text">Salvar solicitação</button>
+                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={ this.saveSolicitation }>Salvar solicitação</button>
                     </div>
                     <br/>
                 </div>
