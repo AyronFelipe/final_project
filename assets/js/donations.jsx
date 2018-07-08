@@ -67,7 +67,7 @@ export default class Donations extends React.Component{
                                 let local_date = date.toLocaleDateString()
                                 return(
                                     <div className="row" key={ donation.pk }>
-                                        <div className="col s6 offset-s3">
+                                        <div className="col l6 offset-l3 m10 push-m1 s12">
                                             <Link to={ '/donations/donation/'+donation.slug+'/' }>
                                                 <div className="card hoverable">
                                                     <div className="card-image">
