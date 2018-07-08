@@ -1,6 +1,6 @@
 from rest_framework import generics, viewsets, permissions
-from .models import Donation
-from .serializers import DonationSerializer
+from .models import Donation, Solicitation
+from .serializers import DonationSerializer, SolicitationSerializer
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import status
@@ -56,5 +56,15 @@ class DonationViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
+
+
+class SolicitationViewSet(viewsets.ReadOnlyModelViewSet):
+    '''
+    Listagem das Solicitalções
+    '''
+
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Solicitation.objects.all()
+    serializer_class = SolicitationSerializer
     
 
