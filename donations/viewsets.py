@@ -58,6 +58,31 @@ class DonationViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DonationSerializer
 
 
+class CreateSolicitationViewSet(generics.CreateAPIView):
+    '''
+    Criação de uma solicitação
+    '''
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Solicitation.objects.all()
+    serializer_class = SolicitationSerializer
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request):
+        serializer = SolicitationSerializer(data=request.data)
+        if serializer.is_valid():
+            instance = serializer.validated_data
+            solicitation = Solicitation(
+                validity = instance.get('validity'),
+                validity_hour = instance.get('validity_hour'),
+                donation = instance.get('donation'),
+            )
+            with transaction.atomic():
+                solicitation.owner = request.user
+                solicitation.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED,)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class SolicitationViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     Listagem das Solicitalções

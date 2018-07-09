@@ -8,7 +8,7 @@ export default class DonationDetail extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { donation: [], user: [] };
+        this.state = { donation: [], user: [], value: '' };
         this.saveSolicitation = this.saveSolicitation.bind(this);
     }
 
@@ -25,7 +25,7 @@ export default class DonationDetail extends React.Component{
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-                //faz algo
+                window.location.href = '/donations/my-solicitations/';
             },
             error: function(request, status, err){
                 if (err == 'Bad Request'){
@@ -56,7 +56,7 @@ export default class DonationDetail extends React.Component{
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-                this.setState({ donation: data })
+                this.setState({ donation: data, value: data.pk })
             }.bind(this),
             error: function(request, status, err){
                 console.log(request, status, err);
@@ -278,6 +278,7 @@ export default class DonationDetail extends React.Component{
                                     <label htmlFor="validity_hour">Sua solicitação vale até às</label>
                                     <span className="error-message red-text"></span>
                                 </div>
+                                <input type="hidden" name="donation" value={ this.state.value } />
                             </div>
                             <br/><br/>
                         </form>

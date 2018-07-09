@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
 from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, login, logged_user
-from donations.viewsets import CreateDonationViewSet
+from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet
 from rest_framework.authtoken.views import obtain_auth_token
 
 
@@ -16,10 +16,11 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('api/', include(router.urls), name='api'),
     path('api/new-person/', CreatePersonViewSet.as_view(), name='new-person'),
-    path('api/new-institution/', CreateInstitutionViewSet.as_view(), name='new-institution'),
-    path('api/new-donation/', CreateDonationViewSet.as_view(), name='new-donation'),
+    path('api/new-institution/', CreateInstitutionViewSet.as_view(), name='new_institution'),
+    path('api/new-donation/', CreateDonationViewSet.as_view(), name='new_donation'),
     path('api-token-auth/', obtain_auth_token, name='get_auth_token'),
     path('api/logged-user/', logged_user, name='logged_user'),
+    path('api/new-solicitation/', CreateSolicitationViewSet.as_view(), name='new_solicitation'),
 ]
 
 if settings.DEBUG:

@@ -61,9 +61,9 @@ class Solicitation(CreationAndUpdateMixin):
 
     def save(self):
 
-        super(Donation, self).save()
+        super(Solicitation, self).save()
         date = datetime.today()
-        self.slug = 'SOL.%i-%i-%i.%i.%i-%s' % (
+        self.slug = 'SOL.%i-%i-%i.%i.%i' % (
             date.year, date.month, date.day, self.id, self.owner.pk
         )
         super(Solicitation, self).save()

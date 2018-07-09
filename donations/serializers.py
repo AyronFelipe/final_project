@@ -40,7 +40,7 @@ class DonationSerializer(serializers.ModelSerializer):
 class SolicitationSerializer(serializers.ModelSerializer):
 
     owner = serializers.SerializerMethodField()
-
+    
     class Meta:
         model = Solicitation
         fields = [
@@ -49,6 +49,7 @@ class SolicitationSerializer(serializers.ModelSerializer):
             'validity_hour',
             'is_accepted',
             'slug',
+            'donation',
         ]
 
     def get_owner(self, obj):
