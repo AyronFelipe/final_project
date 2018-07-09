@@ -42,6 +42,14 @@ def login(request):
         else:
             data["message"] = "Um dos campos foi preenchido incorretamente."
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+def logged_user(request):
+
+    user = request.user
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
         
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

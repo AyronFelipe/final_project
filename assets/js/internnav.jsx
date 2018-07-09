@@ -28,7 +28,7 @@ import { Link } from 'react-router-dom'
     componentDidMount(){
 
         $.ajax({
-            url: '/api/users/'+27+'/',
+            url: '/api/logged-user/',
             dataType: 'json',
             type: 'GET',
             headers: {

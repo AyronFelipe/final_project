@@ -1,7 +1,7 @@
 module.exports = {
 
     storageToken: function(token){
-        localStorage.token = token;
+        localStorage.token = token; 
         return localStorage.token;
     },
 
