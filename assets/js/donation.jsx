@@ -93,6 +93,8 @@ export default class Donation extends React.Component{
         });
 
         $('.chips').material_chip();
+
+        $('.chips').attr('name', 'tag');
     }
 
     render(){
