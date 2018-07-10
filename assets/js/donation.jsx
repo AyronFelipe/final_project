@@ -47,6 +47,7 @@ export default class Donation extends React.Component{
     }
 
     componentDidMount(){
+        
         $(".datepicker").pickadate({
             selectMonths: true, 
             selectYears: 50, 
@@ -90,6 +91,8 @@ export default class Donation extends React.Component{
                 message: '<div class="dropify-message"><span class="file-icon" /> <p class="center-align">{{ default }}</p></div>',
             }
         });
+
+        $('.chips').material_chip();
     }
 
     render(){
@@ -141,6 +144,10 @@ export default class Donation extends React.Component{
                                         <label htmlFor="description">Uma descrição da sua doação (não seja breve)</label>
                                         <span className="error-message red-text"></span>
                                     </div>
+                                </div>
+                                <div className="row">
+                                    <h5>Adicione as tags da sua doação</h5>
+                                    <div className="chips chips-autocomplete"></div>
                                 </div>
                                 <Address legend="Endereço de coleta da doação" />
                                 <div className="row">

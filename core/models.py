@@ -11,6 +11,21 @@ class Photo(CreationAndUpdateMixin):
     donation = models.ForeignKey(Donation, null=True, blank=True, related_name="photos", on_delete=models.CASCADE)
 
     class Meta:
+
         verbose_name = _('photo')
         verbose_name_plural = _('photos')
+
+
+class Tag(CreationAndUpdateMixin):
+
+    name = models.CharField(_('name'), null=True, blank=True, max_length=255)
+
+    class Meta:
+
+        verbose_name=_('tag')
+        verbose_name_plural=_('tags')
+
+    def __str__(self):
+
+        return self.name
 

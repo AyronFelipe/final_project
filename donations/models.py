@@ -68,3 +68,13 @@ class Solicitation(CreationAndUpdateMixin):
         )
         super(Solicitation, self).save()
 
+
+class DonationTags(models.Model):
+
+    donation = models.ForeignKey(Donation, null=True, blank=True, on_delete=models.SET_NULL, related_name='donation_tags')
+    tag = models.ForeignKey('core.Tag', null=True, blank=True, on_delete=models.CASCADE, related_name='tag_donations')
+
+    def __str__(self):
+
+        return '%s - %s' % (self.donation, self.tag)
+
