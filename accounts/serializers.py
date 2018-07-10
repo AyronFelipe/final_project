@@ -57,10 +57,23 @@ class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = [
-            'first_name', 
+            'email',
+            'password',
+            'is_active',
+            'first_name',
             'last_name',
-            'cpf', 
+            'cpf',
+            'phone',
+            'cell_phone',
+            'neighborhood',
+            'street',
+            'number',
             'birthday',
+            'cep',
+            'complement',
+            'city',
+            'uf',
+            'photo',
         ]
 
 
@@ -69,7 +82,18 @@ class InstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution
         fields = [
-            'name', 
-            'cnpj', 
-            'objectives',
+            'email',
+            'password',
+            'is_active',
+            'name',
+            'cnpj',
+            'phone',
+            'cell_phone',
+            'neighborhood',
+            'street',
+            'number',
+            'photo',
+            'cep',
+            'city',
+            'uf',
         ]
