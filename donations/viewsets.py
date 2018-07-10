@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
-from core.models import Photo, Tag
+from core.models import Photo, Tag, Notification
 
 User = get_user_model()
 
@@ -81,6 +81,9 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
             with transaction.atomic():
                 solicitation.owner = request.user
                 solicitation.save()
+                donation = instance.get('donation')
+                message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
+                Notification.objects.create(message=message, notified=donation.donator)
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

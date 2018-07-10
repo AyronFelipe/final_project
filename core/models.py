@@ -3,6 +3,7 @@ from donations.models import Donation
 from django.utils.translation import ugettext_lazy as _
 from core.utils import img_path
 from core.mixins import CreationAndUpdateMixin
+from django.contrib.auth import get_user_model
 
 
 class Photo(CreationAndUpdateMixin):
@@ -28,4 +29,20 @@ class Tag(CreationAndUpdateMixin):
     def __str__(self):
 
         return self.name
+
+
+class Notification(CreationAndUpdateMixin):
+
+    message = models.CharField(_('message'), null=True, blank=True, max_length=255)
+    notified = models.ForeignKey(get_user_model(), related_name='notifications', null=True, blank=True, on_delete=models.CASCADE)
+
+    class Meta:
+
+        verbose_name=_("notification")
+        verbose_name_plural=_("notifications")
+
+    def __str__(self):
+
+        return '%s - %s' % (self.message, self.notified)
+
 

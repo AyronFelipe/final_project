@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Photo, Tag
+from .models import Photo, Tag, Notification
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -19,5 +19,15 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = [
             'name',
+            'pk',
+        ]
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = [
+            'message',
             'pk',
         ]
