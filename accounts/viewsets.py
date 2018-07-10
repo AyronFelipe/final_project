@@ -132,7 +132,8 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
                 email=instance.get('email'), name=instance.get('name'), cnpj=instance.get('cnpj'), 
                 phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), 
                 neighborhood=instance.get('neighborhood'), street=instance.get('street'), 
-                number=instance.get('number'), photo=instance.get("photo"),)
+                number=instance.get('number'), photo=instance.get("photo"), cep=instance.get("cep"), 
+                uf=instance.get("uf"), city=instance.get("city"), complement=instance.get("complement"))
             institution.set_password(instance.get('password'))
             institution.save()
             subject = "Ative sua conta"
