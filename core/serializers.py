@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Photo
+from .models import Photo, Tag
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -10,4 +10,14 @@ class PhotoSerializer(serializers.ModelSerializer):
             'image_file',
             'donation',
             'pk'
+        ]
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = [
+            'name',
+            'pk',
         ]

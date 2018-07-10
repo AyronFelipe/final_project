@@ -5,6 +5,7 @@ import * as Vibrant from 'node-vibrant'
 import Carousel from './carousel'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import Tags from './tags'
 
 export default class DonationDetail extends React.Component{
 
@@ -104,6 +105,8 @@ export default class DonationDetail extends React.Component{
             let color = new Vibrant(this.state.donation.main_photo);
             //color.getPalette((err, palette) => $("#content").css("background-color", palette.LightVibrant.getHex()));
         }
+
+        console.log(this.state.donation)
 
         let date = new Date(this.state.donation.validity)
         date.setDate(date.getDate() + 1 )
@@ -239,6 +242,8 @@ export default class DonationDetail extends React.Component{
                                                 <span>Doação realizada por: <div className="chip"><img src={ this.state.user.photo } alt="Contact Person" /> { this.state.donation.donator }</div></span>
                                             </Link>
                                             <br />
+                                            <br />
+                                            <Tags tags={ this.state.donation.tags } />
                                             <button className="btn-large waves-effect waves-light indigo accent-2 white-text modal-trigger" data-target="modal-solicitation" style={{width: '100%'}}>Solicitar esta doação</button>
                                             <h4>Ponto de Encontro</h4>
                                             <div className="video-container">
@@ -253,9 +258,10 @@ export default class DonationDetail extends React.Component{
                                             </p>
                                             <br/>
                                             <p><strong>Validade: </strong>Você só pode solicitar essa doação até o dia <span className="red-text">{ local_date }</span>  até às <span className="red-text">{ this.state.donation.validity_hour }</span></p>
+                                            <br/>
+                                            <Carousel list={ this.state.donation.photos } />
                                         </div>
                                     </div>
-                                    <Carousel list={ this.state.donation.photos } />
                                 </div>
                             </div>
                         </div>

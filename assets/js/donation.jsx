@@ -17,6 +17,10 @@ export default class Donation extends React.Component{
             $(this).siblings('span.error-message').html('');
         })
         let form = new FormData($("#donation-form").get(0));
+        let chipsObjectValue = $("#tags").material_chip('data');
+        $.each(chipsObjectValue, function(key, value){
+            form.append('tags', value.tag)
+        })
         $.ajax({
             url: '/api/new-donation/',
             type: 'POST',
@@ -93,8 +97,6 @@ export default class Donation extends React.Component{
         });
 
         $('.chips').material_chip();
-
-        $('.chips').attr('name', 'tags');
     }
 
     render(){
@@ -149,7 +151,7 @@ export default class Donation extends React.Component{
                                 </div>
                                 <div className="row">
                                     <h5>Adicione as tags da sua doação</h5>
-                                    <div className="chips chips-autocomplete"></div>
+                                    <div className="chips" id="tags"></div>
                                 </div>
                                 <Address legend="Endereço de coleta da doação" />
                                 <div className="row">

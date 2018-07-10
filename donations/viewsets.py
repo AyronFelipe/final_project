@@ -1,12 +1,12 @@
 from rest_framework import generics, viewsets, permissions
-from .models import Donation, Solicitation
+from .models import Donation, Solicitation, DonationTags
 from .serializers import DonationSerializer, SolicitationSerializer
 from django.db import transaction
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
-from core.models import Photo
+from core.models import Photo, Tag
 
 User = get_user_model()
 
@@ -44,6 +44,9 @@ class CreateDonationViewSet(generics.CreateAPIView):
                 donation.save()
                 for photo in request.FILES.getlist('photos'):
                     Photo.objects.create(image_file=photo, donation=donation)
+                for tag in request.POST.getlist('tags'):
+                    current_tag, created = Tag.objects.get_or_create(name=tag)
+                    DonationTags.objects.create(donation=donation, tag=current_tag)
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
