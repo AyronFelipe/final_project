@@ -136,17 +136,18 @@ export default class Donations extends React.Component{
                     <div id="doacoes">
                         <div className="row">
                             <div className="col s12 center-align">
-                                <div className="valign-wrapper row">
-                                    <div className="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
-                                        <div className="card-content">
-                                            <div className="white-text center-align card-title">
-                                                <h3>Não existem doações cadastradas</h3>
-                                            </div>
+                                <br/><br/><br/>
+                                <div class="preloader-wrapper big active">
+                                    <div class="spinner-layer spinner-blue-only">
+                                        <div class="circle-clipper left">
+                                            <div class="circle"></div>
                                         </div>
-                                        <p>
-                                            Não existem doações cadastradas clique no botão abaixo para cadastrar sua doação.
-                                        </p>
-                                        <br/><br/>
+                                        <div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div>
+                                        <div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
