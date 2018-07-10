@@ -19,7 +19,7 @@ export default class Tags extends React.Component{
                 <div className="col s12">
                     {this.props.tags.map(function(tag){
                         return(
-                            <div className="chip">{ tag.name }</div>
+                            <div className="chip" key={ tag.pk }>{ tag.name }</div>
                         )
                     })}
                 </div>

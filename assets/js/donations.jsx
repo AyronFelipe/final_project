@@ -7,12 +7,13 @@ import { storageToken } from './auth'
 import DonationDetail from './donationdetail'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import Tags from './tags'
 
 export default class Donations extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { donations: [] };
+        this.state = { donations: [], tags: [] };
     }
 
     componentDidMount(){
@@ -25,6 +26,21 @@ export default class Donations extends React.Component{
             },
             success: function(data){
                 this.setState({ donations: data })
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            }
+        });
+        
+        $.ajax({
+            url: '/api/tags/',
+            dataType: 'json',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data){
+                this.setState({ tags: data })
             }.bind(this),
             error: function(request, status, err){
                 console.log(request, status, err);

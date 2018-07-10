@@ -55,7 +55,6 @@ class DonationViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     Listagem das Instituições
     '''
-
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
