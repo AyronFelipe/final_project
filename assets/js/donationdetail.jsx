@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { storageToken } from './auth'
 import * as Vibrant from 'node-vibrant'
 import Carousel from './carousel'
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
 
 export default class DonationDetail extends React.Component{
 
@@ -104,13 +106,9 @@ export default class DonationDetail extends React.Component{
         }
 
         let date = new Date(this.state.donation.validity)
-
-        let local_date = date.toLocaleDateString()
-
+        date.setDate(date.getDate() + 1 )
         let today = new Date()
-
-        let today_local_date = today.toLocaleDateString()
-
+        let local_date = moment(this.state.donation.validity).format("DD/MM/YYYY")
 
         $(".datepicker").pickadate({
             selectMonths: true, 

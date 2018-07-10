@@ -5,6 +5,8 @@ import '../css/main.css'
 import { Link } from 'react-router-dom'
 import { storageToken } from './auth'
 import DonationDetail from './donationdetail'
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
 
 export default class Donations extends React.Component{
 
@@ -63,8 +65,7 @@ export default class Donations extends React.Component{
                         </div>
                         <div id="doacoes">
                             {this.state.donations.map(function(donation){
-                                let date = new Date(donation.validity)
-                                let local_date = date.toLocaleDateString()
+                                let date = moment(donation.validity).format("DD/MM/YYYY")
                                 return(
                                     <div className="row" key={ donation.pk }>
                                         <div className="col l6 offset-l3 m10 push-m1 s12">
@@ -80,7 +81,7 @@ export default class Donations extends React.Component{
                                                         <br/>
                                                         <div className="divider"></div>
                                                         <br/>
-                                                        <p><strong>Validade: </strong>{ local_date} até às { donation.validity_hour }</p>
+                                                        <p><strong>Validade: </strong>{ date } até às { donation.validity_hour }</p>
                                                         <p><strong>Doada por: </strong>{ donation.donator }</p>
                                                     </div>
                                                 </div>
@@ -137,16 +138,16 @@ export default class Donations extends React.Component{
                         <div className="row">
                             <div className="col s12 center-align">
                                 <br/><br/><br/>
-                                <div class="preloader-wrapper big active">
-                                    <div class="spinner-layer spinner-blue-only">
-                                        <div class="circle-clipper left">
-                                            <div class="circle"></div>
+                                <div className="preloader-wrapper big active">
+                                    <div className="spinner-layer spinner-blue-only">
+                                        <div className="circle-clipper left">
+                                            <div className="circle"></div>
                                         </div>
-                                        <div class="gap-patch">
-                                            <div class="circle"></div>
+                                        <div className="gap-patch">
+                                            <div className="circle"></div>
                                         </div>
-                                        <div class="circle-clipper right">
-                                            <div class="circle"></div>
+                                        <div className="circle-clipper right">
+                                            <div className="circle"></div>
                                         </div>
                                     </div>
                                 </div>
