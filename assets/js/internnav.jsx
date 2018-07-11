@@ -6,12 +6,13 @@ import '../css/main.css'
 import Logout from './logout'
 import NameProject from './nameproject'
 import { Link } from 'react-router-dom'
+import Notifications from './notifications'
 
  export default class InternNav extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = {  user: [] };
+        this.state = {  user: [], notifications: [] };
         this.handleRender = this.handleRender.bind(this)
     }
 
@@ -42,15 +43,28 @@ import { Link } from 'react-router-dom'
             }
         });
 
+        $.ajax({
+            url: '/api/notifications/',
+            dataType: 'json',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token  
+            },
+            success: function(data){
+                //Materialize.toast('Você possui uma nova notificação.', 3000)
+                this.setState({ notifications: data })
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            } 
+        })
+
     }
 
     render(){
         const user = this.state.user
         const child = this.state.user.child
         if(child != undefined){
-            $('.dropdown-button').dropdown({
-                alignment: 'right'
-            });
             return(
                 <div>
                     <nav className="deep-purple darken-2 white-text">
@@ -65,7 +79,11 @@ import { Link } from 'react-router-dom'
                                                 <img className="responsive-img circle" style={{ width: '50px', height: '50px', marginTop: '6px' }} src={ user.photo } />
                                             </a>
                                         </li>
-                                        <li><i className="material-icons">notifications</i></li>
+                                        <li>
+                                            <a href="#" data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
+                                                <i className="material-icons">notifications</i>
+                                            </a>
+                                        </li>
                                         <Logout />
                                     </ul>
                                     <ul className="side-nav" id="mobile-demo">
@@ -88,6 +106,13 @@ import { Link } from 'react-router-dom'
                         <li><a><i className="material-icons">account_circle</i>Editar perfil</a></li>
                         <li><a><i className="material-icons">shopping_basket</i>Minhas solicitações</a></li>
                         <li><a><i className="material-icons">room_service</i>Minhas doações</a></li>
+                    </ul>
+                    <ul id="dropdown-notifications" className="dropdown-content">
+                        <li>
+                            <h5 className="purple-text" style={{ marginLeft: '15px' }}>NOTIFICAÇÕES</h5>
+                        </li>
+                        <li className="divider"></li>
+                        <Notifications notifications={ this.state.notifications } />
                     </ul>
                 </div>
             )

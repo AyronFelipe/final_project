@@ -25,9 +25,17 @@ class TagSerializer(serializers.ModelSerializer):
 
 class NotificationSerializer(serializers.ModelSerializer):
 
+    sender = serializers.SerializerMethodField()
+
     class Meta:
         model = Notification
         fields = [
             'message',
             'pk',
+            'sender',
         ]
+
+    def get_sender(self, obj):
+
+        if hasattr(obj, 'sender'):
+            return obj.sender.photo.url

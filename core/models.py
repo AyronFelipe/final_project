@@ -35,6 +35,7 @@ class Notification(CreationAndUpdateMixin):
 
     message = models.CharField(_('message'), null=True, blank=True, max_length=255)
     notified = models.ForeignKey(get_user_model(), related_name='notifications', null=True, blank=True, on_delete=models.CASCADE)
+    sender = models.ForeignKey(get_user_model(), related_name='sended_notifications', null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:
 
