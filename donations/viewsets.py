@@ -83,7 +83,7 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 solicitation.save()
                 donation = instance.get('donation')
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
-                Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner)
+                Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner, type=Notification.MY_DONATIONS)
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -1,6 +1,14 @@
 import React from 'react'
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
+import { Link} from 'react-router-dom'
 
 export default class Notifications extends React.Component{
+
+    constructor(props){
+        super(props)
+        this.handleRender = this.handleRender.bind(this)
+    }
 
     componentDidMount(){
         $('.dropdown-button').dropdown({
@@ -9,40 +17,42 @@ export default class Notifications extends React.Component{
         });
     }
 
-    render(){
-        if (this.props.notifications == undefined){
-            return(
-                <li><a className="grey-text">Nenhuma notificação encontrada</a></li>
-            )
-        }
-
-        let rows = []
-
-        let photos = []
-        
-        let cont = 0
-
-        for (let notification in this.props.notifications){
-            photos.push(this.props.notifications[cont].sender)
-            rows.push(this.props.notifications[cont].message);
-            cont++;
-        }
-        
-        console.log(this.props.notifications)
-
-        return(
-            
-            <li>
-                <a>
-                    <div className="row">
-                        <div className="col s6">
-                            <div className="col s3"><img src={ photos } className="responsive-img circle" style={{ width: '50px', height: '50px', }} /></div>
-                            <div className="col s1">{ rows }</div>
+    handleRender(notifications){
+        let collection;
+        let test;
+        if(notifications==undefined){
+            collection = <li><a>Não existem notificações.</a></li>
+        }else{ 
+            collection = <li><a>Não existem notificações.</a></li>
+            for (const [key, value] of Object.entries(notifications)) {
+                test += 
+                `<li>
+                    <a href="/donations/${ value.type }/">
+                        <div class="row">
+                            <div class="col s6">
+                                <div class="col s3"><img src=${ value.sender } class="responsive-img circle" style="height:50px;width50px;" /></div>
+                                <div class="col s1">
+                                    ${ value.message }<br/>
+                                    <span class="grey-text"><small>${ moment(value.created_at).startOf('second').fromNow() }</small><span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </li>
-        
+                    </a>
+                </li>`
+            }
+            if(test==undefined){
+               return collection = <li><a>Não existem notificações.</a></li>
+            }
+            let lol = test.replace('[object Object]', '');
+            let last = lol.replace('undefined', '');
+            collection = <div dangerouslySetInnerHTML={{__html: last}}></div>
+        }
+        return collection;
+    }   
+
+    render(){
+        return(
+            this.handleRender(this.props.notifications)
         )
     }
 }

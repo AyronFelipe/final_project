@@ -33,6 +33,8 @@ class NotificationSerializer(serializers.ModelSerializer):
             'message',
             'pk',
             'sender',
+            'created_at',
+            'type',
         ]
 
     def get_sender(self, obj):

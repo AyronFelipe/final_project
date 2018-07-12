@@ -7,5 +7,6 @@ urlpatterns = [
     path('new-donation/', views.new_donation, name='new_donation'),
     path('donation/<slug>/', views.donation_detail, name='donation_detail'),
     path('my-solicitations/', views.my_solicitations, name='my_solicitations'),
+    path('my-donations/', views.my_donations, name='my_donations'),
 ]
 

@@ -106,8 +106,6 @@ export default class DonationDetail extends React.Component{
             //color.getPalette((err, palette) => $("#content").css("background-color", palette.LightVibrant.getHex()));
         }
 
-        console.log(this.state.donation)
-
         let date = new Date(this.state.donation.validity)
         date.setDate(date.getDate() + 1 )
         let today = new Date()

@@ -33,14 +33,26 @@ class Tag(CreationAndUpdateMixin):
 
 class Notification(CreationAndUpdateMixin):
 
+    MY_DONATIONS = 'my-donations'
+    MY_SOLICITATIONS = 'my-solicitations'
+    MY_REQUESTS = 'my-requests'
+
+    TYPE_NOTIFICATION = (
+        (MY_DONATIONS, _('my donations')),
+        (MY_SOLICITATIONS, _('my solicitations')),
+        (MY_REQUESTS, _('my requests')),
+    )
+
     message = models.CharField(_('message'), null=True, blank=True, max_length=255)
     notified = models.ForeignKey(get_user_model(), related_name='notifications', null=True, blank=True, on_delete=models.CASCADE)
     sender = models.ForeignKey(get_user_model(), related_name='sended_notifications', null=True, blank=True, on_delete=models.SET_NULL)
+    type = models.CharField(_('type'), max_length=20, null=True, blank=True, choices=TYPE_NOTIFICATION)
 
     class Meta:
 
         verbose_name=_("notification")
         verbose_name_plural=_("notifications")
+        ordering=['-created_at']
 
     def __str__(self):
 

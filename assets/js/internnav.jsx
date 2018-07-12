@@ -14,6 +14,7 @@ import Notifications from './notifications'
         super(props);
         this.state = {  user: [], notifications: [] };
         this.handleRender = this.handleRender.bind(this)
+        this.loadNotifications = this.loadNotifications.bind(this)
     }
 
     handleRender(child){
@@ -26,8 +27,27 @@ import Notifications from './notifications'
         return lol;
     }
 
+    loadNotifications(){
+        $.ajax({
+            url: '/api/notifications/',
+            dataType: 'json',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token  
+            },
+            success: function(data){
+                this.setState({ notifications: data });
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            } 
+        }); 
+    }
+
     componentDidMount(){
 
+        this.loadNotifications();
+        
         $.ajax({
             url: '/api/logged-user/',
             dataType: 'json',
@@ -43,24 +63,13 @@ import Notifications from './notifications'
             }
         });
 
-        $.ajax({
-            url: '/api/notifications/',
-            dataType: 'json',
-            type: 'GET',
-            headers: {
-                'Authorization': 'Token ' + localStorage.token  
-            },
-            success: function(data){
-                //Materialize.toast('Você possui uma nova notificação.', 3000)
-                this.setState({ notifications: data })
-            }.bind(this),
-            error: function(request, status, err){
-                console.log(request, status, err);
-            } 
-        })
+        setInterval(function(){ 
+            this.loadNotifications()            
+        }.bind(this), 60000);
 
     }
 
+    
     render(){
         const user = this.state.user
         const child = this.state.user.child
@@ -109,7 +118,7 @@ import Notifications from './notifications'
                     </ul>
                     <ul id="dropdown-notifications" className="dropdown-content">
                         <li>
-                            <h5 className="purple-text" style={{ marginLeft: '15px' }}>NOTIFICAÇÕES</h5>
+                            <h6 className="purple-text" style={{ marginLeft: '15px' }}>NOTIFICAÇÕES</h6>
                         </li>
                         <li className="divider"></li>
                         <Notifications notifications={ this.state.notifications } />
