@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import Donation, Solicitation
 from core.serializers import PhotoSerializer, TagSerializer
 
-
 class DonationSerializer(serializers.ModelSerializer):
 
     donator = serializers.SerializerMethodField()
@@ -51,7 +50,9 @@ class DonationSerializer(serializers.ModelSerializer):
 class SolicitationSerializer(serializers.ModelSerializer):
 
     owner = serializers.SerializerMethodField()
-    
+    donation = DonationSerializer()
+    status = serializers.SerializerMethodField()
+
     class Meta:
         model = Solicitation
         fields = [
@@ -61,6 +62,8 @@ class SolicitationSerializer(serializers.ModelSerializer):
             'is_accepted',
             'slug',
             'donation',
+            'id',
+            'status',
         ]
 
     def get_owner(self, obj):
@@ -69,3 +72,7 @@ class SolicitationSerializer(serializers.ModelSerializer):
             if hasattr(obj.owner, 'institution'):
                 return obj.owner.institution.name
             return obj.owner.person.first_name
+
+    def get_status(self, obj):
+
+        return obj.get_status_display()

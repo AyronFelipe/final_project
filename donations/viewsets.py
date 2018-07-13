@@ -96,5 +96,39 @@ class SolicitationViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Solicitation.objects.all()
     serializer_class = SolicitationSerializer
+
+
+class MySolicitationsViewSet(viewsets.ViewSet):
+    '''
+    Listagem das Minhas Solicitações
+    '''
+
+    def list(self, request):
+        queryset = Solicitation.objects.filter(owner=request.user)
+        serializer = SolicitationSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Solicitation.objects.filter(sender=request.user)
+        solicitation = get_object_or_404(queryset, pk=pk)
+        serializer = SolicitationSerializer(notification)
+        return Response(serializer.data)
+
+
+class MyDonationsViewSet(viewsets.ViewSet):
+    '''
+    Listagem das Minhas Doações
+    '''
+
+    def list(self, request):
+        queryset = Donation.objects.filter(donator=request.user)
+        serializer = DonationSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Donation.objects.filter(sender=request.user)
+        donation = get_object_or_404(queryset, pk=pk)
+        serializer = DonationSerializer(notification)
+        return Response(serializer.data)
     
 

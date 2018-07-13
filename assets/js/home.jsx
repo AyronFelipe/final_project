@@ -12,6 +12,8 @@ import Login from './login'
 import Profile from './profile'
 import { isAuthenticated } from './auth'
 import InternNav from './internnav'
+import MySolicitations from './mysolicitations'
+import MyDonations from './mydonations'
 
 class Home extends React.Component{
 
@@ -37,6 +39,8 @@ class Home extends React.Component{
                         <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
                         <PrivateRoute authenticated={ this.state.authenticated } path="/donations/donation/:slug/" component={ DonationDetail } />
                         <PrivateRoute authenticated={ this.state.authenticated } path="/accounts/profile/:pk/" component={ Profile } />
+                        <PrivateRoute authenticated={ this.state.authenticated } path="/donations/my-solicitations/" component={ MySolicitations } />
+                        <PrivateRoute authenticated={ this.state.authenticated } path="/donations/my-donations/" component={ MyDonations } />
                     </main>
                 </div>
             </BrowserRouter>
