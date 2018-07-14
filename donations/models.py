@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from core.utils import img_path
 from datetime import datetime
 from django.template.defaultfilters import slugify
+from datetime import datetime
 
 
 class Donation(CreationAndUpdateMixin, AddressMixin):
@@ -45,17 +46,20 @@ class Solicitation(CreationAndUpdateMixin):
     SOLICITED = 'S'
     ACCEPTED = 'A'
     REJECTED = 'R'
+    NOT_ANSWERED = 'NA'
 
     STATUS_SOLICITATION = (
         (SOLICITED, 'Solicitada'),
         (ACCEPTED, 'Aceita'),
         (REJECTED, 'Rejeitada'),
+        (NOT_ANSWERED, 'Não respondida'),
     )
 
     owner = models.ForeignKey(get_user_model(), related_name='solicitations', on_delete=models.CASCADE, null=True, blank=True)
     validity = models.DateField(blank=True, null=True)
     validity_hour = models.TimeField(blank=True, null=True)
     is_accepted = models.BooleanField(default=False)
+    is_evaluated = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
     donation = models.ForeignKey(Donation, related_name='solicitations', on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(_('status'), max_length=1, null=True, blank=True, choices=STATUS_SOLICITATION, default=SOLICITED)
@@ -78,6 +82,13 @@ class Solicitation(CreationAndUpdateMixin):
             date.year, date.month, date.day, self.id, self.owner.pk
         )
         super(Solicitation, self).save()
+
+    def update_status(self):
+
+        combined_fields = datetime.combine(self.validity, self.validity_hour)
+        if datetime.today().toordinal() > combined_fields.toordinal() and self.status == Solicitation.SOLICITED:
+            self.status = Solicitation.NOT_ANSWERED
+        return self
 
 
 class DonationTags(models.Model):

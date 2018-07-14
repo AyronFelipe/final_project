@@ -7,7 +7,8 @@ export default class MySolicitations extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { solicitations: [] }
+        this.state = { solicitations: [] };
+        this.deleteSolicitation = this.deleteSolicitation.bind(this)
     }
 
     componentDidMount(){
@@ -27,27 +28,51 @@ export default class MySolicitations extends React.Component{
         });
     }
 
+    deleteSolicitation(){
+        alert('oi');
+    }
+
     render(){
         if (this.state.solicitations == undefined) {
             return(
-                <nav className="nav-extended deep-purple darken-2 white-text">
-                    <div className="row">
-                        <div className="col s12">
-                            <div className="col s10 push-s1">
-                                <div className="nav-content">
-                                    <span className="nav-title">Minhas Solicitações</span>
-                                    <Link to="/donations/">
-                                        <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
-                                            <i className="material-icons">home</i>
-                                        </button>
-                                    </Link>
+                <div>
+                    <nav className="nav-extended deep-purple darken-2 white-text">
+                        <div className="row">
+                            <div className="col s12">
+                                <div className="col s10 push-s1">
+                                    <div className="nav-content">
+                                        <span className="nav-title">Minhas Solicitações</span>
+                                        <Link to="/donations/">
+                                            <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
+                                                <i className="material-icons">home</i>
+                                            </button>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </nav>
+                    <br/><br/><br/>
+                    <div className="preloader-wrapper big active">
+                        <div className="spinner-layer spinner-blue-only">
+                            <div className="circle-clipper left">
+                                <div className="circle"></div>
+                            </div>
+                            <div className="gap-patch">
+                                <div className="circle"></div>
+                            </div>
+                            <div className="circle-clipper right">
+                                <div className="circle"></div>
+                            </div>
+                        </div>
                     </div>
-                </nav>
+                </div>
             )
         }
+        $('.dropdown-button').dropdown({
+            alignment: 'right'
+        });
+        $('.modal').modal();
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -70,30 +95,62 @@ export default class MySolicitations extends React.Component{
                 <div className="row">
                     <div className="col s12">
                         <div className="col s10 push-s1">
-                            <table className="centered">
+                            <table className="responsive-table">
                                 <thead>
                                     <tr>
                                         <th>Solicitação</th>
                                         <th>Doação</th>
                                         <th>Dono da Doação</th>
                                         <th>Validade da Doação</th>
+                                        <th>Validade da Solicitação</th>
                                         <th>Status da Solicitação</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.solicitations.map(function(solicitation){
-                                        return(
-                                            <tr key={ solicitation.id }>
-                                                <td>{ solicitation.slug }</td>
-                                                <td><Link to={ `/donations/donation/${solicitation.donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donation.main_photo} /> { solicitation.donation.slug }</Link></td>
-                                                <td>{ solicitation.donation.donator }</td>
-                                                <td>{ moment(solicitation.validity).format("DD/MM/YYYY") } até às { solicitation.validity_hour }</td>
-                                                <td>{ solicitation.status }</td>
-                                                <td>Em Implementação</td>
-                                            </tr>
-                                        )
-                                    })}
+                                    {this.state.solicitations.map((solicitation) =>
+                                        <tr key={ solicitation.id }>
+                                            <td>{ solicitation.slug }</td>
+                                            <td><Link to={ `/donations/donation/${solicitation.donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donation.main_photo} /> { solicitation.donation.slug }</Link></td>
+                                            <td><Link to={ `/accounts/profile/${solicitation.donator_donation_pk}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donator_donation_photo} /> { solicitation.donation.donator }</Link></td>
+                                            <td>{ moment(solicitation.donation.validity).format("DD/MM/YYYY") } até às { solicitation.donation.validity_hour }</td>
+                                            <td>{ moment(solicitation.validity).format("DD/MM/YYYY") } até às { solicitation.validity_hour }</td>
+                                            <td>{ solicitation.status }</td>
+                                            <td>
+                                                <a href="#" className="dropdown-button btn waves-effect waves-light indigo accent-2 white-text" data-activates={ `dropdown-details-solicitation-${solicitation.id}` } data-constrainwidth="false" tittle="Detalhes da Solicitação">
+                                                    <i className="material-icons">arrow_drop_down</i>
+                                                </a>
+                                                <ul id={ `dropdown-details-solicitation-${solicitation.id}` } className="dropdown-content">
+                                                    <li><a href="#"><i className="material-icons">zoom_in</i> Ver detalhes da Solicitação</a></li>
+                                                    <li><a href="#"><i className="material-icons">edit</i> Editar Solicitação</a></li>
+                                                    <li><a href={`#modal-delete-${solicitation.id}`} className="modal-trigger"><i className="material-icons">delete</i> Deletar Solicitação</a></li>
+                                                </ul>
+                                                <div id={`modal-delete-${solicitation.id}`} className="modal">
+                                                    <div className="modal-content">
+                                                        <div className="row">
+                                                            <div className="col s12">
+                                                                <h5 className="red-text">Tem certeza que deseja excluir a Solicitação { solicitation.slug }?</h5>
+                                                                <br/>
+                                                                <div className="card red darken-2">
+                                                                    <div className="card-content white-text">
+                                                                        <p>Ao confirmar o desejo de excluir a Solicitação {solicitation.slug}, você se declara ciente que ela não mais existirá e não pode ser recuperada.</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <div className="row">
+                                                            <div className="col s12">
+                                                                <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
+                                                                <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteSolicitation}><i className="material-icons">delete</i> Eu quero deletar!</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
                                 </tbody>
                             </table>
                         </div>

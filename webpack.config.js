@@ -29,7 +29,8 @@ module.exports = {
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'stage-3']
+                    presets: ['react', 'stage-3'],
+                    plugins: ['transform-class-properties']
                 }
             },
             {

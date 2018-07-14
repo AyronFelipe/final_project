@@ -60,6 +60,23 @@ class DonationViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DonationSerializer
 
 
+class MyDonationsViewSet(viewsets.ViewSet):
+    '''
+    Listagem das Minhas Doações
+    '''
+
+    def list(self, request):
+        queryset = Donation.objects.filter(donator=request.user)
+        serializer = DonationSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Donation.objects.filter(sender=request.user)
+        donation = get_object_or_404(queryset, pk=pk)
+        serializer = DonationSerializer(notification)
+        return Response(serializer.data)
+
+
 class CreateSolicitationViewSet(generics.CreateAPIView):
     '''
     Criação de uma solicitação
@@ -104,31 +121,34 @@ class MySolicitationsViewSet(viewsets.ViewSet):
     '''
 
     def list(self, request):
+        list_solicitations = []
         queryset = Solicitation.objects.filter(owner=request.user)
-        serializer = SolicitationSerializer(queryset, many=True)
+        for obj in queryset:
+            obj.update_status()
+            list_solicitations.append(obj)
+        serializer = SolicitationSerializer(list_solicitations, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        queryset = Solicitation.objects.filter(sender=request.user)
+        queryset = Solicitation.objects.filter(owner=request.user)
         solicitation = get_object_or_404(queryset, pk=pk)
-        serializer = SolicitationSerializer(notification)
+        serializer = SolicitationSerializer(solicitation)
         return Response(serializer.data)
 
 
-class MyDonationsViewSet(viewsets.ViewSet):
+class DestroySolicitationViewSet(generics.DestroyAPIView):
     '''
-    Listagem das Minhas Doações
+    Extinção de uma solicitação
     '''
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Solicitation.objects.all()
+    serializer_class = SolicitationSerializer
 
-    def list(self, request):
-        queryset = Donation.objects.filter(donator=request.user)
-        serializer = DonationSerializer(queryset, many=True)
-        return Response(serializer.data)
+    def delete(self, request):
+        print('oi')
+        return True
 
-    def retrieve(self, request, pk=None):
-        queryset = Donation.objects.filter(sender=request.user)
-        donation = get_object_or_404(queryset, pk=pk)
-        serializer = DonationSerializer(notification)
-        return Response(serializer.data)
+
+
     
 
