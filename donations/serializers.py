@@ -50,7 +50,7 @@ class DonationSerializer(serializers.ModelSerializer):
 class SolicitationSerializer(serializers.ModelSerializer):
 
     owner = serializers.SerializerMethodField()
-    donation = DonationSerializer()
+    donation = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
     donator_donation_pk = serializers.SerializerMethodField()
     donator_donation_photo = serializers.SerializerMethodField()
@@ -77,9 +77,15 @@ class SolicitationSerializer(serializers.ModelSerializer):
                 return obj.owner.institution.name
             return obj.owner.person.first_name
 
-    def get_status(self, obj):
+    def get_donation(self, obj):
 
-        return obj.get_status_display()
+        if hasattr(obj, 'donation'):
+            serializer = DonationSerializer(obj.donation)
+            return serializer.data
+
+    def get_status(self, obj):
+        if hasattr(obj, 'status'):
+            return obj.get_status_display()
 
     def get_donator_donation_pk(self, obj):
 

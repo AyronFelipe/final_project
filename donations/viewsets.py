@@ -94,12 +94,13 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
             solicitation = Solicitation(
                 validity = instance.get('validity'),
                 validity_hour = instance.get('validity_hour'),
-                donation = instance.get('donation'),
             )
+            import pdb; pdb.set_trace()
             with transaction.atomic():
                 solicitation.owner = request.user
+                solicitation.donation = Donation.objects.get(id=request.POST.get('donation'))
                 solicitation.save()
-                donation = instance.get('donation')
+                donation = Donation.objects.get(id=request.POST.get('donation'))
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
                 Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner, type=Notification.MY_DONATIONS)
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)

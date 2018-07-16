@@ -47,12 +47,14 @@ class Solicitation(CreationAndUpdateMixin):
     ACCEPTED = 'A'
     REJECTED = 'R'
     NOT_ANSWERED = 'NA'
+    INVALID = 'I'
 
     STATUS_SOLICITATION = (
         (SOLICITED, 'Solicitada'),
         (ACCEPTED, 'Aceita'),
         (REJECTED, 'Rejeitada'),
         (NOT_ANSWERED, 'Não respondida'),
+        (INVALID, 'Inválida'),
     )
 
     owner = models.ForeignKey(get_user_model(), related_name='solicitations', on_delete=models.CASCADE, null=True, blank=True)
@@ -86,8 +88,11 @@ class Solicitation(CreationAndUpdateMixin):
     def update_status(self):
 
         combined_fields = datetime.combine(self.validity, self.validity_hour)
+        combined_donation_fields = datetime.combine(self.donation.validity, self.donation.validity_hour)
         if datetime.today().toordinal() > combined_fields.toordinal() and self.status == Solicitation.SOLICITED:
             self.status = Solicitation.NOT_ANSWERED
+        if datetime.today().toordinal() > combined_donation_fields.toordinal():
+            self.status = Solicitation.INVALID
         return self
 
 
