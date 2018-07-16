@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
 from core.models import Photo, Tag, Notification
+from rest_framework.views import APIView
 
 User = get_user_model()
 
@@ -136,19 +137,20 @@ class MySolicitationsViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
-class DestroySolicitationViewSet(generics.DestroyAPIView):
+class DestroySolicitationViewSet(APIView):
     '''
     Extinção de uma solicitação
     '''
     permission_classes = (permissions.IsAuthenticated,)
-    queryset = Solicitation.objects.all()
-    serializer_class = SolicitationSerializer
-
-    def delete(self, request):
-        print('oi')
-        return True
-
-
-
     
+    def post(self, request):
+        solicitation = Solicitation.objects.get(id=request.POST.get('id'))
+        if solicitation:
+            solicitation.delete()
+            data = {}
+            data['is_valid'] = True
+            return Response(data, status=status.HTTP_200_OK,)
+        return Response(status=status.HTTP_400_BAD_REQUEST,)
+
+
 

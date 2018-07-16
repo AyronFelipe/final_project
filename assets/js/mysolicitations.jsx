@@ -8,7 +8,6 @@ export default class MySolicitations extends React.Component{
     constructor(props){
         super(props);
         this.state = { solicitations: [] };
-        this.deleteSolicitation = this.deleteSolicitation.bind(this)
     }
 
     componentDidMount(){
@@ -28,8 +27,29 @@ export default class MySolicitations extends React.Component{
         });
     }
 
-    deleteSolicitation(){
-        alert('oi');
+    deleteSolicitation(id){
+        let form = new FormData();
+        form.append('id', id);
+        $.ajax({
+            url: '/api/delete/solicitation/',
+            type: 'POST',
+            dataType: 'json',
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data){
+                if(data.is_valid){
+                    location.reload();
+                }
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            }
+        });
     }
 
     render(){
@@ -143,7 +163,7 @@ export default class MySolicitations extends React.Component{
                                                         <div className="row">
                                                             <div className="col s12">
                                                                 <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
-                                                                <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteSolicitation}><i className="material-icons">delete</i> Eu quero deletar!</button>
+                                                                <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteSolicitation.bind(this, solicitation.id)}><i className="material-icons">delete</i> Eu quero excluir!</button>
                                                             </div>
                                                         </div>
                                                     </div>

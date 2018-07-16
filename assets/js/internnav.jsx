@@ -113,8 +113,8 @@ import Notifications from './notifications'
                         </li>
                         <li className="divider"></li>
                         <li><a><i className="material-icons">account_circle</i>Editar perfil</a></li>
-                        <li className="purple-text"><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
-                        <li><a><i className="material-icons">room_service</i>Minhas doações</a></li>
+                        <li><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
+                        <li><Link to="/donations/my-donations/"><i className="material-icons">room_service</i>Minhas doações</Link></li>
                     </ul>
                     <ul id="dropdown-notifications" className="dropdown-content">
                         <li>
