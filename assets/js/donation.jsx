@@ -4,6 +4,7 @@ import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
 import { storageToken } from './auth'
 import { Link } from 'react-router-dom'
+import autocomplete from 'jquery-ui/ui/widgets/autocomplete'
 
 export default class Donation extends React.Component{
 
@@ -97,9 +98,27 @@ export default class Donation extends React.Component{
         });
 
         $('.chips').material_chip();
+
+        let lol = [
+            'oi',
+            'olá',
+            'fui'
+        ]
+
+        $('.chips input').autocomplete({
+            'source': lol,
+        }).autocomplete("instance")._renderItem = function(ul, item) {
+            ul.addClass("collection");
+            return $("<li class='collection-item'>")
+                .append( "<div>" + item.label + "</div>" )
+                .appendTo( ul );
+        }
+
     }
 
     render(){
+        
+
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
