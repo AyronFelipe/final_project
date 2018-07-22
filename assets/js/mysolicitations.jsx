@@ -129,7 +129,6 @@ export default class MySolicitations extends React.Component{
             alignment: 'right'
         });
         $('.modal').modal();
-        console.log(this.state.solicitations);
         return(    
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
