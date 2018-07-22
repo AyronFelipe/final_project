@@ -8,7 +8,6 @@ export default class MySolicitations extends React.Component{
     constructor(props){
         super(props);
         this.state = { solicitations: [] };
-        this.renderEdit = this.renderEdit.bind(this);
     }
 
     componentDidMount(){
@@ -53,16 +52,14 @@ export default class MySolicitations extends React.Component{
         });
     }
 
-    editSolicitation(id){
-        alert(id);
-    }
-
-    renderEdit(status, id){
-        let collection;
-        if (status != 'Inválida'){
-            collection = <li><a href={`#modal-edit-${id}`} className="modal-trigger"><i className="material-icons">edit</i> Editar Solicitação</a></li>
+    handleValidity(validity, validity_hour){
+        let tr;
+        if (validity == null && validity_hour == null){
+            tr = <p>Esperando definição do dono da solicitação</p>
+        }else{
+            tr = <p>moment(this.validity).format("DD/MM/YYYY") } até às this.validity_hour</p>
         }
-        return collection;
+        return tr;
     }
 
     render(){
@@ -131,41 +128,8 @@ export default class MySolicitations extends React.Component{
         $('.dropdown-button').dropdown({
             alignment: 'right'
         });
-        $('.modal').modal({
-            ready: function(modal, trigger){
-                $('.input-active').focus();
-                $('.timepicker').pickatime({
-                    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-                    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-                    twelvehour: false, // Use AM/PM or 24-hour format
-                    donetext: 'OK', // text for done-button
-                    cleartext: 'Limpar', // text for clear-button
-                    canceltext: 'Cancelar', // Text for cancel-button,
-                    container: undefined, // ex. 'body' will append picker to body
-                    autoclose: false, // automatic close timepicker
-                    ampmclickable: true, // make AM PM clickable
-                });
-                $(".datepicker").pickadate({
-                    selectMonths: true, 
-                    selectYears: 50, 
-                    today: 'Hoje',
-                    clear: 'Limpar',
-                    close: 'Ok',
-                    closeOnSelect: true,
-                    formatSubmit: 'yyyy-mm-dd',
-                    monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                    monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
-                    weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'], 
-                    editable: false,
-                    hiddenName: true,
-                    min: true,
-                    max: true,
-                    showMonthsFull: true,
-                    showWeekdaysShort: true,
-                })
-            }
-        });
+        $('.modal').modal();
+        console.log(this.state.solicitations);
         return(    
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -207,7 +171,7 @@ export default class MySolicitations extends React.Component{
                                             <td><Link to={ `/donations/donation/${solicitation.donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donation.main_photo} /> { solicitation.donation.slug }</Link></td>
                                             <td><Link to={ `/accounts/profile/${solicitation.donator_donation_pk}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donator_donation_photo} /> { solicitation.donation.donator }</Link></td>
                                             <td>{ moment(solicitation.donation.validity).format("DD/MM/YYYY") } até às { solicitation.donation.validity_hour }</td>
-                                            <td>{ moment(solicitation.validity).format("DD/MM/YYYY") } até às { solicitation.validity_hour }</td>
+                                            <td>{ this.handleValidity(solicitation.validity, solicitation.validity_hour) }</td>
                                             <td>{ solicitation.status }</td>
                                             <td>
                                                 <a href="#" className="dropdown-button btn waves-effect waves-light indigo accent-2 white-text" data-activates={ `dropdown-details-solicitation-${solicitation.id}` } data-constrainwidth="false" tittle="Detalhes da Solicitação">
@@ -215,7 +179,6 @@ export default class MySolicitations extends React.Component{
                                                 </a>
                                                 <ul id={ `dropdown-details-solicitation-${solicitation.id}` } className="dropdown-content">
                                                     <li><a href="#"><i className="material-icons">zoom_in</i> Ver detalhes da Solicitação</a></li>
-                                                    { this.renderEdit(solicitation.status, solicitation.id) }
                                                     <li><a href={`#modal-delete-${solicitation.id}`} className="modal-trigger"><i className="material-icons">delete</i> Deletar Solicitação</a></li>
                                                 </ul>
                                                 <div id={`modal-delete-${solicitation.id}`} className="modal">
@@ -237,35 +200,6 @@ export default class MySolicitations extends React.Component{
                                                             <div className="col s12">
                                                                 <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
                                                                 <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteSolicitation.bind(this, solicitation.id)}><i className="material-icons">delete</i> Eu quero excluir!</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div id={`modal-edit-${solicitation.id}`} className="modal">
-                                                    <div className="modal-content">
-                                                        <form id={`solicitation-edit-form-${solicitation.id}`}>
-                                                            <div className="row">
-                                                                <h5>Edição de dados da Solicitação { solicitation.slug }?</h5>                                                        
-                                                                <div className="input-field col s12">
-                                                                    <input id="validity" name="validity" type="text" className="datepicker input-active" defaultValue={ moment(solicitation.donation.validity).format("DD/MM/YYYY") } />
-                                                                    <label htmlFor="validity">Sua solicitação vale até o dia</label>
-                                                                    <span className="error-message red-text"></span>                          
-                                                                </div>
-                                                                <div className="input-field col s12">
-                                                                    <input id="validity_hour" name="validity_hour" type="text" className="timepicker input-active" defaultValue={ solicitation.validity_hour } />
-                                                                    <label htmlFor="validity_hour">Sua solicitação vale até às</label>
-                                                                    <span className="error-message red-text"></span>
-                                                                </div>
-                                                                <input type="hidden" name="donation" defaultValue={ solicitation.donation.pk } />
-                                                            </div>
-                                                            <br/><br/>
-                                                        </form>
-                                                    </div>
-                                                    <div className="modal-footer">
-                                                        <div className="row">
-                                                            <div className="col s12">
-                                                                <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
-                                                                <button className="btn btn-large waves-effect waves-light indigo accent-2 white-text" onClick={this.editSolicitation.bind(this, solicitation.id)}><i className="material-icons">edit</i> Eu quero editar essas informações</button>
                                                             </div>
                                                         </div>
                                                     </div>

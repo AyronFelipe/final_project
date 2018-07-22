@@ -99,19 +99,38 @@ export default class Donation extends React.Component{
 
         $('.chips').material_chip();
 
-        let lol = [
-            'oi',
-            'olá',
-            'fui'
-        ]
-
         $('.chips input').autocomplete({
-            'source': lol,
+            minLength: 2,
+            source: function(request, response){
+                $.ajax({
+                    url: '/api/tags/',
+                    dataType: 'json',
+                    type: 'GET',
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data){
+                        response(data);
+                    }
+                })
+            },
+            focus: function(event, ui){
+                $(".chips .input").val(ui.item.name);
+                for(const [key, value] of Object.entries(event.currentTarget.children)){
+                    if(value.id == 'tag-id-'+ui.item.pk){
+                        $("#"+value.id).addClass('active');
+                    }else{
+                        $("#"+value.id).removeClass('active');
+                    }
+                }
+                return false;
+            },
+            select: function(event, ui){
+                return false;
+            }
         }).autocomplete("instance")._renderItem = function(ul, item) {
-            ul.addClass("collection");
-            return $("<li class='collection-item'>")
-                .append( "<div>" + item.label + "</div>" )
-                .appendTo( ul );
+            ul.addClass("collection col s12");
+            return $("<li class='collection-item' id='tag-id-"+item.pk+"'>").append( "<div>" + item.name + "</div>" ).appendTo( ul );
         }
 
     }

@@ -90,12 +90,7 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
     def post(self, request):
         serializer = SolicitationSerializer(data=request.data)
         if serializer.is_valid():
-            instance = serializer.validated_data
-            solicitation = Solicitation(
-                validity = instance.get('validity'),
-                validity_hour = instance.get('validity_hour'),
-            )
-            import pdb; pdb.set_trace()
+            solicitation = Solicitation()
             with transaction.atomic():
                 solicitation.owner = request.user
                 solicitation.donation = Donation.objects.get(id=request.POST.get('donation'))
@@ -126,7 +121,8 @@ class MySolicitationsViewSet(viewsets.ViewSet):
         list_solicitations = []
         queryset = Solicitation.objects.filter(owner=request.user)
         for obj in queryset:
-            obj.update_status()
+            if obj.validity != None and obj.validity_hour != None:    
+                obj.update_status()
             list_solicitations.append(obj)
         serializer = SolicitationSerializer(list_solicitations, many=True)
         return Response(serializer.data)

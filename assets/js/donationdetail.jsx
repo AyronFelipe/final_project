@@ -11,8 +11,9 @@ export default class DonationDetail extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { donation: [], user: [], value: '' };
+        this.state = { donation: [], user: [], value: '', logged_user: [] };
         this.saveSolicitation = this.saveSolicitation.bind(this);
+        this.handleSolicitationRender = this.handleSolicitationRender.bind(this);
     }
 
     saveSolicitation(){
@@ -45,6 +46,16 @@ export default class DonationDetail extends React.Component{
         });
     }
 
+    handleSolicitationRender(logged_user_id, donation_owner_id){
+        let button
+        if(logged_user_id != donation_owner_id){
+            button = <button className="btn-large waves-effect waves-light indigo accent-2 white-text modal-trigger" data-target="modal-solicitation" style={{width: '100%'}}>Solicitar esta doação</button>
+        } else {
+            button = <h6>Essa doação pertence a você</h6>
+        }
+        return button
+    }
+
     componentDidMount(){
         
         let pathname = window.location.pathname;
@@ -75,6 +86,21 @@ export default class DonationDetail extends React.Component{
             },
             success: function(data){
                 this.setState({ user: data })
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            }
+        });
+
+        $.ajax({
+            url: '/api/logged-user/',
+            dataType: 'json',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data){
+                this.setState({ logged_user: data })
             }.bind(this),
             error: function(request, status, err){
                 console.log(request, status, err);
@@ -242,7 +268,7 @@ export default class DonationDetail extends React.Component{
                                             <br />
                                             <br />
                                             <Tags tags={ this.state.donation.tags } />
-                                            <button className="btn-large waves-effect waves-light indigo accent-2 white-text modal-trigger" data-target="modal-solicitation" style={{width: '100%'}}>Solicitar esta doação</button>
+                                            { this.handleSolicitationRender(this.state.user.id, this.state.logged_user.id) }
                                             <h4>Ponto de Encontro</h4>
                                             <div className="video-container">
                                                 <iframe width="450" height="350" frameBorder="0" style={{border:0}} src={`https://www.google.com/maps/embed/v1/place?q=${this.state.donation.cep},${this.state.donation.neighborhood},${this.state.donation.street},${this.state.donation.number},+Brasil&key=${API_KEY}`} allowFullScreen></iframe>
@@ -269,16 +295,13 @@ export default class DonationDetail extends React.Component{
                     <div className="modal-content">
                         <form id="solicitation-form">
                             <div className="row">
-                                <h4>Cadastro de Solicitação para a Doação { this.state.donation.name }</h4>
-                                <div className="input-field col s12">
-                                    <input id="validity" name="validity" type="text" className="datepicker" />
-                                    <label htmlFor="validity">Sua solicitação vale até o dia</label>
-                                    <span className="error-message red-text"></span>                          
-                                </div>
-                                <div className="input-field col s12">
-                                    <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
-                                    <label htmlFor="validity_hour">Sua solicitação vale até às</label>
-                                    <span className="error-message red-text"></span>
+                                <h4>Você deseja solicitar essa doação?</h4>
+                                <div className="col s12">
+                                    <div className="card purple darken-4">
+                                        <div className="card-content white-text">
+                                            <p>Ao clicar em sim, você entrará na lista dos solicitantes dessa doação. Você receberá e-mails com as atualizações do status de sua solicitação. Aguarde a resposta do dono da doação.</p>
+                                        </div>
+                                    </div>
                                 </div>
                                 <input type="hidden" name="donation" value={ this.state.value } />
                             </div>
@@ -286,8 +309,8 @@ export default class DonationDetail extends React.Component{
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</button>
-                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={ this.saveSolicitation }>Salvar solicitação</button>
+                        <button className="modal-action modal-close waves-effect waves-green btn-flat">Não</button>
+                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={ this.saveSolicitation }>Sim</button>
                     </div>
                     <br/>
                 </div>

@@ -13,6 +13,14 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
+    def get_queryset(self):
+
+        queryset = Tag.objects.all()
+        term = self.request.query_params.get('term', None)
+        if term is not None:
+            queryset = queryset.filter(name__icontains=term)
+        return queryset
+
 
 class NotificationViewSet(viewsets.ViewSet):
     '''
