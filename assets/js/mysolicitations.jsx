@@ -151,7 +151,7 @@ export default class MySolicitations extends React.Component{
                 <div className="row">
                     <div className="col s12">
                         <div className="col s10 push-s1">
-                            <table className="responsive-table">
+                            <table>
                                 <thead>
                                     <tr>
                                         <th>Solicitação</th>
@@ -182,15 +182,11 @@ export default class MySolicitations extends React.Component{
                                                 </ul>
                                                 <div id={`modal-delete-${solicitation.id}`} className="modal">
                                                     <div className="modal-content">
-                                                        <div className="row">
-                                                            <div className="col s12">
-                                                                <h5 className="red-text">Tem certeza que deseja excluir a Solicitação { solicitation.slug }?</h5>
-                                                                <br/>
-                                                                <div className="card red darken-2">
-                                                                    <div className="card-content white-text">
-                                                                        <p>Ao confirmar o desejo de excluir a Solicitação {solicitation.slug}, você se declara ciente que ela não mais existirá e não pode ser recuperada.</p>
-                                                                    </div>
-                                                                </div>
+                                                        <h5 className="red-text">Tem certeza que deseja excluir a Solicitação { solicitation.slug }?</h5>
+                                                        <br/>
+                                                        <div className="card red darken-2">
+                                                            <div className="card-content white-text">
+                                                                <p>Ao confirmar o desejo de excluir a Solicitação {solicitation.slug}, você se declara ciente que ela não mais existirá e não pode ser recuperada.</p>
                                                             </div>
                                                         </div>
                                                     </div>

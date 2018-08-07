@@ -23,7 +23,9 @@ class Home extends React.Component{
     }
 
     componentDidMount(){
-        $('.button-collapse').sideNav()
+        $('.button-collapse').sideNav();
+
+        window.scrollTo(0, 0);
     }
 
     render(){

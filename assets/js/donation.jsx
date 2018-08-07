@@ -11,6 +11,7 @@ export default class Donation extends React.Component{
     constructor(props){
         super(props);
         this.saveDonation = this.saveDonation.bind(this);
+        this.loadAutoComplete = this.loadAutoComplete.bind(this);
     }
 
     saveDonation(){
@@ -51,8 +52,44 @@ export default class Donation extends React.Component{
         })
     }
 
+    loadAutoComplete(){
+        $('.chips input').autocomplete({
+            minLength: 2,
+            source: function(request, response){
+                $.ajax({
+                    url: '/api/tags/',
+                    dataType: 'json',
+                    type: 'GET',
+                    data: {
+                        term: request.term
+                    },
+                    success: function(data){
+                        response(data);
+                    }
+                })
+            },
+            focus: function(event, ui){
+                $(".chips .input").val(ui.item.name);
+                for(const [key, value] of Object.entries(event.currentTarget.children)){
+                    if(value.id == 'tag-id-'+ui.item.pk){
+                        $("#"+value.id).addClass('active');
+                    }else{
+                        $("#"+value.id).removeClass('active');
+                    }
+                }
+                return false;
+            },
+            select: function(event, ui){
+                return false;
+            }
+        }).autocomplete("instance")._renderItem = function(ul, item) {
+            ul.addClass("collection col s12");
+            return $("<li class='collection-item' id='tag-id-"+item.pk+"'>").append( "<div>" + item.name + "</div>" ).appendTo( ul );
+        };
+    }
+
     componentDidMount(){
-        
+
         $(".datepicker").pickadate({
             selectMonths: true, 
             selectYears: 50, 
@@ -98,41 +135,8 @@ export default class Donation extends React.Component{
         });
 
         $('.chips').material_chip();
-
-        $('.chips input').autocomplete({
-            minLength: 2,
-            source: function(request, response){
-                $.ajax({
-                    url: '/api/tags/',
-                    dataType: 'json',
-                    type: 'GET',
-                    data: {
-                        term: request.term
-                    },
-                    success: function(data){
-                        response(data);
-                    }
-                })
-            },
-            focus: function(event, ui){
-                $(".chips .input").val(ui.item.name);
-                for(const [key, value] of Object.entries(event.currentTarget.children)){
-                    if(value.id == 'tag-id-'+ui.item.pk){
-                        $("#"+value.id).addClass('active');
-                    }else{
-                        $("#"+value.id).removeClass('active');
-                    }
-                }
-                return false;
-            },
-            select: function(event, ui){
-                return false;
-            }
-        }).autocomplete("instance")._renderItem = function(ul, item) {
-            ul.addClass("collection col s12");
-            return $("<li class='collection-item' id='tag-id-"+item.pk+"'>").append( "<div>" + item.name + "</div>" ).appendTo( ul );
-        }
-
+        
+        this.loadAutoComplete();
     }
 
     render(){

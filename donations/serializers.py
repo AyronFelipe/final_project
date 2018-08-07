@@ -2,11 +2,15 @@ from rest_framework import serializers
 from .models import Donation, Solicitation
 from core.serializers import PhotoSerializer, TagSerializer
 
+
 class DonationSerializer(serializers.ModelSerializer):
+
 
     donator = serializers.SerializerMethodField()
     photos = PhotoSerializer(many=True, read_only=True)
     tags = serializers.SerializerMethodField()
+    solicitations_count = serializers.SerializerMethodField()
+    solicitations = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Donation
@@ -28,6 +32,8 @@ class DonationSerializer(serializers.ModelSerializer):
             'slug',
             'photos',
             'tags',
+            'solicitations_count',
+            'solicitations',
         ]
 
     def get_donator(self, obj):
@@ -46,10 +52,17 @@ class DonationSerializer(serializers.ModelSerializer):
             serializer = TagSerializer(tag_list, many=True)
             return serializer.data
 
+    def get_solicitations_count(self, obj):
+
+        if hasattr(obj, 'solicitations'):
+            return obj.solicitations.count()
+
 
 class SolicitationSerializer(serializers.ModelSerializer):
 
     owner = serializers.SerializerMethodField()
+    owner_pk = serializers.SerializerMethodField()
+    owner_photo = serializers.SerializerMethodField()
     donation = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
     donator_donation_pk = serializers.SerializerMethodField()
@@ -68,6 +81,9 @@ class SolicitationSerializer(serializers.ModelSerializer):
             'status',
             'donator_donation_pk',
             'donator_donation_photo',
+            'owner_pk',
+            'owner_photo',
+            'created_at'
         ]
 
     def get_owner(self, obj):
@@ -98,3 +114,13 @@ class SolicitationSerializer(serializers.ModelSerializer):
         if hasattr(obj, 'donation'):
             if hasattr(obj.donation, 'donator'):
                 return obj.donation.donator.photo.url
+
+    def get_owner_pk(self, obj):
+
+        if hasattr(obj, 'owner'):
+            return obj.owner.pk
+
+    def get_owner_photo(self, obj):
+
+        if hasattr(obj, 'owner'):
+            return obj.owner.photo.url

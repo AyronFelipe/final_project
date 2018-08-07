@@ -12,8 +12,8 @@ export default class Notifications extends React.Component{
 
     componentDidMount(){
         $('.dropdown-button').dropdown({
-            alignment: 'right',
-            hover: true,
+            alignment: 'right'
+            //hover: true,
         });
     }
 
@@ -30,9 +30,9 @@ export default class Notifications extends React.Component{
                     <a href="/donations/${ value.type }/">
                         <div class="row">
                             <div class="col s6">
-                                <div class="col s3"><img src=${ value.sender } class="responsive-img circle" style="height:50px;width50px;" /></div>
+                                <div class="col s3"><img src=${ value.sender } class="responsive-img circle" style="height:60px;width60px;" /></div>
                                 <div class="col s1">
-                                    ${ value.message }<br/>
+                                    <p class="left-align">${ value.message }</p>
                                     <span class="grey-text"><small>${ moment(value.created_at).startOf('second').fromNow() }</small><span>
                                 </div>
                             </div>

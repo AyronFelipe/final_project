@@ -150,4 +150,14 @@ class DestroySolicitationViewSet(APIView):
         return Response(status=status.HTTP_400_BAD_REQUEST,)
 
 
+class SolicitationsOfDonationViewSet(viewsets.ViewSet):
+    '''
+    Criando uma URL na qual se passa o ID de uma doaçõa e retorna todas as solicitações da supra dita doação.
+    Fazendo isso porque o serializers não funciona. ¬¬
+    '''
 
+    def list(self, request, id=None):
+        list_solicitations = []
+        queryset = Solicitation.objects.filter(donation__id=id)
+        serializer = SolicitationSerializer(queryset, many=True)
+        return Response(serializer.data)
