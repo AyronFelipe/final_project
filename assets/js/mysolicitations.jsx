@@ -165,7 +165,7 @@ export default class MySolicitations extends React.Component{
                                 </thead>
                                 <tbody>
                                     {this.state.solicitations.map((solicitation, index) =>
-                                        <tr key={index}>
+                                        <tr key={solicitation.id}>
                                             <td>{ solicitation.slug }</td>
                                             <td><Link to={ `/donations/donation/${solicitation.donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donation.main_photo} /> { solicitation.donation.slug }</Link></td>
                                             <td><Link to={ `/accounts/profile/${solicitation.donator_donation_pk}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donator_donation_photo} /> { solicitation.donation.donator }</Link></td>

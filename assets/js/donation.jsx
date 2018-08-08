@@ -1,17 +1,16 @@
 import React from 'react'
 import Address from './address'
+import NewTag from './tags_new'
 import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
 import { storageToken } from './auth'
 import { Link } from 'react-router-dom'
-import autocomplete from 'jquery-ui/ui/widgets/autocomplete'
 
 export default class Donation extends React.Component{
 
     constructor(props){
         super(props);
         this.saveDonation = this.saveDonation.bind(this);
-        this.loadAutoComplete = this.loadAutoComplete.bind(this);
     }
 
     saveDonation(){
@@ -52,43 +51,9 @@ export default class Donation extends React.Component{
         })
     }
 
-    loadAutoComplete(){
-        $('.chips input').autocomplete({
-            minLength: 2,
-            source: function(request, response){
-                $.ajax({
-                    url: '/api/tags/',
-                    dataType: 'json',
-                    type: 'GET',
-                    data: {
-                        term: request.term
-                    },
-                    success: function(data){
-                        response(data);
-                    }
-                })
-            },
-            focus: function(event, ui){
-                $(".chips .input").val(ui.item.name);
-                for(const [key, value] of Object.entries(event.currentTarget.children)){
-                    if(value.id == 'tag-id-'+ui.item.pk){
-                        $("#"+value.id).addClass('active');
-                    }else{
-                        $("#"+value.id).removeClass('active');
-                    }
-                }
-                return false;
-            },
-            select: function(event, ui){
-                return false;
-            }
-        }).autocomplete("instance")._renderItem = function(ul, item) {
-            ul.addClass("collection col s12");
-            return $("<li class='collection-item' id='tag-id-"+item.pk+"'>").append( "<div>" + item.name + "</div>" ).appendTo( ul );
-        };
-    }
-
     componentDidMount(){
+
+        window.scrollTo(0, 0);
 
         $(".datepicker").pickadate({
             selectMonths: true, 
@@ -133,15 +98,10 @@ export default class Donation extends React.Component{
                 message: '<div class="dropify-message"><span class="file-icon" /> <p class="center-align">{{ default }}</p></div>',
             }
         });
-
-        $('.chips').material_chip();
-        
-        this.loadAutoComplete();
     }
 
     render(){
         
-
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -191,10 +151,7 @@ export default class Donation extends React.Component{
                                         <span className="error-message red-text"></span>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <h5>Adicione as tags da sua doação</h5>
-                                    <div className="chips" id="tags"></div>
-                                </div>
+                                <NewTag />
                                 <Address legend="Endereço de coleta da doação" />
                                 <div className="row">
                                     <h5>Coloque a foto principal de sua doação</h5>

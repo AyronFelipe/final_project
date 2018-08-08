@@ -35,7 +35,6 @@
     "file-loader": "^1.1.11",
     "inputmask": "^3.3.11",
     "jquery": "^3.2.1",
-    "jquery-ui": "^1.12.1",
     "materialize-css": "^0.100.2",
     "moment": "^2.22.2",
     "node-vibrant": "^3.0.0",

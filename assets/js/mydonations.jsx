@@ -120,7 +120,7 @@ export default class MyDonations extends React.Component{
                                 </thead>
                                 <tbody>
                                     {this.state.donations.map((donation, index) =>
-                                        <tr key={index}>
+                                        <tr key={donation.pk}>
                                             <td><Link to={ `/donations/donation/${donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={donation.main_photo} /> { donation.slug }</Link></td>
                                             <td>{ moment(donation.validity).format("DD/MM/YYYY") } até às { donation.validity_hour }</td>
                                             <td>{ donation.solicitations_count }</td>
