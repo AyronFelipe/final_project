@@ -8,6 +8,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
 from core.models import Photo, Tag, Notification
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
