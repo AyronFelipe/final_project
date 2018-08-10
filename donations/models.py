@@ -10,6 +10,14 @@ from datetime import datetime
 
 class Donation(CreationAndUpdateMixin, AddressMixin):
 
+    ACTIVE = 'A'
+    INVALID = 'I'
+
+    STATUS_DONATION = (
+        (ACTIVE, 'Ativa'),
+        (INVALID, 'Inválida'),
+    )
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
@@ -20,6 +28,7 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     is_valid = models.BooleanField(default=False)
     is_accepted = models.BooleanField(default=False)
     main_photo = models.ImageField(_('main photo'), upload_to=img_path, null=True, blank=True)
+    status = models.CharField(_('status'), null=True, blank=True, max_length=1, choices=STATUS_DONATION, default=ACTIVE)
 
     class Meta:
 
@@ -39,6 +48,14 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
             date.year, date.month, date.day, self.id, self.donator.pk, slugify(self.name)
         )
         super(Donation, self).save()
+
+    def update_status(self):
+
+        combined_fields = datetime.combine(self.validity, self.validity_hour)
+        if datetime.today().toordinal() > combined_fields.toordinal() and self.status == Donation.ACTIVE:
+            self.status = Donation.INVALID
+            self.save()
+        return self
 
 
 class Solicitation(CreationAndUpdateMixin):

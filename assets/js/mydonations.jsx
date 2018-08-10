@@ -86,7 +86,6 @@ export default class MyDonations extends React.Component{
         });
         $('.modal').modal();
         $('.collapsible').collapsible();
-        //console.log(this.state.donations)
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">

@@ -10,7 +10,6 @@ class DonationSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(many=True, read_only=True)
     tags = serializers.SerializerMethodField()
     solicitations_count = serializers.SerializerMethodField()
-    solicitations = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Donation
@@ -33,7 +32,6 @@ class DonationSerializer(serializers.ModelSerializer):
             'photos',
             'tags',
             'solicitations_count',
-            'solicitations',
         ]
 
     def get_donator(self, obj):

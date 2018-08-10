@@ -38,7 +38,7 @@ class CreateDonationViewSet(generics.CreateAPIView):
                 cep=instance.get("cep"), 
                 uf=instance.get("uf"), 
                 city=instance.get("city"), 
-                complement=instance.get("complement")
+                complement=instance.get("complement"),
             )
             with transaction.atomic():
                 donation.donator = request.user
@@ -52,13 +52,27 @@ class CreateDonationViewSet(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DonationViewSet(viewsets.ReadOnlyModelViewSet):
+class DonationViewSet(viewsets.ViewSet):
     '''
     Listagem das Instituições
     '''
-    permission_classes = (permissions.IsAuthenticated,)
-    queryset = Donation.objects.all()
-    serializer_class = DonationSerializer
+
+    def list(self, request):
+
+        list_donations = []
+        queryset = Donation.objects.all()
+        for obj in queryset:
+            obj.update_status()
+            if obj.status == Donation.ACTIVE:
+                list_donations.append(obj)
+        serializer = DonationSerializer(list_donations, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Donation.objects.all()
+        donation = get_object_or_404(queryset, pk=pk)
+        serializer = DonationSerializer(donation)
+        return Response(serializer.data)
 
 
 class MyDonationsViewSet(viewsets.ViewSet):
@@ -74,7 +88,7 @@ class MyDonationsViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         queryset = Donation.objects.filter(sender=request.user)
         donation = get_object_or_404(queryset, pk=pk)
-        serializer = DonationSerializer(notification)
+        serializer = DonationSerializer(donation)
         return Response(serializer.data)
 
 

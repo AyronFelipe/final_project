@@ -15,13 +15,9 @@ export default class Donation extends React.Component{
 
     saveDonation(){
         $("#donation-form").find("input, textarea").each(function(){
-            $(this).siblings('span.error-message').html('');
+            $(this).siblings('span.error').html('');
         })
         let form = new FormData($("#donation-form").get(0));
-        let chipsObjectValue = $("#tags").material_chip('data');
-        $.each(chipsObjectValue, function(key, value){
-            form.append('tags', value.tag)
-        })
         $.ajax({
             url: '/api/new-donation/',
             type: 'POST',
@@ -38,14 +34,17 @@ export default class Donation extends React.Component{
             },
             error: function(request, status, err){
                 if (err == 'Bad Request'){
+                    window.scrollTo(0, 0);
                     for(const [key, value] of Object.entries(request.responseJSON)){
                         $("#donation-form").find(":input").each(function(){
                             name = $(this).attr("name");
                             if(name===key){
-                                $(this).siblings('span.error-message').html('<p>'+value+'</p>');
+                                $('span.'+name+'-error-message').html('<p>'+value+'</p>');
                             }
                         });
                     }
+                } else if (err == 'Internal Server Error') {
+                    $('#modal-erro').modal('open');
                 }
             }
         })
@@ -54,6 +53,10 @@ export default class Donation extends React.Component{
     componentDidMount(){
 
         window.scrollTo(0, 0);
+
+        $('#modal-erro').modal({
+            dismissible: false,
+        });
 
         $(".datepicker").pickadate({
             selectMonths: true, 
@@ -104,6 +107,17 @@ export default class Donation extends React.Component{
         
         return(
             <div>
+                <div className="modal" id="modal-erro">
+                    <div className="modal-content">
+                        <h4>Um erro aconteceu!</h4>
+                        <blockquote>Um erro inesperado aconteceu. Um e-mail já foi enviado para a nossa equipe para consertarmos isso o quanto antes.</blockquote>
+                    </div>
+                    <div className="modal-footer">
+                        <Link to="/donations/">
+                            <button className="modal-action modal-close btn waves-effect waves-light indigo accent-2 white-text">Início</button>
+                        </Link>
+                    </div>
+                </div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
                     <div className="row">
                         <div className="col s12">
@@ -131,24 +145,24 @@ export default class Donation extends React.Component{
                                     <div className="input-field col m6 s12">
                                         <input id="name" name="name" type="text" className="validate" />
                                         <label htmlFor="name">Nome</label>
-                                        <span className="error-message red-text"></span>
+                                        <span className="name-error-message red-text error"></span>
                                     </div>
                                     <div className="input-field col m3 s12">
                                         <input id="validity" name="validity" type="text" className="datepicker" />
                                         <label htmlFor="validity">Disponível até o dia</label>
-                                        <span className="error-message red-text"></span>
+                                        <span className="validity-error-message red-text error"></span>
                                     </div>
                                     <div className="input-field col m3 s12">
                                         <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
                                         <label htmlFor="validity_hour">Disponível até às</label>
-                                        <span className="error-message red-text"></span>
+                                        <span className="validity_hour-error-message red-text error"></span>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col s12">
                                         <textarea id="description" name="description" className="materialize-textarea"></textarea>
                                         <label htmlFor="description">Uma descrição da sua doação (não seja breve)</label>
-                                        <span className="error-message red-text"></span>
+                                        <span className="description-error-message red-text error"></span>
                                     </div>
                                 </div>
                                 <NewTag />
@@ -156,6 +170,7 @@ export default class Donation extends React.Component{
                                 <div className="row">
                                     <h5>Coloque a foto principal de sua doação</h5>
                                     <input id="photo" name="main_photo" type="file" className="dropify" />
+                                    <span className="main_photo-error-message red-text error"></span>
                                 </div>
                                 <div className="row">
                                     <div className="col s12">
