@@ -1,0 +1,154 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">  
+    <head>
+        <title>Projeto</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Projeto Email Forms">
+        <meta name="keywords" content="Projeto">
+        <style type="text/css">
+            body{
+                font:14px/20px 'Helvetica', Arial, sans-serif;
+                margin:0;
+                padding:75px 0 0 0;
+                text-align:center;
+                -webkit-text-size-adjust:none;
+            }
+            p{
+                padding:0 0 10px 0;
+            }
+            h2{
+                font-size:22px;
+                line-height:28px;
+                margin:0 0 12px 0;
+            }
+            input.button{
+                border:none !important;
+            }
+            .button{
+                display:inline-block;
+                font-weight:500;
+                font-size:16px;
+                line-height:42px;
+                font-family:'Helvetica', Arial, sans-serif;
+                width:auto;
+                white-space:nowrap;
+                height:42px;
+                margin:12px 5px 12px 0;
+                padding:0 22px;
+                text-decoration:none;
+                text-align:center;
+                cursor:pointer;
+                border:0;
+                border-radius:3px;
+                vertical-align:top;
+            }
+            .button span{
+                display:inline;
+                font-family:'Helvetica', Arial, sans-serif;
+                text-decoration:none;
+                font-weight:500;
+                font-style:normal;
+                font-size:16px;
+                line-height:42px;
+                cursor:pointer;
+                border:none;
+            }
+            .rounded6{
+                border-radius:6px;
+            }
+            html[dir=rtl] .wrapper,html[dir=rtl] .container,html[dir=rtl] label{
+                text-align:right !important;
+            }
+            html[dir=rtl] ul.interestgroup_field label{
+                padding:0;
+            }
+            html[dir=rtl] ul.interestgroup_field input{
+                margin-left:5px;
+            }
+            html[dir=rtl] .hidden-from-view{
+                right:-5000px;
+                left:auto;
+            }
+            body,#bodyTable{
+                background-color:#512da8;
+            }
+            h1{
+                font-size:28px;
+                line-height:110%;
+                margin-bottom:30px;
+                margin-top:0;
+                padding:0;
+            }
+            #templateContainer{
+                background-color:#512da8;
+            }
+            #templateBody{
+                background-color:#512da8;
+            }
+            .bodyContent{
+                line-height:150%;
+                font-family:Helvetica;
+                font-size:14px;
+                color:#ffffff;
+                padding:20px;
+            }
+            a:link,a:active,a:visited,a{
+                color:#f3f3f3;
+            }
+            .button:link,.button:active,.button:visited,.button,.button span{
+                background-color:#ffffff !important;
+                color:#512da8 !important;
+            }
+            .button:hover{
+                background-color:#000000 !important;
+                color:#ffffff !important;
+            }
+        </style>
+    </head>
+  
+    <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="font: 14px/20px 'Helvetica', Arial, sans-serif;margin: 0;padding: 75px 0 0 0;text-align: center;-webkit-text-size-adjust: none;background-color: #512da8;">
+        <center>
+            <table border="0" cellpadding="20" cellspacing="0" height="100%" width="100%" id="bodyTable" style="background-color: #512da8;">
+                <tr>
+                    <td align="center" valign="top">                        
+                        <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateContainer" class="rounded6" style="border-radius: 6px;background-color: #512da8;">
+                            <tr>
+                                <td align="center" valign="top">                                    
+                                    <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody" class="rounded6" style="border-radius: 6px;background-color: #512da8;">
+                                        <tr>
+                                            <td align="left" valign="top" class="bodyContent" style="line-height: 150%;font-family: Helvetica;font-size: 14px;color: #ffffff;padding: 20px;">
+                                                <h2 style="font-size: 22px;line-height: 28px;margin: 0 0 12px 0;">Confirmação de endereço de e-mail</h2>
+                                                <br>
+                                                <div>
+                                                    <p style="padding: 0 0 10px 0;">
+                                                        Olá, {{ user }}.
+                                                    </p>
+                                                    <p style="padding: 0 0 10px 0;">
+                                                        Sua doação <a href="{{ protocol }}://{{ domain }}{% url 'donations:donation_detail' donation.slug %}">{{ donation }}</a> foi solicitada pelo usuário <a href="{{ protocol }}://{{ domain }}{% url 'accounts:profile' solicitation.owner.id %}">{{ solicitation.owner }}</a>.<br/>
+                                                        Você pode aceitar ou rejeitar a solicitação, observe o perfil do {{ solicitation.owner }} pondere e faça como desejar. Não se sinta obrigado a aceitar essa solicitação. Nossa equipe está ao seu lado.
+                                                        Clique no botão abaixo para ser redirecionado para sua página de gerenciamento de doações.
+                                                    </p>
+                                                </div>
+                                                <a class="button" href="{{ protocol }}://{{ domain }}{% url 'donations:my_donations' %}" style="color: #512da8 !important;display: inline-block;font-weight: 500;font-size: 16px;line-height: 42px;font-family: 'Helvetica', Arial, sans-serif;width: auto;white-space: nowrap;height: 42px;margin: 12px 5px 12px 0;padding: 0 22px;text-decoration: none;text-align: center;cursor: pointer;border: 0;border-radius: 3px;vertical-align: top;background-color: #ffffff !important;" target="_blank">
+                                                    <span style="display: inline;font-family: 'Helvetica', Arial, sans-serif;text-decoration: none;font-weight: 500;font-style: normal;font-size: 16px;line-height: 42px;cursor: pointer;border: none;background-color: #ffffff !important;color: #512da8 !important;">
+                                                        Clique aqui!
+                                                    </span>
+                                                </a>
+                                                <br>
+                                                <div>
+                                                    <p style="padding: 0 0 10px 0;">Se você recebeu esse email por engano, simplesmente delete-o.</p>
+                                                    <p style="padding: 0 0 10px 0;">Se você está tendo problemas com o botão acima, copie e cole a URL dada no seu browser.</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>                                    
+                                </td>
+                            </tr>
+                        </table>                        
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </body>
+</html>

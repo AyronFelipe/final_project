@@ -8,7 +8,10 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.contrib.auth import get_user_model
 from core.models import Photo, Tag, Notification
 from rest_framework.views import APIView
+from core.utils import send_mail_template
 from django.shortcuts import get_object_or_404
+from django.contrib.sites.shortcuts import get_current_site
+
 
 User = get_user_model()
 
@@ -113,6 +116,14 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 donation = Donation.objects.get(id=request.POST.get('donation'))
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
                 Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner, type=Notification.MY_DONATIONS)
+                subject = "Sua doação foi solicitada"
+                context = {}
+                context['user'] = donation.donator
+                context['domain'] = get_current_site(request).domain
+                context['protocol'] = 'https' if request.is_secure() else 'http'
+                context['donation'] = donation
+                context['solicitation'] = solicitation
+                send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
