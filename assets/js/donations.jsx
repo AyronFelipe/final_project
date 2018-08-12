@@ -25,7 +25,28 @@ export default class Donations extends React.Component{
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-                this.setState({ donations: data })
+                if(data.length == 0){
+                    const collection = `
+                    <div class="row">
+                        <div class="col s12 center-align">
+                            <div class="valign-wrapper row">
+                                <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
+                                    <div class="card-content">
+                                        <div class="white-text center-align card-title">
+                                            <h3>Nenhuma doação encontrada</h3>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        Nenhuma doação válida foi encontrada em nossa base de dados. Clique no botão de adicionar abaixo para cadastrar uma.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                    $('#doacoes').html(collection)
+                }else{
+                    this.setState({ donations: data })
+                }
             }.bind(this),
             error: function(request, status, err){
                 console.log(request, status, err);
@@ -53,6 +74,7 @@ export default class Donations extends React.Component{
     }
 
     render(){
+        //Se tiver dados no state
         if(this.state.donations.length){
             return(
                 <div>
@@ -106,13 +128,13 @@ export default class Donations extends React.Component{
                                     </div>
                                 )})
                             }
-                            <div className="fixed-action-btn">
-                                <Link to="/donations/new-donation/">
-                                    <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
-                                        <i className="material-icons">add</i>
-                                    </button>
-                                </Link>
-                            </div>
+                        </div>
+                        <div className="fixed-action-btn">
+                            <Link to="/donations/new-donation/">
+                                <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
+                                    <i className="material-icons">add</i>
+                                </button>
+                            </Link>
                         </div>
                         <div id="pedidos">
                             <div className="row">
@@ -125,6 +147,7 @@ export default class Donations extends React.Component{
                 </div>
             )
         }
+        //Se não tive dados no state 
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -169,13 +192,13 @@ export default class Donations extends React.Component{
                                 </div>
                             </div>
                         </div>
-                        <div className="fixed-action-btn">
-                            <Link to="/donations/new-donation/">
-                                <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
-                                    <i className="material-icons">add</i>
-                                </button>
-                            </Link>
-                        </div>
+                    </div>
+                    <div className="fixed-action-btn">
+                        <Link to="/donations/new-donation/">
+                            <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
+                                <i className="material-icons">add</i>
+                            </button>
+                        </Link>
                     </div>
                     <div id="pedidos">
                         <div className="row">
