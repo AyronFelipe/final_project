@@ -114,6 +114,7 @@ export default class MyDonations extends React.Component{
                                         <th>Doação</th>
                                         <th>Validade da Doação</th>
                                         <th>Número de Solicitações</th>
+                                        <th>Status da Doação</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
@@ -123,6 +124,7 @@ export default class MyDonations extends React.Component{
                                             <td><Link to={ `/donations/donation/${donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={donation.main_photo} /> { donation.slug }</Link></td>
                                             <td>{ moment(donation.validity).format("DD/MM/YYYY") } até às { donation.validity_hour }</td>
                                             <td>{ donation.solicitations_count }</td>
+                                            <td>{ donation.status }</td>
                                             <td>
                                                 <a href="#" className="dropdown-button btn waves-effect waves-light indigo accent-2 white-text" data-activates={ `dropdown-details-donation-${donation.pk}` } data-constrainwidth="false" tittle="Detalhes da Doação" onClick={this.loadSolicitations.bind(this, donation.pk)}>
                                                     <i className="material-icons">arrow_drop_down</i>
@@ -162,8 +164,8 @@ export default class MyDonations extends React.Component{
                                                                                         As opções abaixo representam seu interesse nessa solicitação.<br/><br/>
                                                                                         Se você clicar em "rejeitar" essa doação não aparecerá mais no gereciamento de solicitações desta doação.<br/><br/>
                                                                                         Agora, se você clicar em "aceitar" essa doação passará para o estado de aceita. Você deverá preencher os campos de data e hora para que o solicitante possa ir buscar a sua doação.<br/><br/>
-                                                                                        <i class="material-icons">priority_high</i> Se porventura houverem outras solicitações, ao clicar em "aceitar" as outras solicitações passarão para o estado de "Em Espera".<br/><br/>
-                                                                                        <i class="material-icons">priority_high</i> Se o solicitante não aparecer até o dia e horário determinados, você possui a opção de "Não apareceu" e ao confirmar colocará essa doação novamente no estado de "Aberta" e outros usuários poderão solicitá-la novamente.<br/><br/>
+                                                                                        <i className="material-icons">priority_high</i> Se porventura houverem outras solicitações, ao clicar em "aceitar" as outras solicitações passarão para o estado de "Em Espera".<br/><br/>
+                                                                                        <i className="material-icons">priority_high</i> Se o solicitante não aparecer até o dia e horário determinados, você possui a opção de "Não apareceu" e ao confirmar colocará essa doação novamente no estado de "Aberta" e outros usuários poderão solicitá-la novamente.<br/><br/>
                                                                                     </p>
                                                                                 </div>
                                                                                 <div className="card-action">

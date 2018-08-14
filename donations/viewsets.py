@@ -62,9 +62,13 @@ class DonationViewSet(viewsets.ViewSet):
     '''
 
     def list(self, request):
-
         list_donations = []
-        queryset = Donation.objects.all()
+        tag_id = self.request.query_params.get('tag_id')
+        if tag_id:
+            tag = Tag.objects.get(id=tag_id)
+            queryset = Donation.objects.filter(donation_tags__tag=tag)
+        else:  
+            queryset = Donation.objects.all()
         for obj in queryset:
             obj.update_status()
             if obj.status == Donation.ACTIVE:

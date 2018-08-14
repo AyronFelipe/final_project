@@ -7,7 +7,141 @@ import { storageToken } from './auth'
 import DonationDetail from './donationdetail'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-import Tags from './tags'
+
+class CardDonation extends React.Component{
+
+    render(){
+        return(
+            <div>
+                {this.props.donations.map(function(donation){
+                    let date = moment(donation.validity).format("DD/MM/YYYY")
+                    return(
+                        <div className="row" key={ donation.pk }>
+                            <div className="col l10 push-l2 m10 push-m1 s12">
+                                <Link to={ '/donations/donation/'+donation.slug+'/' }>
+                                    <div className="card hoverable">
+                                        <div className="card-image">
+                                            <img src={ donation.main_photo } />
+                                            <button className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></button>
+                                        </div>
+                                        <div className="card-content">
+                                            <span className="card-title">{ donation.name }</span>
+                                            <p>{ donation.description }</p>
+                                            <br/>
+                                            <div className="divider"></div>
+                                            <br/>
+                                            <p><strong>Validade: </strong>{ date } até às { donation.validity_hour }</p>
+                                            <p><strong>Doada por: </strong>{ donation.donator }</p>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                    )})
+                }
+            </div>
+        )
+    }
+}
+
+class Tags extends React.Component{
+    
+    constructor(props){
+        super(props);
+        this.state = { donations: [], tags: [] };
+    }
+
+    componentDidMount(){
+        $.ajax({
+            url: '/api/tags/',
+            dataType: 'json',
+            type: 'GET',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data){
+                if(data.length == 0){
+                    card =
+                    `<div class="row">
+                        <div class="col s12 center-align">
+                            <div class="valign-wrapper row">
+                                <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
+                                    <div class="card-content">
+                                        <div class="white-text center-align card-title">
+                                            <h3>Nenhuma tag encontrada</h3>
+                                        </div>
+                                    </div>
+                                    <p>
+                                        Nenhuma tag foi encontrada em nossa base de dados.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                }
+                this.setState({ tags: data })
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            }
+        });
+    }
+
+    handleClick(id){
+        $.ajax({
+            url: '/api/donations/',
+            dataType: 'json',
+            type: 'GET',
+            data: {
+                tag_id: id
+            },
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data){
+                this.setState({ donations: data })
+            }.bind(this),
+            error: function(request, status, err){
+                console.log(request, status, err);
+            }
+        });
+    }
+
+    render(){
+        if (this.state.tags.length) {
+            return(
+                <div className="row">
+                    <div className="col s12">
+                        <br/>
+                        {this.state.tags.map((tag) => 
+                            <div className="chip" key={ tag.pk } onClick={this.handleClick.bind(this, tag.pk)}>{ tag.name }</div>
+                        )}
+                    </div>
+                </div>
+            )
+        }
+        return(
+            <div className="row">
+                <div className="col s12">
+                    <br/><br/><br/>
+                    <div className="preloader-wrapper big active">
+                        <div className="spinner-layer spinner-blue-only">
+                            <div className="circle-clipper left">
+                                <div className="circle"></div>
+                            </div>
+                            <div className="gap-patch">
+                                <div className="circle"></div>
+                            </div>
+                            <div className="circle-clipper right">
+                                <div className="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
 
 export default class Donations extends React.Component{
 
@@ -52,21 +186,6 @@ export default class Donations extends React.Component{
                 console.log(request, status, err);
             }
         });
-        
-        $.ajax({
-            url: '/api/tags/',
-            dataType: 'json',
-            type: 'GET',
-            headers: {
-                'Authorization': 'Token ' + localStorage.token
-            },
-            success: function(data){
-                this.setState({ tags: data })
-            }.bind(this),
-            error: function(request, status, err){
-                console.log(request, status, err);
-            }
-        });
 
         $('ul.tabs').tabs();
         
@@ -78,7 +197,7 @@ export default class Donations extends React.Component{
         if(this.state.donations.length){
             return(
                 <div>
-                    <nav className="nav-extended deep-purple darken-2 white-text">
+                    <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
                         <div className="row">
                             <div className="col s12">
                                 <div className="col s10 push-s1">
@@ -89,45 +208,27 @@ export default class Donations extends React.Component{
                             </div>
                         </div>
                     </nav>
-                    <div className="row">
-                        <div className="col s12">
-                            <br/>
-                            <ul className="tabs">
-                                <li className="tab col s5 offset-s1">
-                                    <a className="active purple-text" href="#doacoes">Doações</a>
-                                </li>
-                                <li className="tab col s5">
-                                    <a className="purple-text" href="#pedidos">Pedidos</a>
-                                </li>
-                            </ul>
+                    <nav className="show-on-medium-and-down hide-on-med-and-up deep-purple darken-2 white-text">
+                        <div className="nav-wrapper">
+                            <form>
+                                <div className="input-field">
+                                    <input id="search" type="search" required />
+                                    <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                                    <i className="material-icons">close</i>
+                                </div>
+                            </form>
                         </div>
+                    </nav>
+                    <div className="row">
                         <div id="doacoes">
-                            {this.state.donations.map(function(donation){
-                                let date = moment(donation.validity).format("DD/MM/YYYY")
-                                return(
-                                    <div className="row" key={ donation.pk }>
-                                        <div className="col l6 offset-l3 m10 push-m1 s12">
-                                            <Link to={ '/donations/donation/'+donation.slug+'/' }>
-                                                <div className="card hoverable">
-                                                    <div className="card-image">
-                                                        <img src={ donation.main_photo } />
-                                                        <button className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></button>
-                                                    </div>
-                                                    <div className="card-content">
-                                                        <span className="card-title">{ donation.name }</span>
-                                                        <p>{ donation.description }</p>
-                                                        <br/>
-                                                        <div className="divider"></div>
-                                                        <br/>
-                                                        <p><strong>Validade: </strong>{ date } até às { donation.validity_hour }</p>
-                                                        <p><strong>Doada por: </strong>{ donation.donator }</p>
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )})
-                            }
+                            <div className="row">
+                                <div className="col l10 m12 s12">
+                                    <CardDonation donations={this.state.donations} />
+                                </div>
+                                <div className="col l2 m0 s0 hide-on-med-and-down">
+                                    <Tags />
+                                </div>
+                            </div>
                         </div>
                         <div className="fixed-action-btn">
                             <Link to="/donations/new-donation/">
@@ -135,13 +236,6 @@ export default class Donations extends React.Component{
                                     <i className="material-icons">add</i>
                                 </button>
                             </Link>
-                        </div>
-                        <div id="pedidos">
-                            <div className="row">
-                                <div className="col s12">
-                                    <h4>Aqui vão ficar os pedidos</h4>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -162,17 +256,6 @@ export default class Donations extends React.Component{
                     </div>
                 </nav>
                 <div className="row">
-                    <div className="col s12">
-                        <br/>
-                        <ul className="tabs">
-                            <li className="tab col s5 offset-s1">
-                                <a className="active purple-text" href="#doacoes">Doações</a>
-                            </li>
-                            <li className="tab col s5">
-                                <a className="purple-text" href="#pedidos">Pedidos</a>
-                            </li>
-                        </ul>
-                    </div>
                     <div id="doacoes">
                         <div className="row">
                             <div className="col s12 center-align">
@@ -199,13 +282,6 @@ export default class Donations extends React.Component{
                                 <i className="material-icons">add</i>
                             </button>
                         </Link>
-                    </div>
-                    <div id="pedidos">
-                        <div className="row">
-                            <div className="col s12">
-                                <h4>Aqui vão ficar os pedidos</h4>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

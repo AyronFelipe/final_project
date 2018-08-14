@@ -10,6 +10,7 @@ class DonationSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(many=True, read_only=True)
     tags = serializers.SerializerMethodField()
     solicitations_count = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = Donation
@@ -32,6 +33,7 @@ class DonationSerializer(serializers.ModelSerializer):
             'photos',
             'tags',
             'solicitations_count',
+            'status'
         ]
 
     def get_donator(self, obj):
@@ -54,6 +56,11 @@ class DonationSerializer(serializers.ModelSerializer):
 
         if hasattr(obj, 'solicitations'):
             return obj.solicitations.count()
+
+    def get_status(self, obj):
+
+        if hasattr(obj, 'status'):
+            return obj.get_status_display()
 
 
 class SolicitationSerializer(serializers.ModelSerializer):
