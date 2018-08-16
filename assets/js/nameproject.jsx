@@ -8,7 +8,7 @@ export default class NameProject extends React.Component{
 
     render(){
         return(
-            <span>Nome do Projeto</span>
+            <span className="truncate">Nome do Projeto</span>
         )
     }
 }
