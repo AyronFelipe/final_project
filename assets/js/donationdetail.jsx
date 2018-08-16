@@ -108,68 +108,30 @@ export default class DonationDetail extends React.Component{
         });
 
         $('.modal').modal();
-
-        $('.timepicker').pickatime({
-            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-            twelvehour: false, // Use AM/PM or 24-hour format
-            donetext: 'OK', // text for done-button
-            cleartext: 'Limpar', // text for clear-button
-            canceltext: 'Cancelar', // Text for cancel-button,
-            container: undefined, // ex. 'body' will append picker to body
-            autoclose: false, // automatic close timepicker
-            ampmclickable: true, // make AM PM clickable
-            aftershow: function(){} //Function for after opening timepicker
-        })
     }
 
     render(){
         
         const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY"
 
-        if( this.state.donation.main_photo!=undefined ){
-            let color = new Vibrant(this.state.donation.main_photo);
-            //color.getPalette((err, palette) => $("#content").css("background-color", palette.LightVibrant.getHex()));
-        }
-
-        let date = new Date(this.state.donation.validity)
-        date.setDate(date.getDate() + 1 )
-        let today = new Date()
+        let date = new Date(this.state.donation.validity + ' ' + this.state.donation.validity_hour)
         let local_date = moment(this.state.donation.validity).format("DD/MM/YYYY")
+        let now_major_date = moment().isAfter(date)
 
-        $(".datepicker").pickadate({
-            selectMonths: true, 
-            selectYears: 50, 
-            today: 'Hoje',
-            clear: 'Limpar',
-            close: 'Ok',
-            closeOnSelect: true,
-            formatSubmit: 'yyyy-mm-dd',
-            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
-            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'], 
-            editable: false,
-            hiddenName: true,
-            min: true,
-            max: date,
-            showMonthsFull: true,
-            showWeekdaysShort: true,
+        $("#bg").css({
+            "background-image": 'url("'+this.state.donation.main_photo+'")',
+            "background-repeat": 'no-repeat',
+            "background-size": '100% 100%',
+            "position": 'fixed',
+            "z-index": '-1',
+            "width": "100%",
+            "height": "100%",
+            "top": '0',
+            "filter": 'blur(5px)',
+            "opacity": '0.8',
         })
 
-        if(today > date){
-            $("#bg").css({
-                "background-image": 'url("'+this.state.donation.main_photo+'")',
-                "background-repeat": 'no-repeat',
-                "background-size": '100% 100%',
-                "position": 'fixed',
-                "z-index": '-1',
-                "width": "100%",
-                "height": "100%",
-                "top": '0',
-                "filter": 'blur(5px)',
-                "opacity": '0.8',
-            })
+        if(now_major_date){
             return(
                 <div id="content">
                     <nav className="nav-extended deep-purple darken-2 white-text">
@@ -219,19 +181,6 @@ export default class DonationDetail extends React.Component{
                 </div>
             )
         }
-
-        $("#bg").css({
-            "background-image": 'url("'+this.state.donation.main_photo+'")',
-            "background-repeat": 'no-repeat',
-            "background-size": '100% 100%',
-            "position": 'fixed',
-            "z-index": '-1',
-            "width": "100%",
-            "height": "100%",
-            "top": '0',
-            "filter": 'blur(5px)',
-            "opacity": '0.8'
-        })
 
         return(
             <div id="content">
