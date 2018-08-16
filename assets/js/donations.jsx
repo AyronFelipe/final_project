@@ -64,8 +64,7 @@ export default class Donations extends React.Component{
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-                this.setState({title: '/ Doações do Tipo ' + name});
-                this.setState({ donations: data})
+                this.setState({ donations: data, title: '/ Doações do Tipo ' + name})
             }.bind(this),
             error: function(request, status, err){
                 console.log(request, status, err);
@@ -121,25 +120,6 @@ export default class Donations extends React.Component{
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-                if(data.length == 0){
-                    card =
-                    `<div class="row">
-                        <div class="col s12 center-align">
-                            <div class="valign-wrapper row">
-                                <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
-                                    <div class="card-content">
-                                        <div class="white-text center-align card-title">
-                                            <h3>Nenhuma tag encontrada</h3>
-                                        </div>
-                                    </div>
-                                    <p>
-                                        Nenhuma tag foi encontrada em nossa base de dados.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                }
                 this.setState({ tags: data })
             }.bind(this),
             error: function(request, status, err){
@@ -189,7 +169,7 @@ export default class Donations extends React.Component{
 
     render(){
         //Se tiver dados no state
-        if(this.state.donations.length > 1){
+        if(this.state.donations.length){
             return(
                 <div>
                     <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
@@ -237,57 +217,56 @@ export default class Donations extends React.Component{
                     </div>
                 </div>
             )
-        }else{
-            return(
-                <div>
-                    <nav className="nav-extended deep-purple darken-2 white-text">
-                        <div className="row">
-                            <div className="col s12">
-                                <div className="col s10 push-s1">
-                                    <div className="nav-content">
-                                        <span className="nav-title">Início</span>
-                                    </div>
+        }
+        return(
+            <div>
+                <nav className="nav-extended deep-purple darken-2 white-text">
+                    <div className="row">
+                        <div className="col s12">
+                            <div className="col s10 push-s1">
+                                <div className="nav-content">
+                                    <span className="nav-title">Início</span>
                                 </div>
                             </div>
                         </div>
-                    </nav>
-                    <div className="row">
-                        <div id="doacoes">
-                            <div className="row">
-                                <div className="col l10 m12 s12 center-align">
-                                    <div id="card-donations-section">
-                                        <br/><br/><br/>
-                                        <div className="preloader-wrapper big active">
-                                            <div className="spinner-layer spinner-blue-only">
-                                                <div className="circle-clipper left">
-                                                    <div className="circle"></div>
-                                                </div>
-                                                <div className="gap-patch">
-                                                    <div className="circle"></div>
-                                                </div>
-                                                <div className="circle-clipper right">
-                                                    <div className="circle"></div>
-                                                </div>
+                    </div>
+                </nav>
+                <div className="row">
+                    <div id="doacoes">
+                        <div className="row">
+                            <div className="col l10 m12 s12 center-align">
+                                <div id="card-donations-section">
+                                    <br/><br/><br/>
+                                    <div className="preloader-wrapper big active">
+                                        <div className="spinner-layer spinner-blue-only">
+                                            <div className="circle-clipper left">
+                                                <div className="circle"></div>
+                                            </div>
+                                            <div className="gap-patch">
+                                                <div className="circle"></div>
+                                            </div>
+                                            <div className="circle-clipper right">
+                                                <div className="circle"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col l2 m0 s0 hide-on-med-and-down">
-                                    { this.handleTagRender() }
-                                </div>
+                            </div>
+                            <div className="col l2 m0 s0 hide-on-med-and-down">
+                                { this.handleTagRender() }
                             </div>
                         </div>
-                        <div className="fixed-action-btn">
-                            <Link to="/donations/new-donation/">
-                                <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
-                                    <i className="material-icons">add</i>
-                                </button>
-                            </Link>
-                        </div>
+                    </div>
+                    <div className="fixed-action-btn">
+                        <Link to="/donations/new-donation/">
+                            <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
+                                <i className="material-icons">add</i>
+                            </button>
+                        </Link>
                     </div>
                 </div>
-            )
-        }
+            </div>
+        )
         //Se não tiver dados no state 
     }
 }
