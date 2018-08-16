@@ -79,7 +79,8 @@ class DonationViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         queryset = Donation.objects.all()
         donation = get_object_or_404(queryset, pk=pk)
-        serializer = DonationSerializer(donation)
+        donation_updated  = donation.update_status()
+        serializer = DonationSerializer(donation_updated)
         return Response(serializer.data)
 
 
