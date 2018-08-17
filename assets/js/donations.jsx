@@ -48,7 +48,7 @@ export default class Donations extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { donations: [], tags: [], title: ' ' };
+        this.state = { donations: [], tags: [], title: ' ', value: '' };
         this.handleTagRender = this.handleTagRender.bind(this);
     }
 
@@ -94,7 +94,7 @@ export default class Donations extends React.Component{
                                         </div>
                                     </div>
                                     <p>
-                                        Nenhuma doação válida com essa tag foi encontrada em nossa base de dados. Clique no botão de adicionar abaixo para cadastrar uma doação com essa tag.
+                                        Nenhuma doação válida foi encontrada em nossa base de dados. Clique no botão de adicionar abaixo para cadastrar uma doação com essa tag.
                                     </p>
                                 </div>
                             </div>
@@ -168,7 +168,7 @@ export default class Donations extends React.Component{
     }
 
     render(){
-        //Se tiver dados no state
+        //Se tiver dados no state donations
         if(this.state.donations.length){
             return(
                 <div>
@@ -218,17 +218,29 @@ export default class Donations extends React.Component{
                 </div>
             )
         }
+        //Se não tiver dados no state donations
         return(
             <div>
-                <nav className="nav-extended deep-purple darken-2 white-text">
+                <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
                     <div className="row">
                         <div className="col s12">
                             <div className="col s10 push-s1">
                                 <div className="nav-content">
-                                    <span className="nav-title">Início</span>
+                                    <span className="nav-title">Início { this.state.title }</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </nav>
+                <nav className="show-on-medium-and-down hide-on-med-and-up deep-purple darken-2 white-text">
+                    <div className="nav-wrapper">
+                        <form>
+                            <div className="input-field">
+                                <input id="search" type="search" required palceholder="Aperte enter para buscar" />
+                                <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                                <i className="material-icons">close</i>
+                            </div>
+                        </form>
                     </div>
                 </nav>
                 <div className="row">
@@ -267,6 +279,5 @@ export default class Donations extends React.Component{
                 </div>
             </div>
         )
-        //Se não tiver dados no state 
     }
 }
