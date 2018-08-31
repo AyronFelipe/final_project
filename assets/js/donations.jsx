@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import 'moment/locale/pt-br';
 
 const SEARCH_LIMIT_SIZE = 3;
+const SEARCH_LIMIT_EMPTY = 0;
 
 class CardDonation extends React.Component{
 
@@ -206,7 +207,48 @@ export default class Donations extends React.Component{
                     'Authorization': 'Token ' + localStorage.token
                 },
                 success: function(data){
-                    this.setState({ donations: data})
+                    if (data.length == 0) {
+                        //modal de nada encontrado
+                        $('#modal-search-donations-empty').modal('open');
+                    } else {
+                        this.setState({ donations: data})
+                    }
+                }.bind(this),
+                error: function(request, status, err){
+                    console.log(request, status, err);
+                }
+            });
+        } else if (e.target.value.length == SEARCH_LIMIT_EMPTY) {
+            $.ajax({
+                url: '/api/donations/',
+                dataType: 'json',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Token ' + localStorage.token
+                },
+                success: function(data){
+                    if(data.length == 0){
+                        const collection = 
+                        `<div class="row">
+                            <div class="col s12 center-align">
+                                <div class="valign-wrapper row">
+                                    <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
+                                        <div class="card-content">
+                                            <div class="white-text center-align card-title">
+                                                <h3>Nenhuma doação encontrada</h3>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            Nenhuma doação válida foi encontrada em nossa base de dados. Clique no botão de adicionar abaixo para cadastrar uma doação.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                        $('#card-donations-section').html(collection)
+                    }else{
+                        this.setState({ donations: data })
+                    }
                 }.bind(this),
                 error: function(request, status, err){
                     console.log(request, status, err);
@@ -217,6 +259,7 @@ export default class Donations extends React.Component{
 
     render(){
         //Se tiver dados no state donations
+        $('.modal').modal();
         if(this.state.donations.length){
             return(
                 <div>
@@ -263,6 +306,17 @@ export default class Donations extends React.Component{
                             </Link>
                         </div>
                     </div>
+                    <div id="modal-search-donations-empty" className="modal">
+                        <div className="modal-content">
+                            <h4>Não encontramos nada!</h4>
+                            <blockquote>
+                                Sua busca não retornou resultados. O parâmetro informado não retornou nenhuma doação válida.
+                            </blockquote>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</button>                        
+                        </div>
+                    </div>
                 </div>
             )
         }
@@ -278,17 +332,6 @@ export default class Donations extends React.Component{
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </nav>
-                <nav className="show-on-medium-and-down hide-on-med-and-up deep-purple darken-2 white-text">
-                    <div className="nav-wrapper">
-                        <form onSubmit={ (e) => this.handleSubmitSearchForm(e) }>
-                            <div className="input-field">
-                                <input id="search" type="search" required onChange={ (e) => this.handleChangeSearch(e) } />
-                                <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                                <i className="material-icons">close</i>
-                            </div>
-                        </form>
                     </div>
                 </nav>
                 <div className="row">
