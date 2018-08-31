@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from core.utils import send_mail_template
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import Q
 
 
 User = get_user_model()
@@ -64,9 +65,15 @@ class DonationViewSet(viewsets.ViewSet):
     def list(self, request):
         list_donations = []
         tag_id = self.request.query_params.get('tag_id')
+        value_search = self.request.query_params.get('value_search')
         if tag_id:
-            tag = Tag.objects.get(id=tag_id)
-            queryset = Donation.objects.filter(donation_tags__tag=tag)
+            if tag_id == 0:
+                queryset = Donation.objects.all()
+            else:
+                tag = Tag.objects.get(id=tag_id)
+                queryset = Donation.objects.filter(donation_tags__tag=tag)
+        if value_search:
+            queryset = Donation.objects.filter(name__icontains=value_search)
         else:  
             queryset = Donation.objects.all()
         for obj in queryset:

@@ -3,10 +3,10 @@ import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'
 import { Link } from 'react-router-dom'
-import { storageToken } from './auth'
-import DonationDetail from './donationdetail'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+
+const SEARCH_LIMIT_SIZE = 3;
 
 class CardDonation extends React.Component{
 
@@ -44,11 +44,31 @@ class CardDonation extends React.Component{
     }
 }
 
+class Proloader extends React.Component{
+    render(){
+        return(
+            <div className="preloader-wrapper big active">
+                <div className="spinner-layer spinner-blue-only">
+                    <div className="circle-clipper left">
+                        <div className="circle"></div>
+                    </div>
+                    <div className="gap-patch">
+                        <div className="circle"></div>
+                    </div>
+                    <div className="circle-clipper right">
+                        <div className="circle"></div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
 export default class Donations extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { donations: [], tags: [], title: ' ', value: '' };
+        this.state = { donations: [], tags: [], title: ' ', value_search: '' };
         this.handleTagRender = this.handleTagRender.bind(this);
     }
 
@@ -94,13 +114,12 @@ export default class Donations extends React.Component{
                                         </div>
                                     </div>
                                     <p>
-                                        Nenhuma doação válida foi encontrada em nossa base de dados. Clique no botão de adicionar abaixo para cadastrar uma doação com essa tag.
+                                        Nenhuma doação válida foi encontrada em nossa base de dados. Clique no botão de adicionar abaixo para cadastrar uma doação.
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>`
-                    console.log(collection)
                     $('#card-donations-section').html(collection)
                 }else{
                     this.setState({ donations: data })
@@ -138,8 +157,9 @@ export default class Donations extends React.Component{
                 <div className="row">
                     <div className="col s12">
                         <br/>
+                        <div className="chip hoverable" key='0' onClick={this.handleClick.bind(this, 0, 'todos')}>TODOS</div>
                         {this.state.tags.map((tag) => 
-                            <div className="chip" key={ tag.pk } onClick={this.handleClick.bind(this, tag.pk, tag.name)}>{ tag.name }</div>
+                            <div className="chip hoverable" key={ tag.pk } onClick={this.handleClick.bind(this, tag.pk, tag.name)}>{ tag.name }</div>
                         )}
                     </div>
                 </div>
@@ -167,6 +187,34 @@ export default class Donations extends React.Component{
         )
     }
 
+    handleSubmitSearchForm(e){
+        e.preventDefault();
+    }
+    
+    handleChangeSearch(e){
+        e.preventDefault();
+        if(e.target.value.length >= SEARCH_LIMIT_SIZE){
+            this.setState({ value_search: e.target.value });
+            $.ajax({
+                url: '/api/donations/',
+                dataType: 'json',
+                type: 'GET',
+                data: {
+                    value_search: this.state.value_search
+                },
+                headers: {
+                    'Authorization': 'Token ' + localStorage.token
+                },
+                success: function(data){
+                    this.setState({ donations: data})
+                }.bind(this),
+                error: function(request, status, err){
+                    console.log(request, status, err);
+                }
+            });
+        }
+    }
+
     render(){
         //Se tiver dados no state donations
         if(this.state.donations.length){
@@ -185,9 +233,9 @@ export default class Donations extends React.Component{
                     </nav>
                     <nav className="show-on-medium-and-down hide-on-med-and-up deep-purple darken-2 white-text">
                         <div className="nav-wrapper">
-                            <form>
+                            <form onSubmit={ (e) => this.handleSubmitSearchForm(e) }>
                                 <div className="input-field">
-                                    <input id="search" type="search" required />
+                                    <input id="search" type="search" required onChange={ (e) => this.handleChangeSearch(e) } />
                                     <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                     <i className="material-icons">close</i>
                                 </div>
@@ -234,9 +282,9 @@ export default class Donations extends React.Component{
                 </nav>
                 <nav className="show-on-medium-and-down hide-on-med-and-up deep-purple darken-2 white-text">
                     <div className="nav-wrapper">
-                        <form>
+                        <form onSubmit={ (e) => this.handleSubmitSearchForm(e) }>
                             <div className="input-field">
-                                <input id="search" type="search" required palceholder="Aperte enter para buscar" />
+                                <input id="search" type="search" required onChange={ (e) => this.handleChangeSearch(e) } />
                                 <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                 <i className="material-icons">close</i>
                             </div>
@@ -249,19 +297,7 @@ export default class Donations extends React.Component{
                             <div className="col l10 m12 s12 center-align">
                                 <div id="card-donations-section">
                                     <br/><br/><br/>
-                                    <div className="preloader-wrapper big active">
-                                        <div className="spinner-layer spinner-blue-only">
-                                            <div className="circle-clipper left">
-                                                <div className="circle"></div>
-                                            </div>
-                                            <div className="gap-patch">
-                                                <div className="circle"></div>
-                                            </div>
-                                            <div className="circle-clipper right">
-                                                <div className="circle"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Proloader />
                                 </div>
                             </div>
                             <div className="col l2 m0 s0 hide-on-med-and-down">
