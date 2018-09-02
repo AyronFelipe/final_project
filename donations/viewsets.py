@@ -67,12 +67,12 @@ class DonationViewSet(viewsets.ViewSet):
         tag_id = self.request.query_params.get('tag_id')
         value_search = self.request.query_params.get('value_search')
         if tag_id:
-            if tag_id == 0:
+            if tag_id == '0':
                 queryset = Donation.objects.all()
             else:
                 tag = Tag.objects.get(id=tag_id)
                 queryset = Donation.objects.filter(donation_tags__tag=tag)
-        if value_search:
+        elif value_search:
             queryset = Donation.objects.filter(name__icontains=value_search)
         else:  
             queryset = Donation.objects.all()

@@ -115,6 +115,11 @@ class DonationTags(models.Model):
 
     donation = models.ForeignKey(Donation, null=True, blank=True, on_delete=models.SET_NULL, related_name='donation_tags')
     tag = models.ForeignKey('core.Tag', null=True, blank=True, on_delete=models.CASCADE, related_name='tag_donations')
+    
+    class Meta:
+
+        verbose_name=_('Tag of Donation')
+        verbose_name_plural=_('Tags of Donations')
 
     def __str__(self):
 
