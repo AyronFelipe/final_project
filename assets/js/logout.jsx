@@ -1,10 +1,7 @@
 import React from 'react'
-import ReactDom from 'react-dom'
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
-import Login from './login'
 import { logout } from './auth'
 
 export default class Logout extends React.Component{

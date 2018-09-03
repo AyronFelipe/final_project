@@ -1,7 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { storageToken } from './auth'
-import * as Vibrant from 'node-vibrant'
 import Carousel from './carousel'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';

@@ -3,7 +3,6 @@ import Address from './address'
 import NewTag from './tags_new'
 import 'dropify'
 import 'dropify/dist/css/dropify.min.css'
-import { storageToken } from './auth'
 import { Link } from 'react-router-dom'
 
 export default class Donation extends React.Component{
