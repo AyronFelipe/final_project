@@ -8,7 +8,7 @@ import NameProject from './nameproject'
 import { Link } from 'react-router-dom'
 import Notifications from './notifications'
 
- export default class InternNav extends React.Component{
+export default class InternNav extends React.Component{
 
     constructor(props){
         super(props);
@@ -71,6 +71,7 @@ import Notifications from './notifications'
 
     
     render(){
+        const background = `/static/images/background-user-details.jpg`
         const user = this.state.user
         const child = this.state.user.child
         if(child != undefined){
@@ -96,6 +97,28 @@ import Notifications from './notifications'
                                         <Logout />
                                     </ul>
                                     <ul className="side-nav" id="mobile-demo">
+                                        <div className="user-details" style={{ backgroundImage: `url(${background})`, backgroundSize: `cover` }}>
+                                            <div className="row">
+                                                <div className="col s4 m4 l4">
+                                                    <img className="responsive-img circle valign" src={ user.photo } style={{ marginTop: `10px` }} />
+                                                </div>
+                                                <div className="col s8 m8 l8 white-text">
+                                                    <a href="#" className="btn-flat waves-effect waves-light white-text">
+                                                        { child.first_name }
+                                                    </a>
+                                                    <p style={{ marginTop: '-35px', marginLeft: '27px' }}>
+                                                        { child.last_name }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="no-padding">
+                                            <ul>
+                                                <li><a><i className="material-icons">account_circle</i>Editar perfil</a></li>
+                                                <li><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
+                                                <li><Link to="/donations/my-donations/"><i className="material-icons">room_service</i>Minhas doações</Link></li>
+                                            </ul>
+                                        </div>
                                         <Logout />
                                     </ul>
                                 </div>
