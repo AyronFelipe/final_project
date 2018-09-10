@@ -82,18 +82,20 @@ export default class InternNav extends React.Component{
                                 <div className="nav-wrapper">
                                     <a href="#" className="brand-logo"><NameProject /></a>
                                     <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
-                                    <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                        <li>
+                                    <ul id="nav-mobile">
+                                        <li className="right hide-on-med-and-down">
                                             <a href="#" data-activates="dropdown-options" title="Suas opções" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false" style={{ height: '63px' }}>
                                                 <img className="responsive-img circle" style={{ width: '50px', height: '50px', marginTop: '6px' }} src={ user.photo } />
                                             </a>
                                         </li>
-                                        <li>
+                                        <li className="right">
                                             <a href="#" data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
                                                 <i className="material-icons">notifications</i>
                                             </a>
                                         </li>
-                                        <Logout />
+                                        <li className="right hide-on-med-and-down">
+                                            <Logout />
+                                        </li>
                                     </ul>
                                     <ul className="side-nav" id="mobile-demo">
                                         <div className="user-details" style={{ backgroundImage: `url(${background})`, backgroundSize: `cover` }}>
