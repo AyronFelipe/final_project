@@ -64,6 +64,7 @@ export default class Person extends React.Component{
                 message: '<div class="dropify-message"><span class="file-icon" /> <p class="center-align">{{ default }}</p></div>',
             }
         });
+        window.scrollTo(0, 0);
     }
 
     render(){
