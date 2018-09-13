@@ -35,7 +35,6 @@ class Home extends React.Component{
                         <PrivateRoute authenticated={ this.state.authenticated } component={ InternNav } />
                     </header>
                     <main>
-                        <Route exact path="/accounts/login/" component={ Login } />
                         <PrivateRoute exact authenticated={ this.state.authenticated } path="/donations/" component={ Donations } />
                         <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
                         <PrivateRoute authenticated={ this.state.authenticated } path="/donations/donation/:slug/" component={ DonationDetail } />

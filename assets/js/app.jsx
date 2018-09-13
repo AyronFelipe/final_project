@@ -24,6 +24,7 @@ class Initial extends React.Component{
 }
 
 class App extends React.Component{
+
     render(){
         return(
             <div className="deep-purple white-text">
