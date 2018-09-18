@@ -14,6 +14,7 @@ export default class InternNav extends React.Component{
         this.state = {  user: [], notifications: [] };
         this.handleRender = this.handleRender.bind(this)
         this.loadNotifications = this.loadNotifications.bind(this)
+        this.handleRenderNotifications = this.handleRenderNotifications.bind(this)
     }
 
     handleRender(child){
@@ -25,6 +26,7 @@ export default class InternNav extends React.Component{
         }
         return lol;
     }
+
 
     loadNotifications(){
         $.ajax({
@@ -41,6 +43,23 @@ export default class InternNav extends React.Component{
                 console.log(request, status, err);
             } 
         }); 
+    }
+
+    updateNotifications(){
+        alert('lol');
+    }
+
+    handleRenderNotifications(notifications){
+
+        let count = 0;
+
+        this.state.notifications.map((notification) => {
+            if (notification.unread == true) {
+                count++;
+            }
+        });
+
+        return count;
     }
 
     componentDidMount(){
@@ -63,7 +82,7 @@ export default class InternNav extends React.Component{
         });
 
         setInterval(function(){ 
-            this.loadNotifications()            
+            this.loadNotifications()
         }.bind(this), 60000);
 
     }
@@ -84,17 +103,20 @@ export default class InternNav extends React.Component{
                                     <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
                                     <ul id="nav-mobile">
                                         <li className="right hide-on-med-and-down">
+                                            <Logout />
+                                        </li>
+                                        <li className="right hide-on-med-and-down">
                                             <a href="#" data-activates="dropdown-options" title="Suas opções" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false" style={{ height: '63px' }}>
                                                 <img className="responsive-img circle" style={{ width: '50px', height: '50px', marginTop: '6px' }} src={ user.photo } />
                                             </a>
                                         </li>
-                                        <li className="right">
+                                        <li className="right" style={{ marginTop: '19px' }}>
+                                            <span data-badge-caption="novas" className="new badge">{ this.handleRenderNotifications(this.state.notifications) }</span>
+                                        </li>
+                                        <li className="right" onClick={ this.updateNotifications() }>
                                             <a href="#" data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
                                                 <i className="material-icons">notifications</i>
                                             </a>
-                                        </li>
-                                        <li className="right hide-on-med-and-down">
-                                            <Logout />
                                         </li>
                                     </ul>
                                     <ul className="side-nav" id="mobile-demo">
@@ -140,7 +162,7 @@ export default class InternNav extends React.Component{
                         <li><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
                         <li><Link to="/donations/my-donations/"><i className="material-icons">room_service</i>Minhas doações</Link></li>
                     </ul>
-                    <ul id="dropdown-notifications" className="dropdown-content">
+                    <ul id="dropdown-notifications" className="dropdown-content" style={{ width: '360px', overflowX: 'hidden' }}>
                         <li>
                             <h6 className="purple-text" style={{ marginLeft: '15px' }}>NOTIFICAÇÕES</h6>
                         </li>

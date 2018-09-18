@@ -37,3 +37,6 @@ class NotificationViewSet(viewsets.ViewSet):
         notification = get_object_or_404(queryset, pk=pk)
         serializer = NotificationSerializer(notification)
         return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        pass

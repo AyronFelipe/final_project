@@ -47,6 +47,7 @@ class Notification(CreationAndUpdateMixin):
     notified = models.ForeignKey(get_user_model(), related_name='notifications', null=True, blank=True, on_delete=models.CASCADE)
     sender = models.ForeignKey(get_user_model(), related_name='sended_notifications', null=True, blank=True, on_delete=models.SET_NULL)
     type = models.CharField(_('type'), max_length=20, null=True, blank=True, choices=TYPE_NOTIFICATION)
+    unread = models.BooleanField(_('unread'), default=True)
 
     class Meta:
 

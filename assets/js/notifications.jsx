@@ -30,9 +30,9 @@ export default class Notifications extends React.Component{
                     <a href="/donations/${ value.type }/">
                         <div class="row">
                             <div class="col s6">
-                                <div class="col s3"><img src=${ value.sender } class="responsive-img circle" style="height:60px;width60px;" /></div>
-                                <div class="col s1">
-                                    <p class="left-align">${ value.message }</p>
+                                <div class="col s3"><img src=${ value.sender } class="circle left" style="height:48px;" /></div>
+                                <div class="col s3" style="margin-left:10px;">
+                                    <p class="left-align" style="white-space: nowrap;width: auto;">${ value.message }</p>
                                     <span class="grey-text"><small>${ moment(value.created_at).startOf('second').fromNow() }</small><span>
                                 </div>
                             </div>
