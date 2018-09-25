@@ -15,6 +15,7 @@ export default class InternNav extends React.Component{
         this.handleRender = this.handleRender.bind(this)
         this.loadNotifications = this.loadNotifications.bind(this)
         this.handleRenderNotifications = this.handleRenderNotifications.bind(this)
+        this.handleClickNotifications = this.handleClickNotifications.bind(this)
     }
 
     handleRender(child){
@@ -27,6 +28,14 @@ export default class InternNav extends React.Component{
         return lol;
     }
 
+
+    handleClickNotifications(){
+        let unread_notifications = this.handleRenderNotifications()
+        if (unread_notifications > 0) {
+            //faz um post passando as notificações com unread igual a true. 
+            console.log('oi');
+        }
+    }
 
     loadNotifications(){
         $.ajax({
@@ -45,11 +54,8 @@ export default class InternNav extends React.Component{
         }); 
     }
 
-    updateNotifications(){
-        alert('lol');
-    }
 
-    handleRenderNotifications(notifications){
+    handleRenderNotifications(){
 
         let count = 0;
 
@@ -111,9 +117,10 @@ export default class InternNav extends React.Component{
                                             </a>
                                         </li>
                                         <li className="right" style={{ marginTop: '19px' }}>
-                                            <span data-badge-caption="novas" className="new badge">{ this.handleRenderNotifications(this.state.notifications) }</span>
+                                            <span data-badge-caption="novas" className="new badge">{ this.handleRenderNotifications() }</span>
                                         </li>
-                                        <li className="right" onClick={ this.updateNotifications() }>
+                                        <li className="right">
+                                            <div onClick={ this.handleClickNotifications() }></div>
                                             <a href="#" data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
                                                 <i className="material-icons">notifications</i>
                                             </a>
