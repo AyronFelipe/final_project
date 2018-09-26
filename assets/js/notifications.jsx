@@ -13,7 +13,6 @@ export default class Notifications extends React.Component{
     componentDidMount(){
         $('.dropdown-button').dropdown({
             alignment: 'right',
-            //hover: true,
         });
     }
 

@@ -39,4 +39,9 @@ class NotificationViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def update(self, request, pk=None):
-        pass
+        notification = Notification.objects.get(pk=pk)
+        notification.unread = False
+        notification.save()
+        serializer = NotificationSerializer(notification)
+        return Response(serializer.data)
+        

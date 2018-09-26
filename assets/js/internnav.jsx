@@ -15,7 +15,6 @@ export default class InternNav extends React.Component{
         this.handleRender = this.handleRender.bind(this)
         this.loadNotifications = this.loadNotifications.bind(this)
         this.handleRenderNotifications = this.handleRenderNotifications.bind(this)
-        this.handleClickNotifications = this.handleClickNotifications.bind(this)
     }
 
     handleRender(child){
@@ -32,8 +31,24 @@ export default class InternNav extends React.Component{
     handleClickNotifications(){
         let unread_notifications = this.handleRenderNotifications()
         if (unread_notifications > 0) {
-            //faz um post passando as notificações com unread igual a true. 
-            console.log('oi');
+            this.state.notifications.map((notification) => {
+                if (notification.unread == true) {
+                    $.ajax({
+                        url: `/api/notifications/${notification.pk}/`,
+                        dataType: `json`,
+                        type: 'PUT',
+                        headers: {
+                            'Authorization': 'Token ' + localStorage.token  
+                        },
+                        success: function(data){
+                           //lembrar de por algo aqui
+                        },
+                        error: function(request, status, err){
+                            console.log(request, status, err);
+                        }
+                    });
+                }
+            })
         }
     }
 
@@ -119,9 +134,8 @@ export default class InternNav extends React.Component{
                                         <li className="right" style={{ marginTop: '19px' }}>
                                             <span data-badge-caption="novas" className="new badge">{ this.handleRenderNotifications() }</span>
                                         </li>
-                                        <li className="right">
-                                            <div onClick={ this.handleClickNotifications() }></div>
-                                            <a href="#" data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
+                                        <li className="right">                                        
+                                            <a href="#" onClick={() => { this.handleClickNotifications() } } data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
                                                 <i className="material-icons">notifications</i>
                                             </a>
                                         </li>
