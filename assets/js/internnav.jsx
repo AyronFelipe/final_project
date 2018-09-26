@@ -29,6 +29,9 @@ export default class InternNav extends React.Component{
 
 
     handleClickNotifications(){
+        $('#dropdown-notifications').css({
+            "white-space": 'normal'
+        })
         let unread_notifications = this.handleRenderNotifications()
         if (unread_notifications > 0) {
             this.state.notifications.map((notification) => {
@@ -41,7 +44,7 @@ export default class InternNav extends React.Component{
                             'Authorization': 'Token ' + localStorage.token  
                         },
                         success: function(data){
-                           //lembrar de por algo aqui
+                           // Ayron, lembrar de por algo aqui
                         },
                         error: function(request, status, err){
                             console.log(request, status, err);
@@ -110,9 +113,11 @@ export default class InternNav extends React.Component{
 
     
     render(){
+        
         const background = `/static/images/background-user-details.jpg`
         const user = this.state.user
         const child = this.state.user.child
+
         if(child != undefined){
             return(
                 <div>
@@ -183,7 +188,7 @@ export default class InternNav extends React.Component{
                         <li><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
                         <li><Link to="/donations/my-donations/"><i className="material-icons">room_service</i>Minhas doações</Link></li>
                     </ul>
-                    <ul id="dropdown-notifications" className="dropdown-content" style={{ width: '360px', overflowX: 'hidden' }}>
+                    <ul id="dropdown-notifications" className="dropdown-content" style={{ width: '360px', overflowX: 'hidden', whiteSpace: 'normal' }}>
                         <li>
                             <h6 className="purple-text" style={{ marginLeft: '15px' }}>NOTIFICAÇÕES</h6>
                         </li>
