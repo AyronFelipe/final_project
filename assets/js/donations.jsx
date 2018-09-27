@@ -5,6 +5,7 @@ import '../css/main.css'
 import { Link } from 'react-router-dom'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import Preloader from './preloader'
 
 const SEARCH_LIMIT_SIZE = 3;
 const SEARCH_LIMIT_EMPTY = 0;
@@ -40,26 +41,6 @@ class CardDonation extends React.Component{
                         </div>
                     )})
                 }
-            </div>
-        )
-    }
-}
-
-class Proloader extends React.Component{
-    render(){
-        return(
-            <div className="preloader-wrapper big active">
-                <div className="spinner-layer spinner-blue-only">
-                    <div className="circle-clipper left">
-                        <div className="circle"></div>
-                    </div>
-                    <div className="gap-patch">
-                        <div className="circle"></div>
-                    </div>
-                    <div className="circle-clipper right">
-                        <div className="circle"></div>
-                    </div>
-                </div>
             </div>
         )
     }
@@ -104,7 +85,7 @@ export default class Donations extends React.Component{
             },
             success: function(data){
                 if(data.length == 0){
-                    const collection = 
+                    const collection =
                     `<div class="row">
                         <div class="col s12 center-align">
                             <div class="valign-wrapper row">
@@ -165,24 +146,17 @@ export default class Donations extends React.Component{
                     </div>
                 </div>
             )
+        } else if (this.state.tags.length == 0) {
+            return(
+                <div className="row">
+                </div>
+            )
         }
         return(
             <div className="row">
                 <div className="col s12">
                     <br/><br/><br/>
-                    <div className="preloader-wrapper big active">
-                        <div className="spinner-layer spinner-blue-only">
-                            <div className="circle-clipper left">
-                                <div className="circle"></div>
-                            </div>
-                            <div className="gap-patch">
-                                <div className="circle"></div>
-                            </div>
-                            <div className="circle-clipper right">
-                                <div className="circle"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <Preloader />
                 </div>
             </div>
         )
@@ -340,7 +314,7 @@ export default class Donations extends React.Component{
                             <div className="col l10 m12 s12 center-align">
                                 <div id="card-donations-section">
                                     <br/><br/><br/>
-                                    <Proloader />
+                                    <Preloader />
                                 </div>
                             </div>
                             <div className="col l2 m0 s0 hide-on-med-and-down">

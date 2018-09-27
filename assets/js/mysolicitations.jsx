@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
+import Preloader from './preloader'
 
 export default class MySolicitations extends React.Component{
 
@@ -19,7 +20,13 @@ export default class MySolicitations extends React.Component{
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-                this.setState({ solicitations: data })
+                if (data.length == 0) {
+                    const collection =
+                    `<h6>Você não possui solicitações cadastradas.</h6>`
+                    $('#table-content').html(collection);
+                } else {
+                    this.setState({ solicitations: data })
+                }
             }.bind(this),
             error: function(request, status, err){
                 console.log(request, status, err);
@@ -83,7 +90,6 @@ export default class MySolicitations extends React.Component{
                         </div>
                     </nav>
                     <br/><br/>
-                        
                     <div className="row">
                         <div className="col s12">
                             <div className="col s10 push-s1">
@@ -102,18 +108,9 @@ export default class MySolicitations extends React.Component{
                                     <tbody>
                                         <tr colSpan="7">
                                             <td>
-                                                <div className="preloader-wrapper big active">
-                                                    <div className="spinner-layer spinner-blue-only">
-                                                        <div className="circle-clipper left">
-                                                            <div className="circle"></div>
-                                                        </div>
-                                                        <div className="gap-patch">
-                                                            <div className="circle"></div>
-                                                        </div>
-                                                        <div className="circle-clipper right">
-                                                            <div className="circle"></div>
-                                                        </div>
-                                                    </div>
+                                                <div id="table-content">
+                                                    <br />
+                                                    <Preloader />
                                                 </div>
                                             </td>
                                         </tr>
@@ -129,7 +126,7 @@ export default class MySolicitations extends React.Component{
             alignment: 'right'
         });
         $('.modal').modal();
-        return(    
+        return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
                     <div className="row">
