@@ -39,8 +39,8 @@ class UserSerializer(serializers.ModelSerializer):
     def get_child(self, obj):
 
         if hasattr(obj, 'institution'):
-            serializer = InstitutionSerializer(obj.institution)
-        serializer = PersonSerializer(obj.person)
+            serializer = LoggedInstitutionSerializer(obj.institution)
+        serializer = LoggedPersonSerializer(obj.person)
         return serializer.data
 
     def get_donations_count(self, obj):
@@ -84,6 +84,51 @@ class InstitutionSerializer(serializers.ModelSerializer):
         fields = [
             'email',
             'password',
+            'is_active',
+            'name',
+            'cnpj',
+            'phone',
+            'cell_phone',
+            'neighborhood',
+            'street',
+            'number',
+            'photo',
+            'cep',
+            'city',
+            'uf',
+        ]
+
+
+class LoggedPersonSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Person
+        fields = [
+            'email',
+            'is_active',
+            'first_name',
+            'last_name',
+            'cpf',
+            'phone',
+            'cell_phone',
+            'neighborhood',
+            'street',
+            'number',
+            'birthday',
+            'cep',
+            'complement',
+            'city',
+            'uf',
+            'photo',
+        ]
+
+
+class LoggedInstitutionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Institution
+        fields = [
+            'email',
             'is_active',
             'name',
             'cnpj',
