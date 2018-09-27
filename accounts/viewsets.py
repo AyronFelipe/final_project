@@ -50,7 +50,7 @@ def logged_user(request):
     user = request.user
     serializer = UserSerializer(user)
     return Response(serializer.data)
-        
+
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     '''
@@ -61,7 +61,6 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
-
 class PersonViewSet(viewsets.ReadOnlyModelViewSet):
     '''
     Listagem das Pessoas
@@ -69,7 +68,7 @@ class PersonViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
-    
+
 
 class InstitutionViewSet(viewsets.ReadOnlyModelViewSet):
     '''
