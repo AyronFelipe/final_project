@@ -49,6 +49,7 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
         super(Donation, self).save()
 
     def update_status(self):
+        
         combined_fields = datetime.combine(self.validity, self.validity_hour)
         if datetime.today() > combined_fields and self.status == Donation.ACTIVE:
             self.status = Donation.INVALID

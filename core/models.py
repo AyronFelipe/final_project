@@ -63,7 +63,7 @@ class Notification(CreationAndUpdateMixin):
 class UnitMeasurement(models.Model):
 
     name = models.CharField(_('name'), max_length=255, null=True, blank=True)
-    initials = models.CharField(_('initials'), max_length=2, null=True, blank=True)
+    initials = models.CharField(_('initials'), max_length=3, null=True, blank=True)
 
     class Meta:
 

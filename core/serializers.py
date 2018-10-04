@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Photo, Tag, Notification
+from .models import Photo, Tag, Notification, UnitMeasurement
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -42,3 +42,14 @@ class NotificationSerializer(serializers.ModelSerializer):
 
         if hasattr(obj, 'sender'):
             return obj.sender.photo.url
+
+
+class UnitMeasurementSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UnitMeasurement
+        fields = [
+            'pk',
+            'initials',
+            'name'
+        ]
