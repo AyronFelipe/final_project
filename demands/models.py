@@ -1,3 +1,34 @@
 from django.db import models
+from core.mixins import CreationAndUpdateMixin, PhoneMixin, AddressMixin
+from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify
+from django.contrib.auth import get_user_model
+from core.utils import img_path
+from core.models import UnitMeasurement
+from datetime import datetime
 
-# Create your models here.
+
+class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
+
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
+    owner = models.ForeignKey(get_user_model(), related_name='demands', on_delete=models.CASCADE, null=True, blank=True,)
+    main_photo = models.ImageField(_('main photo'), upload_to=img_path, null=True, blank=True)
+    quantity = models.DecimalField(_('quatity'), max_digits=5, decimal_places=1, null=True, blank=True)
+    unit_measurement = models.ForeignKey(UnitMeasurement, related_name='unit_demands', on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+
+        verbose_name = _('demand')
+        verbose_name_plural = _('demands')
+        ordering = ['-created_at']
+
+    def save(self):
+
+        super(Demand, self).save()
+        date = datetime.today()
+        self.slug = 'DEM.%i-%i-%i.%i.%i-%s' % (
+           date.year, date.month, date.day, self.id, self.owner.pk, slugify(self.name)
+        )
+        super(Demand, self).save()

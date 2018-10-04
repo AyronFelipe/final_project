@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Photo, Tag, Notification
+from .models import Photo, Tag, Notification, UnitMeasurement
 
 
 class PhotoAdmin(admin.ModelAdmin):
@@ -15,3 +15,8 @@ admin.site.register(Tag, TagAdmin)
 class NotificationAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Notification, NotificationAdmin)
+
+
+class UnitMeasurementAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(UnitMeasurement, UnitMeasurementAdmin)

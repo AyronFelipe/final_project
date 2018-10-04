@@ -60,3 +60,16 @@ class Notification(CreationAndUpdateMixin):
         return '%s - %s' % (self.message, self.notified)
 
 
+class UnitMeasurement(models.Model):
+
+    name = models.CharField(_('name'), max_length=255, null=True, blank=True)
+    initials = models.CharField(_('initials'), max_length=2, null=True, blank=True)
+
+    class Meta:
+
+        verbose_name=_("unit of measurement")
+        verbose_name_plural=_("unit of measurements")
+    
+    def __str__(self):
+
+        return '%s - %s' % (self.name, self.initials)
