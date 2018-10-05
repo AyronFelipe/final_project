@@ -16,7 +16,7 @@ class Initial extends React.Component{
         return(
             <div>
                 <Header />
-                <Main />   
+                <Main />
                 <Footer />
             </div>
         )
