@@ -48,7 +48,3 @@ export default class Home extends React.Component{
         )
     }
 }
-
-ReactDom.render(
-    <Home />, document.getElementById('home')
-)
