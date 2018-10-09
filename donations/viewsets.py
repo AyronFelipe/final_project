@@ -106,6 +106,12 @@ class MyDonationsViewSet(viewsets.ViewSet):
         donation = get_object_or_404(queryset, pk=pk)
         serializer = DonationSerializer(donation)
         return Response(serializer.data)
+    
+    def destroy(self, request, pk=None):
+        donation = Donation.objects.get(pk=pk)
+        donation.delete()
+        serializer = DonationSerializer(donation)
+        return Response(serializer.data)
 
 
 class CreateSolicitationViewSet(generics.CreateAPIView):

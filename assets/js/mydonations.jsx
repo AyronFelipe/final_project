@@ -11,9 +11,26 @@ export default class MyDonations extends React.Component{
         this.state = { donations: [], solicitations_of_donation: [] }
     }
 
-    loadSolicitations(id){
+    deleteDonation(pk){
         $.ajax({
-            url: '/api/donation/'+id+'/solicitations/',
+            url: `/api/my-donations/${pk}/`,
+            type: 'DELETE',
+            dataType: 'json',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function (data) {
+                location.reload()
+            }.bind(this),
+            error: function (request, status, err) {
+                console.log(request, status, err);
+            }
+        })
+    }
+
+    loadSolicitations(pk){
+        $.ajax({
+            url: '/api/donation/'+pk+'/solicitations/',
             type: 'GET',
             dataType: 'json',
             headers: {
@@ -206,6 +223,21 @@ export default class MyDonations extends React.Component{
                                                     </div>
                                                     <div className="modal-footer">
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
+                                                    </div>
+                                                </div>
+                                                <div id={`modal-delete-${donation.pk}`} className="modal purple-text">
+                                                    <div className="modal-content">
+                                                        <h5 className="red-text">Tem certeza que deseja deletar a Doação { donation.slug }</h5>
+                                                        <br />
+                                                        <div className="card red darken-2">
+                                                            <div className="card-content white-text">
+                                                                <p>Ao confirmar o desejo de excluir a Doação { donation.slug }, você se declara ciente que ela não mais existirá e não pode ser recuperada.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
+                                                        <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteDonation.bind(this, donation.pk)}><i className="material-icons">delete</i> Eu quero excluir!</button>
                                                     </div>
                                                 </div>
                                             </td>
