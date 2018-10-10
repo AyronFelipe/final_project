@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'webpack_loader',
-    'channels',
     #local apps
     'accounts',
     'core',
@@ -44,8 +43,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'project_settings.urls'
-
-ASGI_APPLICATION = "project_settings.routing.application"
 
 TEMPLATES = [
     {
