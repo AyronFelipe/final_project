@@ -4,6 +4,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.defaultfilters import striptags
 import os
 from datetime import date
+import pusher
+from decouple import config
 
 
 def send_mail_template(subject, template_name, context, recipient_list, from_email=settings.DEFAULT_FROM_EMAIL, fail_silently=False):
@@ -26,3 +28,11 @@ def img_path(instance, filename):
         date.today().strftime("%d"), 
         filename
     )
+
+pusher_client = pusher.Pusher(
+                    app_id=config('PUSHER_APP_ID'),
+                    key=config('PUSHER_APP_KEY'),
+                    secret=config('PUSHER_APP_SECRET'),
+                    cluster=config('PUSHER_CLUSTER'),
+                    ssl=config('PUSHER_SSL', cast=bool),
+                )

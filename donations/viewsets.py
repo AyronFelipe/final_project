@@ -12,7 +12,7 @@ from core.utils import send_mail_template
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
-
+from core.utils import pusher_client
 
 User = get_user_model()
 
@@ -133,7 +133,8 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 solicitation.save()
                 donation = Donation.objects.get(id=request.POST.get('donation'))
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
-                Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner, type=Notification.MY_DONATIONS)
+                notification = Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner, type=Notification.MY_DONATIONS)
+                pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
                 subject = "Sua doação foi solicitada"
                 context = {}
                 context['user'] = donation.donator
@@ -141,7 +142,7 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 context['protocol'] = 'https' if request.is_secure() else 'http'
                 context['donation'] = donation
                 context['solicitation'] = solicitation
-                send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
+                #send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

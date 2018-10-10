@@ -209,13 +209,13 @@ export default class DonationDetail extends React.Component{
                                         <div className="col l5 m12 s12">
                                             <img className="responsive-img" src={ this.state.donation.main_photo } />
                                             <br/><br/>
-                                            <Link to={ '/accounts/profile/'+this.state.user.id+'/' }>
+                                            <Link to={ '/accounts/profile/'+this.state.user.pk+'/' }>
                                                 <span>Doação realizada por: <div className="chip"><img src={ this.state.user.photo } alt="Contact Person" /> { this.state.donation.donator }</div></span>
                                             </Link>
                                             <br />
                                             <br />
                                             <Tags tags={ this.state.donation.tags } />
-                                            { this.handleSolicitationRender(this.state.user.id, this.state.logged_user.id) }
+                                            { this.handleSolicitationRender(this.state.user.pk, this.state.logged_user.pk) }
                                             <h4>Ponto de Encontro</h4>
                                             <div className="video-container">
                                                 <iframe width="450" height="350" frameBorder="0" style={{border:0}} src={`https://www.google.com/maps/embed/v1/place?q=${this.state.donation.cep},${this.state.donation.neighborhood},${this.state.donation.street},${this.state.donation.number},+Brasil&key=${API_KEY}`} allowFullScreen></iframe>

@@ -6,6 +6,7 @@ import Logout from './logout'
 import NameProject from './nameproject'
 import { Link } from 'react-router-dom'
 import Notifications from './notifications'
+import Pusher from 'pusher-js'
 
 export default class InternNav extends React.Component{
 
@@ -44,8 +45,8 @@ export default class InternNav extends React.Component{
                             'Authorization': 'Token ' + localStorage.token  
                         },
                         success: function(data){
-                           // Ayron, lembrar de por algo aqui
-                        },
+                           this.loadNotifications();
+                        }.bind(this),
                         error: function(request, status, err){
                             console.log(request, status, err);
                         }
@@ -89,7 +90,7 @@ export default class InternNav extends React.Component{
     componentDidMount(){
 
         this.loadNotifications();
-        
+
         $.ajax({
             url: '/api/logged-user/',
             dataType: 'json',
@@ -104,19 +105,27 @@ export default class InternNav extends React.Component{
                 console.log(request, status, err);
             }
         });
-
-        setInterval(function(){ 
-            this.loadNotifications()
-        }.bind(this), 60000);
-
     }
 
-    
     render(){
-        
         const background = `/static/images/background-user-details.jpg`
         const user = this.state.user
         const child = this.state.user.child
+
+        var pusher = new Pusher('1ab67094ad1ec71707db', {
+            cluster: 'us2',
+            forceTLS: true
+        });
+
+        var channel = pusher.subscribe('my-channel');
+
+        channel.bind('my-event', (data) => {
+            if (user.pk == data.notified) {
+                {this.loadNotifications()};
+                {this.handleRenderNotifications()};
+                Materialize.toast(data.message, 3000);
+            }
+        });
 
         if(child != undefined){
             return(
@@ -139,7 +148,7 @@ export default class InternNav extends React.Component{
                                         <li className="right" style={{ marginTop: '19px' }}>
                                             <span data-badge-caption="novas" className="new badge">{ this.handleRenderNotifications() }</span>
                                         </li>
-                                        <li className="right">                                        
+                                        <li className="right">
                                             <a href="#" onClick={() => { this.handleClickNotifications() } } data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
                                                 <i className="material-icons">notifications</i>
                                             </a>
@@ -176,7 +185,7 @@ export default class InternNav extends React.Component{
                     </nav>
                     <ul id="dropdown-options" className="dropdown-content">
                         <li>
-                            <Link to={ '/accounts/profile/'+user.id+'/' }>
+                            <Link to={ '/accounts/profile/'+user.pk+'/' }>
                                 <div className="valign-wrapper">
                                     <img className="responsive-img circle" style={{ width: '50px', height: '50px', }} src={ user.photo } />
                                     &nbsp;&nbsp;&nbsp;&nbsp;<p>{ this.handleRender(child) }<br/><small>{ user.email }</small></p>

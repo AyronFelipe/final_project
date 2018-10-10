@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
             'city',
             'complement',
             'email',
-            'id',
+            'pk',
             'is_active',
             'neighborhood',
             'number',

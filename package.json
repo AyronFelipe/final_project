@@ -38,6 +38,7 @@
     "materialize-css": "^0.100.2",
     "moment": "^2.22.2",
     "node-vibrant": "^3.0.0",
+    "pusher-js": "^4.3.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",

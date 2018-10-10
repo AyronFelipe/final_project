@@ -1,7 +1,6 @@
 import React from 'react'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
-import { Link} from 'react-router-dom'
 
 export default class Notifications extends React.Component{
 
