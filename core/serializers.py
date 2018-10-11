@@ -4,6 +4,8 @@ from .models import Photo, Tag, Notification, UnitMeasurement
 
 class PhotoSerializer(serializers.ModelSerializer):
 
+    image_file = serializers.SerializerMethodField()
+
     class Meta:
         model = Photo
         fields = [
@@ -11,6 +13,10 @@ class PhotoSerializer(serializers.ModelSerializer):
             'donation',
             'pk'
         ]
+    
+    def get_image_file(self, obj):
+
+        return obj.image_file.url
 
 
 class TagSerializer(serializers.ModelSerializer):

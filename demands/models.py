@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from core.utils import img_path
 from core.models import UnitMeasurement
 from datetime import datetime
+from cloudinary.models import CloudinaryField
 
 
 class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
@@ -14,7 +15,7 @@ class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
     owner = models.ForeignKey(get_user_model(), related_name='demands', on_delete=models.CASCADE, null=True, blank=True,)
-    main_photo = models.ImageField(_('main photo'), upload_to=img_path, null=True, blank=True)
+    main_photo = CloudinaryField(_('main photo'), null=True, blank=True)
     quantity = models.DecimalField(_('quatity'), max_digits=5, decimal_places=1, null=True, blank=True)
     unit_measurement = models.ForeignKey(UnitMeasurement, related_name='unit_demands', on_delete=models.SET_NULL, null=True, blank=True)
 

@@ -6,6 +6,7 @@ from core.utils import img_path
 from datetime import datetime
 from django.template.defaultfilters import slugify
 from datetime import datetime
+from cloudinary.models import CloudinaryField
 
 
 class Donation(CreationAndUpdateMixin, AddressMixin):
@@ -26,7 +27,7 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     validity = models.DateField(blank=True, null=True)
     validity_hour = models.TimeField(blank=True, null=True)
     is_accepted = models.BooleanField(default=False)
-    main_photo = models.ImageField(_('main photo'), upload_to=img_path, null=True, blank=True)
+    main_photo = CloudinaryField(_('main photo'), null=True, blank=True)
     status = models.CharField(_('status'), null=True, blank=True, max_length=1, choices=STATUS_DONATION, default=ACTIVE)
 
     class Meta:

@@ -7,13 +7,14 @@ from core.mixins import CreationAndUpdateMixin, PhoneMixin, AddressMixin
 from django.utils.translation import ugettext_lazy as _
 from .managers import UserManager
 from core.utils import img_path
+from cloudinary.models import CloudinaryField
 
 
 class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixin, AddressMixin):
 
     email = models.EmailField(_('email address'), unique=True,)
     is_active = models.BooleanField(_('active'), default=False,)
-    photo = models.ImageField(_('photo'), upload_to=img_path, null=True, blank=True,)
+    photo = CloudinaryField(_('photo'), null=True, blank=True,)
     is_staff = models.BooleanField(_('is staff?'), default=False,)
 
     objects = UserManager()

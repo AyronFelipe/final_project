@@ -4,11 +4,12 @@ from django.utils.translation import ugettext_lazy as _
 from core.utils import img_path
 from core.mixins import CreationAndUpdateMixin
 from django.contrib.auth import get_user_model
+from cloudinary.models import CloudinaryField
 
 
 class Photo(CreationAndUpdateMixin):
 
-    image_file = models.ImageField(_('file'), upload_to=img_path, null=True, blank=True)
+    image_file = CloudinaryField(_('file'), null=True, blank=True)
     donation = models.ForeignKey(Donation, null=True, blank=True, related_name="photos", on_delete=models.CASCADE)
 
     class Meta:

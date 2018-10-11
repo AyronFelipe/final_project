@@ -14,10 +14,12 @@ class UserSerializer(serializers.ModelSerializer):
     child = serializers.SerializerMethodField()
     donations_count = serializers.SerializerMethodField()
     donations_accepted = serializers.SerializerMethodField()
+    photo = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = [
+            'complement',
             'cell_phone',
             'cep',
             'city',
@@ -50,6 +52,10 @@ class UserSerializer(serializers.ModelSerializer):
     def get_donations_accepted(self, obj):
 
         return obj.donated_donations.filter(is_accepted=True).count()
+    
+    def get_photo(self, obj):
+
+        return obj.photo.url
 
 
 class PersonSerializer(serializers.ModelSerializer):
@@ -94,8 +100,11 @@ class InstitutionSerializer(serializers.ModelSerializer):
             'number',
             'photo',
             'cep',
+            'complement'
             'city',
             'uf',
+            'photo',
+            'objectives',
         ]
 
 
@@ -104,22 +113,10 @@ class LoggedPersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = [
-            'email',
-            'is_active',
             'first_name',
             'last_name',
             'cpf',
-            'phone',
-            'cell_phone',
-            'neighborhood',
-            'street',
-            'number',
             'birthday',
-            'cep',
-            'complement',
-            'city',
-            'uf',
-            'photo',
         ]
 
 
@@ -128,17 +125,7 @@ class LoggedInstitutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Institution
         fields = [
-            'email',
-            'is_active',
             'name',
             'cnpj',
-            'phone',
-            'cell_phone',
-            'neighborhood',
-            'street',
-            'number',
-            'photo',
-            'cep',
-            'city',
-            'uf',
+            'objectives',
         ]
