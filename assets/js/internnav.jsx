@@ -57,6 +57,7 @@ export default class InternNav extends React.Component{
     }
 
     loadNotifications(){
+
         $.ajax({
             url: '/api/notifications/',
             dataType: 'json',
@@ -121,9 +122,9 @@ export default class InternNav extends React.Component{
 
         channel.bind('my-event', (data) => {
             if (user.pk == data.notified) {
-                {this.loadNotifications};
-                {this.handleRenderNotifications};
-                Materialize.toast(data.message, 3000);
+                {this.loadNotifications()};
+                {this.handleRenderNotifications()};
+                Materialize.toast(data.message, 5000);
             }
         });
 
