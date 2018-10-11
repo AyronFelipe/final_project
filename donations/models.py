@@ -65,6 +65,7 @@ class Solicitation(CreationAndUpdateMixin):
     REJECTED = 'R'
     NOT_ANSWERED = 'NA'
     INVALID = 'I'
+    ON_HOLD = 'O'
 
     STATUS_SOLICITATION = (
         (SOLICITED, 'Solicitada'),
@@ -72,6 +73,7 @@ class Solicitation(CreationAndUpdateMixin):
         (REJECTED, 'Rejeitada'),
         (NOT_ANSWERED, 'Não respondida'),
         (INVALID, 'Inválida'),
+        (ON_HOLD, 'Em Espera'),
     )
 
     owner = models.ForeignKey(get_user_model(), related_name='solicitations', on_delete=models.CASCADE, null=True, blank=True)

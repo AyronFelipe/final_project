@@ -88,7 +88,7 @@ class SolicitationSerializer(serializers.ModelSerializer):
             'is_accepted',
             'slug',
             'donation',
-            'id',
+            'pk',
             'status',
             'donator_donation_pk',
             'donator_donation_photo',

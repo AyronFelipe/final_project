@@ -43,7 +43,27 @@ export default class MyDonations extends React.Component{
                 console.log(request, status, err);
             }
         });
-    }   
+    }
+
+    acceptSolicitation(pk){
+        $.ajax({
+            url: `/api/donation/accepts/${pk}/`,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                pk: pk
+            },
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function(data) {
+                location.reload();
+            }.bind(this),
+            error: function (request, status, err) {
+                console.log(request, status, err);
+            }
+        });
+    }
 
     componentDidMount(){
         $.ajax({
@@ -211,7 +231,7 @@ export default class MyDonations extends React.Component{
                                                                                         <i className="material-icons right">not_interested</i> Rejeitar
                                                                                     </button>
                                                                                     &nbsp;&nbsp;&nbsp;
-                                                                                    <button className="btn waves-effect waves-light green" type="submit" name="action">
+                                                                                    <button className="btn waves-effect waves-light green" type="button" onClick={this.acceptSolicitation.bind(this, solicitation_of_donation.pk)}>
                                                                                         <i className="material-icons right">done</i> Aceitar
                                                                                     </button>
                                                                                 </div>

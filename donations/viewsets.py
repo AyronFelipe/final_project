@@ -197,7 +197,7 @@ class DestroySolicitationViewSet(APIView):
 
 class SolicitationsOfDonationViewSet(viewsets.ViewSet):
     '''
-    Criando uma URL na qual se passa o ID de uma doaçõa e retorna todas as solicitações da supra dita doação.
+    Criando um endpoint no qual se passa o ID de uma doação e todas as solicitações da supra dita doação são retornadas.
     Fazendo isso porque o serializers não funciona. ¬¬
     '''
 
@@ -206,3 +206,25 @@ class SolicitationsOfDonationViewSet(viewsets.ViewSet):
         queryset = Solicitation.objects.filter(donation__id=id)
         serializer = SolicitationSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class AcceptSolicitation(APIView):
+    '''
+    Criando endpoint no qual a solicitação é aceita
+    '''
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def post(self, request, pk=None):
+        solicitation = Solicitation.objects.get(pk=pk)
+        solicitation.is_accepted = True
+        solicitation.status = Solicitation.ACCEPTED
+        solicitation.save()
+        donation = Donation.objects.get(pk=solicitation.donation.pk)
+        for obj in donation.solicitations.all():
+            if obj.pk != solicitation.pk:
+                obj.status = Solicitation.ON_HOLD
+                obj.save()
+        message = 'A sua solicitação ' + solicitation.slug + ' foi aceita pelo usuário ' + donation.donator.get_name() + '.'
+        notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
+        pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+        return Response(status=status.HTTP_200_OK)
