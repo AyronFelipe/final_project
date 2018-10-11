@@ -36,7 +36,6 @@ class CreateDonationViewSet(generics.CreateAPIView):
                 description = instance.get('description'),
                 validity = instance.get('validity'),
                 validity_hour = instance.get('validity_hour'),
-                main_photo = instance.get('main_photo'),
                 neighborhood=instance.get('neighborhood'), 
                 street=instance.get('street'), 
                 number=instance.get('number'), 
@@ -47,6 +46,7 @@ class CreateDonationViewSet(generics.CreateAPIView):
             )
             with transaction.atomic():
                 donation.donator = request.user
+                donation.main_photo = request.FILES.get('main_photo')
                 donation.save()
                 for photo in request.FILES.getlist('photos'):
                     Photo.objects.create(image_file=photo, donation=donation)

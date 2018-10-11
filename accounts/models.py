@@ -29,9 +29,9 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
 
     def get_name(self):
 
-        if self.person:
+        if hasattr(self, 'person'):
             return self.person.first_name
-        elif self.institution:
+        else:
             return self.institution.name
         return None
 

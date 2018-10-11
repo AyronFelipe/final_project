@@ -52,5 +52,8 @@
     "webpack": "^3.10.0",
     "webpack-bundle-tracker": "^0.2.1",
     "webpack-dev-server": "^3.1.1"
+  },
+  "dependencies": {
+    "cloudinary-react": "^1.0.6"
   }
 }

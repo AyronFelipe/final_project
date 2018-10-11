@@ -42,7 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
 
         if hasattr(obj, 'institution'):
             serializer = LoggedInstitutionSerializer(obj.institution)
-        serializer = LoggedPersonSerializer(obj.person)
+        else:
+            serializer = LoggedPersonSerializer(obj.person)
         return serializer.data
 
     def get_donations_count(self, obj):
@@ -52,13 +53,15 @@ class UserSerializer(serializers.ModelSerializer):
     def get_donations_accepted(self, obj):
 
         return obj.donated_donations.filter(is_accepted=True).count()
-    
-    def get_photo(self, obj):
 
-        return obj.photo.url
+    def get_photo(self, obj):
+        if hasattr(obj, 'photo'):
+            return obj.photo.url
 
 
 class PersonSerializer(serializers.ModelSerializer):
+
+    photo = serializers.SerializerMethodField()
 
     class Meta:
         model = Person
@@ -82,8 +85,14 @@ class PersonSerializer(serializers.ModelSerializer):
             'photo',
         ]
 
+    def get_photo(self, obj):
+        if hasattr(obj, 'photo'):
+            return obj.photo.url
+
 
 class InstitutionSerializer(serializers.ModelSerializer):
+
+    photo = serializers.SerializerMethodField()
 
     class Meta:
         model = Institution
@@ -100,12 +109,15 @@ class InstitutionSerializer(serializers.ModelSerializer):
             'number',
             'photo',
             'cep',
-            'complement'
+            'complement',
             'city',
             'uf',
-            'photo',
             'objectives',
         ]
+
+    def get_photo(self, obj):
+        if hasattr(obj, 'photo'):
+            return obj.photo.url
 
 
 class LoggedPersonSerializer(serializers.ModelSerializer):

@@ -15,11 +15,18 @@ export default class Institution extends React.Component{
     }
 
     saveInstitution(){
+        $("#institution-form").find(":input").each(function () {
+            $(this).siblings('span.error-message').html('');
+        });
+        let form = new FormData($("#institution-form").get(0));
         $.ajax({
             url: '/api/new-institution/',
             type: 'POST',
             dataType: 'json',
-            data: $("#institution-form"),
+            data: form,
+            cache: false,
+            processData: false,
+            contentType: false,
             success: function(data){
                 $('#modal-confirmacao').modal('open');
             },
@@ -152,7 +159,7 @@ export default class Institution extends React.Component{
                                     <Address legend="Endereço" />
                                     <div className="row">
                                         <div className="col s12 right-align">
-                                            <button type="button" className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={ this.savePerson }>Salvar</button>
+                                            <button type="button" className="btn-large waves-effect waves-light indigo accent-2 white-text" onClick={this.saveInstitution }>Salvar</button>
                                         </div>
                                     </div>
                                 </form>

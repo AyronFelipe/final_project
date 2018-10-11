@@ -15,8 +15,8 @@ class PhotoSerializer(serializers.ModelSerializer):
         ]
     
     def get_image_file(self, obj):
-
-        return obj.image_file.url
+        if hasattr(obj, 'image_file'):
+            return obj.image_file.url
 
 
 class TagSerializer(serializers.ModelSerializer):

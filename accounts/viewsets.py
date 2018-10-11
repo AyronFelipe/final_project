@@ -16,7 +16,7 @@ from django.db import transaction
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from rest_framework.parsers import MultiPartParser, FormParser
-
+import cloudinary.uploader
 
 User = get_user_model()
 
@@ -93,13 +93,24 @@ class CreatePersonViewSet(generics.CreateAPIView):
         if serializer.is_valid():
             instance = serializer.validated_data
             person = Person(
-                email=instance.get('email'), first_name=instance.get('first_name'), 
-                last_name=instance.get('last_name'), cpf=instance.get('cpf'), birthday=instance.get('birthday'), 
-                phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), neighborhood=instance.get('neighborhood'), 
-                street=instance.get('street'), number=instance.get('number'), cep=instance.get("cep"), photo=instance.get("photo"),
-                uf=instance.get("uf"), city=instance.get("city"), complement=instance.get("complement"))
+                email=instance.get('email'), 
+                first_name=instance.get('first_name'), 
+                last_name=instance.get('last_name'), 
+                cpf=instance.get('cpf'), 
+                birthday=instance.get('birthday'), 
+                phone=instance.get('phone'), 
+                cell_phone=instance.get('cell_phone'), 
+                neighborhood=instance.get('neighborhood'), 
+                street=instance.get('street'), 
+                number=instance.get('number'), 
+                cep=instance.get("cep"), 
+                uf=instance.get("uf"), 
+                city=instance.get("city"), 
+                complement=instance.get("complement")
+            )
             with transaction.atomic():
                 person.set_password(instance.get('password'))
+                person.photo = request.FILES.get('photo')
                 person.save()
                 subject = "Ative sua conta"
                 context = {}
@@ -128,20 +139,30 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
         if serializer.is_valid():
             instance = serializer.validated_data
             institution = Institution(
-                email=instance.get('email'), name=instance.get('name'), cnpj=instance.get('cnpj'), 
-                phone=instance.get('phone'), cell_phone=instance.get('cell_phone'), 
-                neighborhood=instance.get('neighborhood'), street=instance.get('street'), 
-                number=instance.get('number'), photo=instance.get("photo"), cep=instance.get("cep"), 
-                uf=instance.get("uf"), city=instance.get("city"), complement=instance.get("complement"))
-            institution.set_password(instance.get('password'))
-            institution.save()
-            subject = "Ative sua conta"
-            context = {}
-            context['user'] = institution
-            context['domain'] = get_current_site(request).domain
-            context['uid'] = urlsafe_base64_encode(force_bytes(institution.pk)).decode()
-            context['token'] = account_activation_token.make_token(institution)
-            context['protocol'] = 'https' if request.is_secure() else 'http'
-            send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+                email=instance.get('email'), 
+                name=instance.get('name'), 
+                cnpj=instance.get('cnpj'), 
+                phone=instance.get('phone'), 
+                cell_phone=instance.get('cell_phone'), 
+                neighborhood=instance.get('neighborhood'), 
+                street=instance.get('street'), 
+                number=instance.get('number'), 
+                cep=instance.get("cep"), 
+                uf=instance.get("uf"), 
+                city=instance.get("city"), 
+                complement=instance.get("complement")
+            )
+            with transaction.atomic():
+                institution.set_password(instance.get('password'))
+                institution.photo = request.FILES.get('photo')
+                institution.save()
+                subject = "Ative sua conta"
+                context = {}
+                context['user'] = institution
+                context['domain'] = get_current_site(request).domain
+                context['uid'] = urlsafe_base64_encode(force_bytes(institution.pk)).decode()
+                context['token'] = account_activation_token.make_token(institution)
+                context['protocol'] = 'https' if request.is_secure() else 'http'
+                send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
