@@ -64,7 +64,7 @@ export default class Login extends React.Component{
                         <form id="login-form">
                             <DjangoCSRFToken />
                             <div className="card-content">
-                                <div className="white-text center-align"><h1><NameProject /></h1></div>
+                                <div className="white-text center-align"><h3><NameProject /></h3></div>
                                 <span className="card-title">Digite seus dados</span>
                                 <div id="error-message" className="red-text"></div>
                                 <div className="row">
