@@ -28,7 +28,7 @@ class NotificationViewSet(viewsets.ViewSet):
     '''
    
     def list(self, request):
-        
+
         queryset = Notification.objects.filter(notified=request.user)
         serializer = NotificationSerializer(queryset, many=True)
         return Response(serializer.data)

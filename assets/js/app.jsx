@@ -34,7 +34,7 @@ class App extends React.Component{
     }
 
     render(){
-        if (this.state.authenticated) {
+        if (this.state.authenticated == true) {
             return(
                 <Switch>
                     <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/" component={ Home } />
