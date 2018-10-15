@@ -18,7 +18,7 @@ export default class Main extends React.Component{
                                 <div className="col m6 s12">
                                     <br/>
                                     <Link to="/accounts/new-person/">
-                                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text">Sou uma pessoa normal. Quero ajudar!</button>
+                                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text">Sou uma pessoa física. Quero ajudar!</button>
                                     </Link>
                                 </div>
                                 <div className="col m6 s12">

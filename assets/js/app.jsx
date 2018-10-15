@@ -10,7 +10,7 @@ import Person from './person'
 import Institution from './institution'
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
-import { isAuthenticated } from './auth'
+import { storageToken, isAuthenticated } from './auth'
 import Home from './home2'
 import PrivateRoute from './privateroute'
 
@@ -33,11 +33,15 @@ class App extends React.Component{
         this.state = {authenticated: isAuthenticated()}
     }
 
+    componentDidMount(){
+        storageToken("");
+    }
+
     render(){
         if (this.state.authenticated == true) {
             return(
                 <Switch>
-                    <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/" component={ Home } />
+                    <Route exact authenticated={this.state.authenticated} path="/donations/" component={ Home } />
                     <Redirect to="/donations/" />
                 </Switch>
             )
