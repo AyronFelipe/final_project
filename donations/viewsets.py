@@ -181,7 +181,7 @@ class MySolicitationsViewSet(viewsets.ViewSet):
 
 class DestroySolicitationViewSet(APIView):
     '''
-    Extinção de uma solicitação
+    Delete de uma solicitação
     '''
     permission_classes = (permissions.IsAuthenticated,)
     
@@ -203,7 +203,7 @@ class SolicitationsOfDonationViewSet(viewsets.ViewSet):
 
     def list(self, request, id=None):
         list_solicitations = []
-        queryset = Solicitation.objects.filter(donation__id=id)
+        queryset = Solicitation.objects.filter(donation__id=id).exclude(status=Solicitation.REJECTED)
         serializer = SolicitationSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -215,6 +215,7 @@ class AcceptSolicitation(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request, pk=None):
+        #faltam dados
         solicitation = Solicitation.objects.get(pk=pk)
         solicitation.is_accepted = True
         solicitation.status = Solicitation.ACCEPTED
@@ -227,4 +228,25 @@ class AcceptSolicitation(APIView):
         message = 'A sua solicitação ' + solicitation.slug + ' foi aceita pelo usuário ' + donation.donator.get_name() + '.'
         notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
         pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+        #email
+        return Response(status=status.HTTP_200_OK)
+
+
+class RejectSolicitation(APIView):
+    '''
+    Endpoint no qual a solicitação é rejeitada
+    '''
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, pk=None):
+        #faltam dados
+        solicitation = Solicitation.objects.get(pk=pk)
+        solicitation.is_accepted = True
+        solicitation.status = Solicitation.REJECTED
+        solicitation.save()
+        donation = Donation.objects.get(pk=solicitation.donation.pk)
+        message = 'A sua solicitação ' + solicitation.slug + ' foi rejeitada pelo usuário ' + donation.donator.get_name() + '.'
+        notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
+        pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+        #email
         return Response(status=status.HTTP_200_OK)

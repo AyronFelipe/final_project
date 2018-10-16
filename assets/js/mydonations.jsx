@@ -65,6 +65,36 @@ export default class MyDonations extends React.Component{
         });
     }
 
+    rejectSolicitation(pk){
+        $.ajax({
+            url: `/api/donation/rejects/${pk}/`,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                pk: pk
+            },
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function (data) {
+                location.reload();
+            }.bind(this),
+            error: function (request, status, err) {
+                console.log(request, status, err);
+            }
+        })
+    }
+
+    handleClickReject(pk){
+        $(`#reject-${pk}`).show().find('textarea').attr('disabled', false);
+        $(`#accept-${pk}`).hide().find('input').attr('disabled', true);
+    }
+
+    handleClickAccept(pk){
+        $(`#reject-${pk}`).hide().find('textarea').attr('disabled', true);
+        $(`#accept-${pk}`).show().find('input').attr('disabled', false);
+    }
+
     componentDidMount(){
         $.ajax({
             url: '/api/my-donations/',
@@ -86,6 +116,38 @@ export default class MyDonations extends React.Component{
                 console.log(request, status, err);
             }
         });
+
+        $(".datepicker").pickadate({
+            selectMonths: true,
+            selectYears: 50,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true,
+            formatSubmit: 'yyyy-mm-dd',
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            editable: false,
+            hiddenName: true,
+            min: true,
+            showMonthsFull: true,
+            showWeekdaysShort: true,
+        })
+
+        $('.timepicker').pickatime({
+            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+            twelvehour: false, // Use AM/PM or 24-hour format
+            donetext: 'OK', // text for done-button
+            cleartext: 'Limpar', // text for clear-button
+            canceltext: 'Cancelar', // Text for cancel-button,
+            container: undefined, // ex. 'body' will append picker to body
+            autoclose: false, // automatic close timepicker
+            ampmclickable: true, // make AM PM clickable
+            aftershow: function () { } //Function for after opening timepicker
+        })
     }
 
     render(){
@@ -199,14 +261,15 @@ export default class MyDonations extends React.Component{
                                                         <ul className="collapsible popout" data-collapsible="accordion">
                                                             {this.state.solicitations_of_donation.map((solicitation_of_donation, index) =>
                                                                 <li key={index}>
-                                                                    <div className="collapsible-header"><i className="material-icons">shopping_basket</i>{solicitation_of_donation.slug}</div>
+                                                                    <div className="collapsible-header">
+                                                                        <p><i className="material-icons">shopping_basket</i>{solicitation_of_donation.slug} - <span className="rigth-align">{solicitation_of_donation.status}</span></p>
+                                                                    </div>
                                                                     <div className="collapsible-body">
                                                                         <p>
                                                                             <strong>Solicitante: </strong>
-                                                                            <Link target="_blank"
-                                                                             to={ `/accounts/profile/${solicitation_of_donation.owner_pk}/` }>
+                                                                            <Link target="_blank" to={ `/accounts/profile/${solicitation_of_donation.owner_pk}/` }>
                                                                                 <img className="responsive-img circle" style={{ width: '50px', height: '50px' }} src={solicitation_of_donation.owner_photo} /> 
-                                                                                 { solicitation_of_donation.owner }
+                                                                                { solicitation_of_donation.owner }
                                                                             </Link>
                                                                         </p>
                                                                         <p>
@@ -215,27 +278,55 @@ export default class MyDonations extends React.Component{
                                                                         </p>
                                                                         <h5>Ações</h5>
                                                                         <hr/>
-                                                                            <div className="card deep-purple">
-                                                                                <div className="card-content white-text">
-                                                                                    <span className="card-title">Atenção</span>
-                                                                                    <p>
-                                                                                        As opções abaixo representam seu interesse nessa solicitação.<br/><br/>
-                                                                                        Se você clicar em "rejeitar" essa doação não aparecerá mais no gereciamento de solicitações desta doação.<br/><br/>
-                                                                                        Agora, se você clicar em "aceitar" essa doação passará para o estado de aceita. Você deverá preencher os campos de data e hora para que o solicitante possa ir buscar a sua doação.<br/><br/>
-                                                                                        <i className="material-icons">priority_high</i> Se porventura houverem outras solicitações, ao clicar em "aceitar" as outras solicitações passarão para o estado de "Em Espera".<br/><br/>
-                                                                                        <i className="material-icons">priority_high</i> Se o solicitante não aparecer até o dia e horário determinados, você possui a opção de "Não apareceu" e ao confirmar colocará essa doação novamente no estado de "Aberta" e outros usuários poderão solicitá-la novamente.<br/><br/>
-                                                                                    </p>
-                                                                                </div>
-                                                                                <div className="card-action">
-                                                                                    <button className="btn waves-effect waves-light red" type="submit" name="action">
-                                                                                        <i className="material-icons right">not_interested</i> Rejeitar
-                                                                                    </button>
-                                                                                    &nbsp;&nbsp;&nbsp;
-                                                                                    <button className="btn waves-effect waves-light green" type="button" onClick={this.acceptSolicitation.bind(this, solicitation_of_donation.pk)}>
-                                                                                        <i className="material-icons right">done</i> Aceitar
-                                                                                    </button>
-                                                                                </div>
+                                                                        <div className="card deep-purple">
+                                                                            <div className="card-content white-text">
+                                                                                <span className="card-title">Atenção</span>
+                                                                                <p>
+                                                                                    As opções abaixo representam seu interesse nessa solicitação.<br/><br/>
+                                                                                    Se você clicar em "Rejeitar essa solicitação" um campo com o motivo da rejeição aparecerá. Após preenche-lo clique em "Rejeitar" e essa solicitação não aparecerá mais.<br/><br/>
+                                                                                    Agora, se você clicar em "Aceitar essa solicitação" dois campos aparecerão para você preencher a data e o horário limite que para esse solicitante ir buscar a sua doação.<br/><br/>
+                                                                                    <i className="material-icons">priority_high</i> Se porventura houverem outras solicitações, ao clicar em "aceitar" as outras solicitações passarão para o estado de "Em Espera".<br/><br/>
+                                                                                    <i className="material-icons">priority_high</i> Se o solicitante não aparecer até o dia e horário determinados, você possui a opção de "Não apareceu" e ao confirmar colocará essa doação novamente no estado de "Aberta" e outros usuários poderão solicitá-la novamente.<br/><br/>
+                                                                                </p>
                                                                             </div>
+                                                                            <div className="card-action">
+                                                                                <button className="btn waves-effect waves-light" type="button" onClick={() => {this.handleClickReject(solicitation_of_donation.pk)}}>
+                                                                                    Rejeitar essa solicitação
+                                                                                </button>
+                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                <button className="btn waves-effect waves-light" type="button" onClick={() => { this.handleClickAccept(solicitation_of_donation.pk)}}>
+                                                                                    Aceitar essa solicitação
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id={`accept-${solicitation_of_donation.pk}`} hidden>
+                                                                            <div className="row">
+                                                                                <div className="input-field col s12">
+                                                                                    <input id="validity" name="validity" type="text" className="datepicker" />
+                                                                                    <label htmlFor="validity">Disponível até o dia</label>
+                                                                                    <span className="validity-error-message red-text error"></span>
+                                                                                </div>
+                                                                                <div className="input-field col s12">
+                                                                                    <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
+                                                                                    <label htmlFor="validity_hour">Disponível até às</label>
+                                                                                    <span className="validity_hour-error-message red-text error"></span>
+                                                                                </div>
+                                                                                <button className="btn waves-effect waves-light green" type="button" onClick={this.acceptSolicitation.bind(this, solicitation_of_donation.pk)}>
+                                                                                    <i className="material-icons right">done</i> Aceitar
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id={`reject-${solicitation_of_donation.pk}`} hidden>
+                                                                            <div className="row">
+                                                                                <div className="input-field col s12">
+                                                                                    <textarea id="reason-rejection" name="reason_rejection" className="materialize-textarea"></textarea>
+                                                                                    <label htmlFor="reason-rejection">Motivo da Rejeição</label>
+                                                                                </div>
+                                                                                <button className="btn waves-effect waves-light red" type="button" onClick={this.rejectSolicitation.bind(this, solicitation_of_donation.pk)}>
+                                                                                    <i className="material-icons right">not_interested</i> Rejeitar
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </li>
                                                             )}
