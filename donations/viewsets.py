@@ -186,7 +186,7 @@ class DestroySolicitationViewSet(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request):
-        solicitation = Solicitation.objects.get(id=request.POST.get('id'))
+        solicitation = Solicitation.objects.get(id=request.POST.get('pk'))
         if solicitation:
             solicitation.delete()
             data = {}

@@ -34,9 +34,9 @@ export default class MySolicitations extends React.Component{
         });
     }
 
-    deleteSolicitation(id){
+    deleteSolicitation(pk){
         let form = new FormData();
-        form.append('id', id);
+        form.append('pk', pk);
         $.ajax({
             url: '/api/delete/solicitation/',
             type: 'POST',
@@ -162,7 +162,7 @@ export default class MySolicitations extends React.Component{
                                 </thead>
                                 <tbody>
                                     {this.state.solicitations.map((solicitation, index) =>
-                                        <tr key={solicitation.id}>
+                                        <tr key={solicitation.pk}>
                                             <td>{ solicitation.slug }</td>
                                             <td><Link to={ `/donations/donation/${solicitation.donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donation.main_photo} /> { solicitation.donation.slug }</Link></td>
                                             <td><Link to={ `/accounts/profile/${solicitation.donator_donation_pk}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={solicitation.donator_donation_photo} /> { solicitation.donation.donator }</Link></td>
@@ -191,7 +191,7 @@ export default class MySolicitations extends React.Component{
                                                         <div className="row">
                                                             <div className="col s12">
                                                                 <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
-                                                                <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteSolicitation.bind(this, solicitation.id)}><i className="material-icons">delete</i> Eu quero excluir!</button>
+                                                                <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteSolicitation.bind(this, solicitation.pk)}><i className="material-icons">delete</i> Eu quero excluir!</button>
                                                             </div>
                                                         </div>
                                                     </div>
