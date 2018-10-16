@@ -142,7 +142,7 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 context['protocol'] = 'https' if request.is_secure() else 'http'
                 context['donation'] = donation
                 context['solicitation'] = solicitation
-                send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
+                #send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
                 return Response(serializer.data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
