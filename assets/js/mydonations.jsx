@@ -66,13 +66,15 @@ export default class MyDonations extends React.Component{
     }
 
     rejectSolicitation(pk){
+        let values = {
+            pk: pk,
+            reason_rejection: $("#reason-rejection").val() 
+        }
         $.ajax({
             url: `/api/donation/rejects/${pk}/`,
             type: 'POST',
             dataType: 'json',
-            data: {
-                pk: pk
-            },
+            data: values,
             headers: {
                 'Authorization': 'Token ' + localStorage.token
             },
@@ -80,7 +82,9 @@ export default class MyDonations extends React.Component{
                 location.reload();
             }.bind(this),
             error: function (request, status, err) {
-                console.log(request, status, err);
+                if (request.status == 401) {
+                    $('.reason_rejection-error-message').html(request.responseJSON.message_error)
+                }
             }
         })
     }
@@ -116,38 +120,6 @@ export default class MyDonations extends React.Component{
                 console.log(request, status, err);
             }
         });
-
-        $(".datepicker").pickadate({
-            selectMonths: true,
-            selectYears: 50,
-            today: 'Hoje',
-            clear: 'Limpar',
-            close: 'Ok',
-            closeOnSelect: true,
-            formatSubmit: 'yyyy-mm-dd',
-            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
-            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            editable: false,
-            hiddenName: true,
-            min: true,
-            showMonthsFull: true,
-            showWeekdaysShort: true,
-        })
-
-        $('.timepicker').pickatime({
-            default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-            fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-            twelvehour: false, // Use AM/PM or 24-hour format
-            donetext: 'OK', // text for done-button
-            cleartext: 'Limpar', // text for clear-button
-            canceltext: 'Cancelar', // Text for cancel-button,
-            container: undefined, // ex. 'body' will append picker to body
-            autoclose: false, // automatic close timepicker
-            ampmclickable: true, // make AM PM clickable
-            aftershow: function () { } //Function for after opening timepicker
-        })
     }
 
     render(){
@@ -201,11 +173,48 @@ export default class MyDonations extends React.Component{
                 </div>
             )
         }
+
         $('.dropdown-button').dropdown({
             alignment: 'right'
-        });
-        $('.modal').modal();
-        $('.collapsible').collapsible();
+        })
+
+        $('.modal').modal({
+            endingTop: '10%'
+        })
+        
+        $('.collapsible').collapsible()
+        
+        $(".datepicker").pickadate({
+            selectMonths: true,
+            selectYears: 50,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true,
+            formatSubmit: 'yyyy-mm-dd',
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            editable: false,
+            hiddenName: true,
+            min: true,
+            showMonthsFull: true,
+            showWeekdaysShort: true,
+        })
+
+        $('.timepicker').pickatime({
+            default: 'now',
+            fromnow: 0,
+            twelvehour: false,
+            donetext: 'OK',
+            cleartext: 'Limpar',
+            canceltext: 'Cancelar',
+            container: undefined,
+            autoclose: false,
+            ampmclickable: true,
+        })
+
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -303,12 +312,12 @@ export default class MyDonations extends React.Component{
                                                                             <div className="row">
                                                                                 <div className="input-field col s12">
                                                                                     <input id="validity" name="validity" type="text" className="datepicker" />
-                                                                                    <label htmlFor="validity">Disponível até o dia</label>
+                                                                                    <label htmlFor="validity"><span className="red-text">*</span> Disponível até o dia</label>
                                                                                     <span className="validity-error-message red-text error"></span>
                                                                                 </div>
                                                                                 <div className="input-field col s12">
                                                                                     <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
-                                                                                    <label htmlFor="validity_hour">Disponível até às</label>
+                                                                                    <label htmlFor="validity_hour"><span className="red-text">*</span> Disponível até às</label>
                                                                                     <span className="validity_hour-error-message red-text error"></span>
                                                                                 </div>
                                                                                 <button className="btn waves-effect waves-light green" type="button" onClick={this.acceptSolicitation.bind(this, solicitation_of_donation.pk)}>
@@ -320,7 +329,8 @@ export default class MyDonations extends React.Component{
                                                                             <div className="row">
                                                                                 <div className="input-field col s12">
                                                                                     <textarea id="reason-rejection" name="reason_rejection" className="materialize-textarea"></textarea>
-                                                                                    <label htmlFor="reason-rejection">Motivo da Rejeição</label>
+                                                                                    <label htmlFor="reason-rejection">Motivo da Rejeição <span className="red-text">*</span></label>
+                                                                                    <span className="reason_rejection-error-message red-text error"></span>
                                                                                 </div>
                                                                                 <button className="btn waves-effect waves-light red" type="button" onClick={this.rejectSolicitation.bind(this, solicitation_of_donation.pk)}>
                                                                                     <i className="material-icons right">not_interested</i> Rejeitar

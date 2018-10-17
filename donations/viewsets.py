@@ -239,14 +239,26 @@ class RejectSolicitation(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, pk=None):
-        #faltam dados
+        reason_rejection = request.POST.get('reason_rejection')
+        if reason_rejection == '':
+            data = {}
+            data['message_error'] = "Este campo não pode ficar em branco."
+            return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
         solicitation = Solicitation.objects.get(pk=pk)
         solicitation.is_accepted = True
         solicitation.status = Solicitation.REJECTED
+        solicitation.reason_rejection = reason_rejection
         solicitation.save()
         donation = Donation.objects.get(pk=solicitation.donation.pk)
         message = 'A sua solicitação ' + solicitation.slug + ' foi rejeitada pelo usuário ' + donation.donator.get_name() + '.'
         notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
         pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
-        #email
+        subject = "Sua solicitação foi rejeitada"
+        context = {}
+        context['user'] = solicitation.owner
+        context['domain'] = get_current_site(request).domain
+        context['protocol'] = 'https' if request.is_secure() else 'http'
+        context['donation'] = donation
+        context['solicitation'] = solicitation
+        send_mail_template(subject, "emails/notification_rejection_solicitation_email.html", context, [solicitation.owner.email])
         return Response(status=status.HTTP_200_OK)

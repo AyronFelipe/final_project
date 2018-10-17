@@ -84,6 +84,7 @@ class Solicitation(CreationAndUpdateMixin):
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
     donation = models.ForeignKey(Donation, related_name='solicitations', on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(_('status'), max_length=1, null=True, blank=True, choices=STATUS_SOLICITATION, default=SOLICITED)
+    reason_rejection = models.TextField(_('reason of rejection'), null=True, blank=True)
 
     class Meta:
 
