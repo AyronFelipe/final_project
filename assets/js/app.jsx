@@ -12,7 +12,6 @@ import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import { storageToken, isAuthenticated } from './auth'
 import Home from './home2'
-import PrivateRoute from './privateroute'
 
 class Initial extends React.Component{
     render(){
@@ -34,16 +33,22 @@ class App extends React.Component{
     }
 
     componentDidMount(){
-        storageToken("");
+        if (!isAuthenticated()) {
+            storageToken("");
+        } else {
+            storageToken(localStorage.token);
+        }
     }
 
     render(){
-        if (this.state.authenticated == true) {
+        if (isAuthenticated()) {
             return(
-                <Switch>
-                    <Route exact authenticated={this.state.authenticated} path="/donations/" component={ Home } />
-                    <Redirect to="/donations/" />
-                </Switch>
+                <div>
+                    <Switch>
+                        <Route exact path="/donations/" component={ Home } />
+                        <Redirect to="/donations/" />
+                    </Switch>
+                </div>
             )
         } else {
             return(

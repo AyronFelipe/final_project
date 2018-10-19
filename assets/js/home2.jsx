@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDom from 'react-dom'
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'

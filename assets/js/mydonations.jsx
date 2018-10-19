@@ -299,25 +299,30 @@ export default class MyDonations extends React.Component{
                                                                                 </p>
                                                                             </div>
                                                                             <div className="card-action">
-                                                                                <button className="btn waves-effect waves-light" type="button" onClick={() => {this.handleClickReject(solicitation_of_donation.pk)}}>
-                                                                                    Rejeitar essa solicitação
-                                                                                </button>
-                                                                                &nbsp;&nbsp;&nbsp;
-                                                                                <button className="btn waves-effect waves-light" type="button" onClick={() => { this.handleClickAccept(solicitation_of_donation.pk)}}>
-                                                                                    Aceitar essa solicitação
-                                                                                </button>
+                                                                                <div className="row">
+                                                                                    <div className="col m6 s12">
+                                                                                        <button className="btn waves-effect waves-light" type="button" onClick={() => {this.handleClickReject(solicitation_of_donation.pk)}}>
+                                                                                            <small>Rejeitar essa solicitação</small>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div className="col m6 s12">
+                                                                                        <button className="btn waves-effect waves-light" type="button" onClick={() => { this.handleClickAccept(solicitation_of_donation.pk)}}>
+                                                                                            <small>Aceitar essa solicitação</small>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <div id={`accept-${solicitation_of_donation.pk}`} hidden>
                                                                             <div className="row">
                                                                                 <div className="input-field col s12">
                                                                                     <input id="validity" name="validity" type="text" className="datepicker" />
-                                                                                    <label htmlFor="validity"><span className="red-text">*</span> Disponível até o dia</label>
+                                                                                    <label htmlFor="validity">Disponível até o dia <span className="red-text">*</span></label>
                                                                                     <span className="validity-error-message red-text error"></span>
                                                                                 </div>
                                                                                 <div className="input-field col s12">
                                                                                     <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
-                                                                                    <label htmlFor="validity_hour"><span className="red-text">*</span> Disponível até às</label>
+                                                                                    <label htmlFor="validity_hour">Disponível até às <span className="red-text">*</span></label>
                                                                                     <span className="validity_hour-error-message red-text error"></span>
                                                                                 </div>
                                                                                 <button className="btn waves-effect waves-light green" type="button" onClick={this.acceptSolicitation.bind(this, solicitation_of_donation.pk)}>
