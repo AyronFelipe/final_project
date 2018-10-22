@@ -2,10 +2,11 @@ import React from 'react'
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, Switch, Route } from 'react-router-dom'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import Preloader from './preloader'
+import Login from './login'
 
 const SEARCH_LIMIT_SIZE = 3;
 const SEARCH_LIMIT_EMPTY = 0;
@@ -232,9 +233,79 @@ export default class Donations extends React.Component{
     }
 
     render(){
-        //Se tiver dados no state donations
-        $('.modal').modal();
-        if(this.state.donations.length){
+        if (localStorage.token == "" || localStorage.token == undefined) {
+            return (
+                <div>
+                    <Switch>
+                        <Route exact path="/accounts/login/" component={Login} />
+                        <Redirect to={{ pathname: '/accounts/login/' }} />
+                    </Switch>
+                </div>
+            )
+        } else {
+            //Se tiver dados no state donations
+            $('.modal').modal();
+            if(this.state.donations.length){
+                return(
+                    <div>
+                        <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
+                            <div className="row">
+                                <div className="col s12">
+                                    <div className="col s10 push-s1">
+                                        <div className="nav-content">
+                                            <span className="nav-title">Início { this.state.title }</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                        <nav className="show-on-medium-and-down hide-on-med-and-up deep-purple darken-2 white-text">
+                            <div className="nav-wrapper">
+                                <form onSubmit={ (e) => this.handleSubmitSearchForm(e) }>
+                                    <div className="input-field">
+                                        <input id="search" type="search" required onChange={ (e) => this.handleChangeSearch(e) } />
+                                        <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                                        <i className="material-icons">close</i>
+                                    </div>
+                                </form>
+                            </div>
+                        </nav>
+                        <div className="row">
+                            <div id="doacoes">
+                                <div className="row">
+                                    <div className="col l10 m12 s12">
+                                        <div id="card-donations-section">
+                                            <CardDonation donations={this.state.donations} />
+                                        </div>
+                                    </div>
+                                    <div className="col l2 m0 s0 hide-on-med-and-down">
+                                        { this.handleTagRender() }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="fixed-action-btn">
+                                <Link to="/donations/new-donation/">
+                                    <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
+                                        <i className="material-icons">add</i>
+                                    </button>
+                                </Link>
+                            </div>
+                        </div>
+                        <div id="modal-search-donations-empty" className="modal">
+                            <div className="modal-content">
+                                <h4>Não encontramos nada!</h4>
+                                <blockquote>
+                                    Sua busca não retornou resultados. O parâmetro informado não retornou nenhuma doação válida.
+                                </blockquote>
+                            </div>
+                            <div className="modal-footer">
+                                <button className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</button>                        
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+            //Se não tiver dados no state donations
             return(
                 <div>
                     <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
@@ -248,23 +319,13 @@ export default class Donations extends React.Component{
                             </div>
                         </div>
                     </nav>
-                    <nav className="show-on-medium-and-down hide-on-med-and-up deep-purple darken-2 white-text">
-                        <div className="nav-wrapper">
-                            <form onSubmit={ (e) => this.handleSubmitSearchForm(e) }>
-                                <div className="input-field">
-                                    <input id="search" type="search" required onChange={ (e) => this.handleChangeSearch(e) } />
-                                    <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                                    <i className="material-icons">close</i>
-                                </div>
-                            </form>
-                        </div>
-                    </nav>
                     <div className="row">
                         <div id="doacoes">
                             <div className="row">
-                                <div className="col l10 m12 s12">
+                                <div className="col l10 m12 s12 center-align">
                                     <div id="card-donations-section">
-                                        <CardDonation donations={this.state.donations} />
+                                        <br/><br/><br/>
+                                        <Preloader />
                                     </div>
                                 </div>
                                 <div className="col l2 m0 s0 hide-on-med-and-down">
@@ -280,57 +341,8 @@ export default class Donations extends React.Component{
                             </Link>
                         </div>
                     </div>
-                    <div id="modal-search-donations-empty" className="modal">
-                        <div className="modal-content">
-                            <h4>Não encontramos nada!</h4>
-                            <blockquote>
-                                Sua busca não retornou resultados. O parâmetro informado não retornou nenhuma doação válida.
-                            </blockquote>
-                        </div>
-                        <div className="modal-footer">
-                            <button className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</button>                        
-                        </div>
-                    </div>
                 </div>
             )
         }
-        //Se não tiver dados no state donations
-        return(
-            <div>
-                <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
-                    <div className="row">
-                        <div className="col s12">
-                            <div className="col s10 push-s1">
-                                <div className="nav-content">
-                                    <span className="nav-title">Início { this.state.title }</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-                <div className="row">
-                    <div id="doacoes">
-                        <div className="row">
-                            <div className="col l10 m12 s12 center-align">
-                                <div id="card-donations-section">
-                                    <br/><br/><br/>
-                                    <Preloader />
-                                </div>
-                            </div>
-                            <div className="col l2 m0 s0 hide-on-med-and-down">
-                                { this.handleTagRender() }
-                            </div>
-                        </div>
-                    </div>
-                    <div className="fixed-action-btn">
-                        <Link to="/donations/new-donation/">
-                            <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
-                                <i className="material-icons">add</i>
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        )
     }
 }

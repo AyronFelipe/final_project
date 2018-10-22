@@ -179,11 +179,13 @@ export default class MyDonations extends React.Component{
         })
 
         $('.modal').modal({
-            endingTop: '10%'
+            ready: function (modal, trigger) {
+                console.log(modal[0].attributes.id.value)
+            },
         })
-        
+
         $('.collapsible').collapsible()
-        
+
         $(".datepicker").pickadate({
             selectMonths: true,
             selectYears: 50,
@@ -255,7 +257,12 @@ export default class MyDonations extends React.Component{
                                             <td>{ donation.solicitations_count }</td>
                                             <td>{ donation.status }</td>
                                             <td>
-                                                <a href="#" className="dropdown-button btn waves-effect waves-light indigo accent-2 white-text" data-activates={ `dropdown-details-donation-${donation.pk}` } data-constrainwidth="false" tittle="Detalhes da Doação" onClick={this.loadSolicitations.bind(this, donation.pk)}>
+                                                <a href="#" 
+                                                className="dropdown-button btn waves-effect waves-light indigo accent-2 white-text" 
+                                                data-activates={ `dropdown-details-donation-${donation.pk}` }
+                                                data-constrainwidth="false" 
+                                                title="Detalhes da Doação" 
+                                                onClick={ this.loadSolicitations.bind(this, donation.pk) }>
                                                     <i className="material-icons">arrow_drop_down</i>
                                                 </a>
                                                 <ul id={ `dropdown-details-donation-${donation.pk}` } className="dropdown-content">
@@ -264,7 +271,7 @@ export default class MyDonations extends React.Component{
                                                     <li><a href={`#modal-delete-${donation.pk}`} className="modal-trigger"><i className="material-icons">delete</i> Deletar Doação</a></li>
                                                     <li><a href="#" className="modal-trigger"><i className="material-icons">sentiment_dissatisfied</i> Não apareceu</a></li>
                                                 </ul>
-                                                <div id={`modal-manage-solicitation-${donation.pk}`} className="modal purple-text">
+                                                <div id={`modal-manage-solicitation-${donation.pk}`} className="modal purple-text" style={{ maxHeight: '100% !important' }}>
                                                     <div className="modal-content">
                                                         <h4>Solicitações da sua Doação</h4>
                                                         <ul className="collapsible popout" data-collapsible="accordion">
@@ -351,7 +358,7 @@ export default class MyDonations extends React.Component{
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
                                                     </div>
                                                 </div>
-                                                <div id={`modal-delete-${donation.pk}`} className="modal purple-text">
+                                                <div id={`modal-delete-${donation.pk}`} className="modal purple-text" style={{ overflowY: 'hidden', maxHeight: '100% !important', paddingBottom: '1%' }}>
                                                     <div className="modal-content">
                                                         <h5 className="red-text">Tem certeza que deseja deletar a Doação { donation.slug }</h5>
                                                         <br />
