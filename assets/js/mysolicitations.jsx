@@ -64,7 +64,7 @@ export default class MySolicitations extends React.Component{
         if (validity == null && validity_hour == null){
             tr = <p>Esperando definição do dono da solicitação</p>
         }else{
-            tr = <p>moment(this.validity).format("DD/MM/YYYY") } até às this.validity_hour</p>
+            tr = <p>{ moment({validity}).format("DD/MM/YYYY") } até às {validity_hour}</p>
         }
         return tr;
     }
