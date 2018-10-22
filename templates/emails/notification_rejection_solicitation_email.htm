@@ -124,7 +124,7 @@
                                                         Olá, {{ user }}.
                                                     </p>
                                                     <p style="padding: 0 0 10px 0;">
-                                                        Sua solicitação <a href="{{ protocol }}://{{ domain }}{% url 'donations:solicitation_detail' solicitation.slug %}">{{ solicitation }}</a> foi rejeitada pelo usuário <a href="{{ protocol }}://{{ domain }}{% url 'accounts:profile' donation.donator.pk %}">{{ donation.donator }}</a>.<br/>
+                                                        Sua solicitação {{ solicitation }} foi rejeitada pelo usuário <a href="{{ protocol }}://{{ domain }}{% url 'accounts:profile' donation.donator.pk %}">{{ donation.donator }}</a>.<br/>
                                                         Pelo motivo: <br/>
                                                         <strong>{{ solicitation.reason_rejection }}</strong><br/>
                                                         Clique no botão abaixo para ser redirecionado para sua página de gerenciamento de solicitações.
