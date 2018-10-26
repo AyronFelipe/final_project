@@ -112,12 +112,12 @@ export default class Person extends React.Component{
                                 <div className="row">
                                     <div className="input-field col m6 s12">
                                         <input id="email" name="email" type="text" className="validate" />
-                                        <label htmlFor="email">Email</label>
+                                        <label htmlFor="email">Email <span className="red-text">*</span></label>
                                         <span className="error-message red-text"></span>
                                     </div>
                                     <div className="input-field col m6 s12">
                                         <input id="password" name="password" type="password" />
-                                        <label htmlFor="email">Senha</label>
+                                        <label htmlFor="email">Senha <span className="red-text">*</span></label>
                                         <span className="error-message red-text"></span>
                                     </div> 
                                 </div>
@@ -125,19 +125,19 @@ export default class Person extends React.Component{
                                 <div className="row">
                                     <div className="input-field col m6 s12">
                                         <input id="first_name" name="first_name" type="text" />
-                                        <label htmlFor="first_name">Nome</label>
+                                        <label htmlFor="first_name">Nome <span className="red-text">*</span></label>
                                         <span className="error-message red-text"></span>
                                     </div>
                                     <div className="input-field col m6 s12">
                                         <input id="last_name" name="last_name" type="text" />
-                                        <label htmlFor="last_name">Sobrenome</label>
+                                        <label htmlFor="last_name">Sobrenome <span className="red-text">*</span></label>
                                         <span className="error-message red-text"></span>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="input-field col m6 s12">
                                         <input id="cpf" name="cpf" type="text" />
-                                        <label htmlFor="cpf">CPF</label>
+                                        <label htmlFor="cpf">CPF <span className="red-text">*</span></label>
                                         <span className="error-message red-text"></span>
                                     </div>
                                     <Dateapicker name="birthday" />

@@ -143,17 +143,17 @@ export default class Donation extends React.Component{
                                 <div className="row">
                                     <div className="input-field col m6 s12">
                                         <input id="name" name="name" type="text" className="validate" />
-                                        <label htmlFor="name">Nome</label>
+                                        <label htmlFor="name">Nome <span className="red-text">*</span></label>
                                         <span className="name-error-message red-text error"></span>
                                     </div>
                                     <div className="input-field col m3 s12">
                                         <input id="validity" name="validity" type="text" className="datepicker" />
-                                        <label htmlFor="validity">Disponível até o dia</label>
+                                        <label htmlFor="validity">Disponível até o dia <span className="red-text">*</span></label>
                                         <span className="validity-error-message red-text error"></span>
                                     </div>
                                     <div className="input-field col m3 s12">
                                         <input id="validity_hour" name="validity_hour" type="text" className="timepicker" />
-                                        <label htmlFor="validity_hour">Disponível até às</label>
+                                        <label htmlFor="validity_hour">Disponível até às <span className="red-text">*</span></label>
                                         <span className="validity_hour-error-message red-text error"></span>
                                     </div>
                                 </div>

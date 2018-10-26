@@ -62,7 +62,7 @@ export default class Address extends React.Component{
                 <div className="row">
                     <div className="input-field col m6 s12">
                         <input type="text" name="cep" id="cep"/>
-                        <label htmlFor="cep">CEP</label>
+                        <label htmlFor="cep">CEP <span className="red-text">*</span></label>
                         <span className="cep-error-message red-text error"></span>
                     </div>
                 </div>

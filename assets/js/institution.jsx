@@ -114,12 +114,12 @@ export default class Institution extends React.Component{
                                     <div className="row">
                                         <div className="input-field col m6 s12">
                                             <input id="email" name="email" type="text" />
-                                            <label htmlFor="email">Email</label>
+                                            <label htmlFor="email">Email <span className="red-text">*</span></label>
                                             <span className="error-message red-text"></span>
                                         </div>
                                         <div className="input-field col m6 s12">
                                             <input id="password" name="password" type="password" />
-                                            <label htmlFor="email">Senha</label>
+                                            <label htmlFor="email">Senha <span className="red-text">*</span></label>
                                             <span className="error-message red-text"></span>
                                         </div>
                                     </div>
@@ -127,12 +127,12 @@ export default class Institution extends React.Component{
                                     <div className="row">
                                         <div className="input-field col m6 s12">
                                             <input type="text" id="name" name="name"/>
-                                            <label htmlFor="name">Nome da instituição</label>
+                                            <label htmlFor="name">Nome da instituição <span className="red-text">*</span></label>
                                             <span className="error-message red-text"></span>
                                         </div>
                                         <div className="input-field col m6 s12">
                                             <input type="text" id="cnpj" name="cnpj"/>
-                                            <label htmlFor="name">CNPJ</label>
+                                            <label htmlFor="name">CNPJ <span className="red-text">*</span></label>
                                             <span className="error-message red-text"></span>
                                         </div>
                                     </div>
