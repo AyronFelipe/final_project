@@ -34,3 +34,10 @@ def my_donations(request):
     template_name = "donations/my_donations.html"
     context = {}
     return render(request, template_name, context)
+
+
+def solicitations_donation(request):
+
+    template_name = "donations/solicitations_donation.html"
+    context = {}
+    return render(request, template_name, context)
