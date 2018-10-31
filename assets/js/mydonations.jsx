@@ -191,7 +191,7 @@ export default class MyDonations extends React.Component{
                                                 <a href="#" 
                                                 className="dropdown-button btn-large waves-effect waves-light indigo accent-2 white-text" 
                                                 data-activates={ `dropdown-details-donation-${donation.pk}` }
-                                                data-constrainwidth="false" 
+                                                data-constrainwidth="false"
                                                 title="Detalhes da Doação" >
                                                     <i className="material-icons">arrow_drop_down</i>
                                                 </a>
