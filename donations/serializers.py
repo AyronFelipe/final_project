@@ -94,7 +94,8 @@ class SolicitationSerializer(serializers.ModelSerializer):
             'donator_donation_photo',
             'owner_pk',
             'owner_photo',
-            'created_at'
+            'created_at',
+            'comment',
         ]
 
     def get_owner(self, obj):

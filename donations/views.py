@@ -36,7 +36,7 @@ def my_donations(request):
     return render(request, template_name, context)
 
 
-def solicitations_donation(request):
+def solicitations_donation(request, slug):
 
     template_name = "donations/solicitations_donation.html"
     context = {}

@@ -130,6 +130,10 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
             with transaction.atomic():
                 solicitation.owner = request.user
                 solicitation.donation = Donation.objects.get(id=request.POST.get('donation'))
+                if request.POST.get('comment') == '':
+                    solicitation.comment = 'O solicitante não deixou nenhum comentário'
+                else:
+                    solicitation.comment = request.POST.get('comment')
                 solicitation.save()
                 donation = Donation.objects.get(id=request.POST.get('donation'))
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'

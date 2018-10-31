@@ -249,6 +249,11 @@ export default class DonationDetail extends React.Component{
                                             <p>Ao clicar em sim, você entrará na lista dos solicitantes dessa doação. Você receberá e-mails com as atualizações do status de sua solicitação. Aguarde a resposta do dono da doação.</p>
                                         </div>
                                     </div>
+                                    <br/>
+                                    <div className="input-field">
+                                        <textarea name="comment" id="comment" className="materialize-textarea"></textarea>
+                                        <label htmlFor="comment">Comentário sobre sua solicitação (opcional)</label>
+                                    </div>
                                 </div>
                                 <input type="hidden" name="donation" value={ this.state.value } />
                             </div>

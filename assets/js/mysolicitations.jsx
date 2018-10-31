@@ -170,7 +170,7 @@ export default class MySolicitations extends React.Component{
                                             <td>{ this.handleValidity(solicitation.validity, solicitation.validity_hour) }</td>
                                             <td>{ solicitation.status }</td>
                                             <td>
-                                                <a href="#" className="dropdown-button btn waves-effect waves-light indigo accent-2 white-text" data-activates={ `dropdown-details-solicitation-${solicitation.id}` } data-constrainwidth="false" tittle="Detalhes da Solicitação">
+                                                <a href="#" className="dropdown-button btn-large waves-effect waves-light indigo accent-2 white-text" data-activates={ `dropdown-details-solicitation-${solicitation.id}` } data-constrainwidth="false" tittle="Detalhes da Solicitação">
                                                     <i className="material-icons">arrow_drop_down</i>
                                                 </a>
                                                 <ul id={ `dropdown-details-solicitation-${solicitation.id}` } className="dropdown-content">

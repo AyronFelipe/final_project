@@ -8,7 +8,7 @@ export default class MyDonations extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = { donations: [], solicitations_of_donation: [] }
+        this.state = { donations: [] }
     }
 
     deleteDonation(pk){
@@ -26,80 +26,6 @@ export default class MyDonations extends React.Component{
                 console.log(request, status, err);
             }
         })
-    }
-
-    loadSolicitations(pk){
-        $.ajax({
-            url: '/api/donation/'+pk+'/solicitations/',
-            type: 'GET',
-            dataType: 'json',
-            headers: {
-                'Authorization': 'Token ' + localStorage.token
-            },
-            success: function(data){
-                this.setState({ solicitations_of_donation: data })
-            }.bind(this),
-            error: function(request, status, err){
-                console.log(request, status, err);
-            }
-        });
-    }
-
-    acceptSolicitation(pk){
-        let values = {
-            pk: pk,
-            validity: $('[name=validity]').val(),
-            validity_hour: $('#validity-hour').val()
-        }
-        $.ajax({
-            url: `/api/donation/accepts/${pk}/`,
-            type: 'POST',
-            dataType: 'json',
-            data: values,
-            headers: {
-                'Authorization': 'Token ' + localStorage.token
-            },
-            success: function(data) {
-                location.reload();
-            }.bind(this),
-            error: function (request, status, err) {
-                console.log(request, status, err);
-            }
-        });
-    }
-
-    rejectSolicitation(pk){
-        let values = {
-            pk: pk,
-            reason_rejection: $("#reason-rejection").val() 
-        }
-        $.ajax({
-            url: `/api/donation/rejects/${pk}/`,
-            type: 'POST',
-            dataType: 'json',
-            data: values,
-            headers: {
-                'Authorization': 'Token ' + localStorage.token
-            },
-            success: function (data) {
-                location.reload();
-            }.bind(this),
-            error: function (request, status, err) {
-                if (request.status == 401) {
-                    $('.reason_rejection-error-message').html(request.responseJSON.message_error)
-                }
-            }
-        })
-    }
-
-    handleClickReject(pk){
-        $(`#reject-${pk}`).show().find('textarea').attr('disabled', false);
-        $(`#accept-${pk}`).hide().find('input').attr('disabled', true);
-    }
-
-    handleClickAccept(pk){
-        $(`#reject-${pk}`).hide().find('textarea').attr('disabled', true);
-        $(`#accept-${pk}`).show().find('input').attr('disabled', false);
     }
 
     componentDidMount(){
@@ -244,7 +170,7 @@ export default class MyDonations extends React.Component{
                 <div className="row">
                     <div className="col s12">
                         <div className="col s10 push-s1">
-                            <table className="responsive-table">
+                            <table>
                                 <thead>
                                     <tr>
                                         <th>Doação</th>
@@ -263,16 +189,32 @@ export default class MyDonations extends React.Component{
                                             <td>{ donation.status }</td>
                                             <td>
                                                 <a href="#" 
-                                                className="dropdown-button btn waves-effect waves-light indigo accent-2 white-text" 
+                                                className="dropdown-button btn-large waves-effect waves-light indigo accent-2 white-text" 
                                                 data-activates={ `dropdown-details-donation-${donation.pk}` }
                                                 data-constrainwidth="false" 
                                                 title="Detalhes da Doação" >
                                                     <i className="material-icons">arrow_drop_down</i>
                                                 </a>
                                                 <ul id={ `dropdown-details-donation-${donation.pk}` } className="dropdown-content">
-                                                    <Link to={`/donations/donation/${donation.slug}/solicitations/`}><li><i className="material-icons">settings</i> Gerenciar solicitações</li></Link>
-                                                    <Link to={`/donations/donation/${donation.slug}/`}><li><span><i className="material-icons">zoom_in</i> Ver detalhes da Doação</span></li></Link>
-                                                    <li><a href={`#modal-delete-${donation.pk}`} className="modal-trigger"><i className="material-icons">delete</i> Deletar Doação</a></li>
+                                                    <Link to={`/donations/${donation.slug}/solicitations/`}>
+                                                        <li>
+                                                            <span>
+                                                                <i className="material-icons">settings</i> Gerenciar solicitações
+                                                            </span>
+                                                        </li>
+                                                    </Link>
+                                                    <Link to={`/donations/donation/${donation.slug}/`}>
+                                                        <li>
+                                                            <span>
+                                                                <i className="material-icons">zoom_in</i> Ver detalhes da Doação
+                                                            </span>
+                                                        </li>
+                                                    </Link>
+                                                    <li>
+                                                        <a href={`#modal-delete-${donation.pk}`} className="modal-trigger">
+                                                            <i className="material-icons">delete</i> Deletar Doação
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                                 <div id={`modal-delete-${donation.pk}`} className="modal purple-text" style={ modalStyle }>
                                                     <div className="modal-content">
