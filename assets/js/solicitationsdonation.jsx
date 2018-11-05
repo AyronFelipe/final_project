@@ -187,6 +187,7 @@ export default class SolicitationsDonation extends React.Component{
                                     <tr>
                                         <th>Solicitação</th>
                                         <th>Dono da Solicitação</th>
+                                        <th>Status da solicitação</th>
                                         <th>Comentário do solicitante</th>
                                         <th>Ações</th>
                                     </tr>
@@ -196,22 +197,11 @@ export default class SolicitationsDonation extends React.Component{
                                         <tr key={ solicitation.pk }>
                                             <td>{ solicitation.slug }</td>
                                             <td><Link to={`/accounts/profile/${solicitation.owner_pk}/`}><img className="responsive-img circle" style={{ width: '50px', height: '50px', marginTop: '6px' }} src={ solicitation.owner_photo } /> {solicitation.owner}</Link></td>
+                                            <td><p>{ solicitation.status }</p></td>
                                             <td><p className="grey-text">{ solicitation.comment }</p></td>
                                             <td>
-                                                <a href="#"
-                                                className="btn-large waves-effect waves-light indigo accent-2 white-text dropdown-button" 
-                                                data-activates="solicitations-menu"
-                                                data-constrainwidth="false">
-                                                    <i className="material-icons">menu</i>
-                                                </a>
-                                                <ul id="solicitations-menu" className="dropdown-content">
-                                                    <li><a href="#!">one</a></li>
-                                                    <li><a href="#!">two</a></li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#!">three</a></li>
-                                                    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-                                                    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
-                                                </ul>
+                                                <button className="btn waves-effect waves-light">Aceitar</button>
+                                                <button className="btn waves-effect waves-light">Recusar</button>
                                             </td>
                                         </tr>
                                     ) }
