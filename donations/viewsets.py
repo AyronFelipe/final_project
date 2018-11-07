@@ -97,14 +97,19 @@ class MyDonationsViewSet(viewsets.ViewSet):
     '''
 
     def list(self, request):
+        list_donations = []
         queryset = Donation.objects.filter(donator=request.user)
-        serializer = DonationSerializer(queryset, many=True)
+        for obj in queryset:
+            obj.update_status()
+            list_donations.append(obj)
+        serializer = DonationSerializer(list_donations, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         queryset = Donation.objects.filter(sender=request.user)
         donation = get_object_or_404(queryset, pk=pk)
-        serializer = DonationSerializer(donation)
+        donation_updated  = donation.update_status()
+        serializer = DonationSerializer(donation_updated)
         return Response(serializer.data)
     
     def destroy(self, request, pk=None):
@@ -208,8 +213,7 @@ class SolicitationsOfDonationViewSet(viewsets.ViewSet):
         list_solicitations = []
         queryset = Solicitation.objects.filter(donation__id=id)
         for obj in queryset:
-            if obj.validity != None and obj.validity_hour != None:
-                obj.update_status()
+            obj.update_status()
             list_solicitations.append(obj)
         serializer = SolicitationSerializer(list_solicitations, many=True)
         return Response(serializer.data)
@@ -227,8 +231,8 @@ class AcceptSolicitation(APIView):
         validity_hour = request.POST.get('validity_hour')
         if validity == '' or validity_hour == '':
             data = {}
-            data['message_error_validity'] = "Este campo não pode ficam em branco"
-            data['message_error_validity_hour'] = "Este campo não pode ficam em branco"
+            data['message_error_validity'] = "Este campo não pode ficar em branco"
+            data['message_error_validity_hour'] = "Este campo não pode ficar em branco"
             return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
         solicitation = Solicitation.objects.get(pk=pk)
         solicitation.is_accepted = True

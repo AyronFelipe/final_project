@@ -60,20 +60,20 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
 
 class Solicitation(CreationAndUpdateMixin):
 
-    SOLICITED = 'S'
+    CREATED = 'C'
     ACCEPTED = 'A'
     REJECTED = 'R'
-    NOT_ANSWERED = 'NA'
     INVALID = 'I'
     ON_HOLD = 'O'
+    COMPLETED = 'F'
 
     STATUS_SOLICITATION = (
-        (SOLICITED, 'Solicitada'),
+        (CREATED, 'Criada'),
         (ACCEPTED, 'Aceita'),
         (REJECTED, 'Rejeitada'),
-        (NOT_ANSWERED, 'Não respondida'),
         (INVALID, 'Inválida'),
         (ON_HOLD, 'Em Espera'),
+        (COMPLETED, 'Finalizada'),
     )
 
     owner = models.ForeignKey(get_user_model(), related_name='solicitations', on_delete=models.CASCADE, null=True, blank=True)
@@ -83,7 +83,7 @@ class Solicitation(CreationAndUpdateMixin):
     is_evaluated = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
     donation = models.ForeignKey(Donation, related_name='solicitations', on_delete=models.SET_NULL, null=True, blank=True)
-    status = models.CharField(_('status'), max_length=1, null=True, blank=True, choices=STATUS_SOLICITATION, default=SOLICITED)
+    status = models.CharField(_('status'), max_length=1, null=True, blank=True, choices=STATUS_SOLICITATION, default=CREATED)
     reason_rejection = models.TextField(_('reason of rejection'), null=True, blank=True)
     comment = models.TextField(_('comment'), null=True, blank=True)
 
@@ -110,6 +110,10 @@ class Solicitation(CreationAndUpdateMixin):
         
         if self.donation.status == Donation.INVALID:
             self.status = Solicitation.INVALID
+            self.save()
+        elif self.donation.status == Donation.ACTIVE and self.status == Solicitation.INVALID:
+            self.status = Solicitation.CREATED
+            self.save()
         return self
 
 

@@ -8,6 +8,29 @@ export default class SolicitationsDonation extends React.Component{
     constructor(props){
         super(props);
         this.state = { donation: [], solicitations_of_donation: [] };
+        this.handleActionsRender = this.handleActionsRender.bind(this)
+    }
+
+    handleActionsRender(status){
+        let conditional;
+        if (status == 'Inválida') {
+            conditional = <p className="red-text">Você não pode fazer nada em relação a essa solicitação. Pois sua doação está inválida.</p>
+        } else if (status == 'Criada') {
+            conditional =
+            <div>
+                <button type="button" className="btn">Aceitar</button>
+                <button type="button" className="btn">Rejeitar</button>
+            </div>
+        } else if (status == 'Rejeitada') {
+            conditional = <p className="red-text">Você rejeitou essa solicitação</p>
+        } else if (status == 'Aceita') {
+            conditional = <p className="green-text">Você aceitou essa solicitação</p>
+        } else if (status == 'Em espera') {
+            conditional = <p>Essa solicitação está em espera</p>
+        } else if (status == 'Finalizada') {
+            conditional = <p>Esta solicitação foi atendida e concluida</p>
+        }
+        return conditional;
     }
 
     acceptSolicitation(pk) {
@@ -200,8 +223,7 @@ export default class SolicitationsDonation extends React.Component{
                                             <td><p>{ solicitation.status }</p></td>
                                             <td><p className="grey-text">{ solicitation.comment }</p></td>
                                             <td>
-                                                <button className="btn waves-effect waves-light">Aceitar</button>
-                                                <button className="btn waves-effect waves-light">Recusar</button>
+                                                { this.handleActionsRender( solicitation.status ) }
                                             </td>
                                         </tr>
                                     ) }
