@@ -108,11 +108,7 @@ class Solicitation(CreationAndUpdateMixin):
 
     def update_status(self):
         
-        combined_fields = datetime.combine(self.validity, self.validity_hour)
-        combined_donation_fields = datetime.combine(self.donation.validity, self.donation.validity_hour)
-        if datetime.today().toordinal() > combined_fields.toordinal() and self.status == Solicitation.SOLICITED:
-            self.status = Solicitation.NOT_ANSWERED
-        if datetime.today().toordinal() > combined_donation_fields.toordinal():
+        if self.donation.status == Donation.INVALID:
             self.status = Solicitation.INVALID
         return self
 

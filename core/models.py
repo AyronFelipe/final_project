@@ -74,3 +74,18 @@ class UnitMeasurement(models.Model):
     def __str__(self):
 
         return '%s - %s' % (self.name, self.initials)
+
+
+class Comment(CreationAndUpdateMixin):
+
+    content = models.TextField(_('content'))
+    commenter = models.ForeignKey(get_user_model(), related_name='comments_made', null=True, blank=True, on_delete=models.SET_NULL)
+    commented = models.ForeignKey(get_user_model(), related_name='comments_received', null=True, blank=True, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _("comment")
+        verbose_name_plural = _("comments")
+
+    def __str__(self):
+
+        return '%s - %s' % (self.commenter, self.commented)

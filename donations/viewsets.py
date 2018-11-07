@@ -170,8 +170,7 @@ class MySolicitationsViewSet(viewsets.ViewSet):
         list_solicitations = []
         queryset = Solicitation.objects.filter(owner=request.user)
         for obj in queryset:
-            if obj.validity != None and obj.validity_hour != None:    
-                obj.update_status()
+            obj.update_status()
             list_solicitations.append(obj)
         serializer = SolicitationSerializer(list_solicitations, many=True)
         return Response(serializer.data)
@@ -208,7 +207,11 @@ class SolicitationsOfDonationViewSet(viewsets.ViewSet):
     def list(self, request, id=None):
         list_solicitations = []
         queryset = Solicitation.objects.filter(donation__id=id)
-        serializer = SolicitationSerializer(queryset, many=True)
+        for obj in queryset:
+            if obj.validity != None and obj.validity_hour != None:
+                obj.update_status()
+            list_solicitations.append(obj)
+        serializer = SolicitationSerializer(list_solicitations, many=True)
         return Response(serializer.data)
 
 
