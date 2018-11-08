@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
 from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, login, logged_user
-from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet, DestroySolicitationViewSet, SolicitationsOfDonationViewSet, AcceptSolicitation, RejectSolicitation
+from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet, DestroySolicitationViewSet, SolicitationsOfDonationViewSet, AcceptSolicitation, RejectSolicitation, CancelDonationSolicitation
 from rest_framework.authtoken.views import obtain_auth_token
 
 
@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/donation/<int:id>/solicitations/', SolicitationsOfDonationViewSet.as_view({'get': 'list'}), name='solicitations_of_donation'),
     path('api/donation/accepts/<int:pk>/', AcceptSolicitation.as_view(), name='accept_solicitation'),
     path('api/donation/rejects/<int:pk>/', RejectSolicitation.as_view(), name='reject_solicitation'),
+    path('api/donation/cancels/<int:pk>/', CancelDonationSolicitation.as_view(), name='cancel_solicitation'),
 ]
 
 if settings.DEBUG:

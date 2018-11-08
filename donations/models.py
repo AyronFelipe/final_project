@@ -108,10 +108,10 @@ class Solicitation(CreationAndUpdateMixin):
 
     def update_status(self):
         
-        if self.donation.status == Donation.INVALID:
+        if self.donation.status == Donation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
             self.status = Solicitation.INVALID
             self.save()
-        elif self.donation.status == Donation.ACTIVE and self.status == Solicitation.INVALID:
+        elif self.donation.status == Donation.ACTIVE and self.status == Solicitation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
             self.status = Solicitation.CREATED
             self.save()
         return self

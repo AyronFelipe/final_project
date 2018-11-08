@@ -16,34 +16,36 @@ export default class SolicitationsDonation extends React.Component{
         if (status == 'Inválida') {
             conditional = <p className="red-text">Você não pode fazer nada em relação a essa solicitação. Pois sua doação está inválida.</p>
         } else if (status == 'Criada') {
-            //aceitar
-            //rejeitar
             conditional =
             <div>
                 <a href={`#modal-accept-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Aceitar</a>&nbsp;
                 <a href={`#modal-reject-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Rejeitar</a>
             </div>
         } else if (status == 'Rejeitada') {
-            //desrejeitar
-            conditional = <p className="red-text">Você rejeitou essa solicitação</p>
+            //desrejeitar??
+            conditional = <p className="red-text">Você rejeitou essa solicitação.</p>
         } else if (status == 'Aceita') {
-            //desistir
-            //não apareceu
-            //finalizar
-            conditional = <p className="green-text">Você aceitou essa solicitação</p>
-        } else if (status == 'Em espera') {
-            conditional = <p>Essa solicitação está em espera</p>
+            conditional =
+            <div>
+                <a href={`#modal-cancel-solicitation-${pk}`    } className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Cancelar doação</a><br /><br />
+                <a href={`#modal-not-appear-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light indigo accent-2 white-text">Solicitante não apareceu</a><br /><br />
+                <a href={`#modal-finalize-solicitation-${pk}`  } className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Doação finalizada</a>
+            </div>
+        } else if (status == 'Em Espera') {
+            conditional = <p className="grey-text">Essa solicitação está em espera</p>
         } else if (status == 'Finalizada') {
-            conditional = <p>Esta solicitação foi atendida e concluída</p>
+            conditional = <p className="teal-text">Esta solicitação foi atendida e concluída</p>
         }
         return conditional;
     }
 
     acceptSolicitation(pk) {
+        $('.validity-error-message').html("");
+        $('.validity_hour-error-message').html("");
         let values = {
             pk: pk,
-            validity: $('[name=validity]').val(),
-            validity_hour: $('#validity-hour').val()
+            validity: $(`#validity-${pk}`).val(),
+            validity_hour: $(`#validity-hour-${pk}`).val()
         }
         $.ajax({
             url: `/api/donation/accepts/${pk}/`,
@@ -57,12 +59,20 @@ export default class SolicitationsDonation extends React.Component{
                 location.reload();
             }.bind(this),
             error: function (request, status, err) {
-                console.log(request, status, err);
+                if (request.status == 401) {
+                    if (request.responseJSON.message_error_validity) {
+                        $('.validity-error-message').html(request.responseJSON.message_error_validity)
+                    }
+                    if (request.responseJSON.message_error_validity_hour) {
+                        $('.validity_hour-error-message').html(request.responseJSON.message_error_validity_hour)
+                    }
+                }
             }
         });
     }
 
     rejectSolicitation(pk) {
+        $('.reason_rejection-error-message').html("")
         let values = {
             pk: pk,
             reason_rejection: $(`#reason-rejection-${pk}`).val()
@@ -82,6 +92,29 @@ export default class SolicitationsDonation extends React.Component{
                 if (request.status == 401) {
                     $('.reason_rejection-error-message').html(request.responseJSON.message_error)
                 }
+            }
+        })
+    }
+    
+    cancelSolicitation(pk) {
+
+        let values = {
+            pk: pk,
+            reason_rejection: $(`#reason-rejection-${pk}`).val()
+        }
+        $.ajax({
+            url: `/api/donation/cancels/${pk}/`,
+            type: 'POST',
+            dataType: 'json',
+            data: values,
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function (data) {
+                location.reload();
+            }.bind(this),
+            error: function (request, status, err) {
+                console.log(request, status, err);
             }
         })
     }
@@ -133,6 +166,38 @@ export default class SolicitationsDonation extends React.Component{
         $('.dropdown-button').dropdown();
         
         $('.modal').modal();
+
+        $(".datepicker").pickadate({
+            selectMonths: true,
+            selectYears: 50,
+            today: 'Hoje',
+            clear: 'Limpar',
+            close: 'Ok',
+            closeOnSelect: true,
+            formatSubmit: 'yyyy-mm-dd',
+            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            editable: false,
+            hiddenName: true,
+            min: true,
+            max: this.state.donation.validity,
+            showMonthsFull: true,
+            showWeekdaysShort: true,
+        });
+
+        $('.timepicker').pickatime({
+            default: 'now',
+            fromnow: 0,
+            twelvehour: false,
+            donetext: 'OK',
+            cleartext: 'Limpar',
+            canceltext: 'Cancelar',
+            container: undefined,
+            autoclose: false,
+            ampmclickable: true,
+        });
 
         if ( this.state.donation.length == 0 ) {
             return(
@@ -227,13 +292,24 @@ export default class SolicitationsDonation extends React.Component{
                                                     <div className="modal-content">
                                                         <div className="row">
                                                             <h4>Aceitar solicitação { solicitation.slug }</h4>
+                                                            <div className="col s12 center-align">
+                                                                <div className="valign-wrapper row">
+                                                                    <div className="col card hoverable teal darken-2 white-text">
+                                                                        <div className="card-content">
+                                                                            <div className="white-text center-align">
+                                                                                <p>Aceitar solicitação. Após aceitar essa solicitação você deve dizer se o solicitante recolheu ou não a doação.</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <div className="input-field col s12">
-                                                                <input id="validity" type="text" name="validity" className="datepicker" />
+                                                                <input id={`validity-${solicitation.pk}`} type="text" name="validity" className="datepicker" />
                                                                 <label htmlFor="validity">Disponível até o dia <span className="red-text">*</span></label>
                                                                 <span className="validity-error-message red-text error"></span>
                                                             </div>
                                                             <div className="input-field col s12">
-                                                                <input id="validity-hour" name="validity_hour" type="text" className="timepicker" />
+                                                                <input id={`validity-hour-${solicitation.pk}`} name="validity_hour" type="text" className="timepicker" />
                                                                 <label htmlFor="validity_hour">Disponível até às <span className="red-text">*</span></label>
                                                                 <span className="validity_hour-error-message red-text error"></span>
                                                             </div>
@@ -251,6 +327,17 @@ export default class SolicitationsDonation extends React.Component{
                                                     <div className="modal-content">
                                                         <div className="row">
                                                             <h4>Rejeitar solicitação {solicitation.slug}</h4>
+                                                            <div className="col s12 center-align">
+                                                                <div className="valign-wrapper row">
+                                                                    <div className="col card hoverable red accent-2 white-text">
+                                                                        <div className="card-content">
+                                                                            <div className="white-text center-align">
+                                                                                <p>Ao rejeitar essa solicitação, você se declara ciente de que essa ação é irreversível.</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                             <div className="input-field col s12">
                                                                 <textarea id={`reason-rejection-${solicitation.pk}`} name="reason_rejection" className="materialize-textarea"></textarea>
                                                                 <label htmlFor="reason-rejection">Motivo da Rejeição <span className="red-text">*</span></label>
@@ -262,6 +349,53 @@ export default class SolicitationsDonation extends React.Component{
                                                         <button className="btn waves-effect waves-light red accent-2" type="button" onClick={this.rejectSolicitation.bind(this, solicitation.pk)}>
                                                             <i className="material-icons right">not_interested</i> Rejeitar
                                                         </button>
+                                                        <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                                    </div>
+                                                </div>
+
+                                                <div id={`modal-cancel-solicitation-${solicitation.pk}`} className="modal red-text">
+                                                    <div className="modal-content">
+                                                        <div className="row">
+                                                            <h4>Cancelar doação para a solicitação {solicitation.slug}</h4>
+                                                            <div className="col s12 center-align">
+                                                                <div className="valign-wrapper row">
+                                                                    <div className="col card hoverable red accent-2 white-text">
+                                                                        <div className="card-content">
+                                                                            <div className="white-text center-align">
+                                                                                <p>Ao cancelar essa solicitação todas as outras solicitações, inclusive essa, passarão para o status de criada. E então, você pode escolher outra solicitação para sua doação.</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button className="btn waves-effect waves-light red accent-2" type="button" onClick={this.cancelSolicitation.bind(this, solicitation.pk)}>
+                                                            <i className="material-icons right">cancel</i> Cancelar
+                                                        </button>
+                                                        <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                                    </div>
+                                                </div>
+
+                                                <div id={`modal-not-appear-solicitation-${solicitation.pk}`} className="modal purple-text">
+                                                    <div className="modal-content">
+                                                        <div className="row">
+                                                            <h4>Dono da solicitação {solicitation.slug} não apareceu</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id={`modal-finalize-solicitation-${solicitation.pk}`} className="modal teal-text">
+                                                    <div className="modal-content">
+                                                        <div className="row">
+                                                            <h4>Finalizar solicitação {solicitation.slug}</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                                     </div>
                                                 </div>
