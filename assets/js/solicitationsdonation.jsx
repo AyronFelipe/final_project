@@ -27,9 +27,9 @@ export default class SolicitationsDonation extends React.Component{
         } else if (status == 'Aceita') {
             conditional =
             <div>
-                <a href={`#modal-cancel-solicitation-${pk}`    } className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Cancelar doação</a><br /><br />
+                <a href={`#modal-cancel-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Cancelar doação</a><br /><br />
                 <a href={`#modal-not-appear-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light indigo accent-2 white-text">Solicitante não apareceu</a><br /><br />
-                <a href={`#modal-finalize-solicitation-${pk}`  } className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Doação finalizada</a>
+                <a href={`#modal-finalize-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Doação finalizada</a>
             </div>
         } else if (status == 'Em Espera') {
             conditional = <p className="grey-text">Essa solicitação está em espera</p>
@@ -98,15 +98,28 @@ export default class SolicitationsDonation extends React.Component{
     
     cancelSolicitation(pk) {
 
-        let values = {
-            pk: pk,
-            reason_rejection: $(`#reason-rejection-${pk}`).val()
-        }
         $.ajax({
             url: `/api/donation/cancels/${pk}/`,
             type: 'POST',
             dataType: 'json',
-            data: values,
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function (data) {
+                location.reload();
+            }.bind(this),
+            error: function (request, status, err) {
+                console.log(request, status, err);
+            }
+        })
+    }
+    
+    notAppearSolicitation(pk) {
+
+        $.ajax({
+            url: `/api/donation/not-appear/${pk}/`,
+            type: 'POST',
+            dataType: 'json',
             headers: {
                 'Authorization': 'Token ' + localStorage.token
             },
@@ -382,9 +395,26 @@ export default class SolicitationsDonation extends React.Component{
                                                     <div className="modal-content">
                                                         <div className="row">
                                                             <h4>Dono da solicitação {solicitation.slug} não apareceu</h4>
+                                                            <div className="col s12 center-align">
+                                                                <div className="valign-wrapper row">
+                                                                    <div className="col card hoverable red accent-2 white-text">
+                                                                        <div className="card-content">
+                                                                            <div className="white-text center-align">
+                                                                                <p>
+                                                                                    Ao clicar em "Não Apareceu" nós assumimos que esse usuário não foi ao endereço de coleta da sua doação.
+                                                                                    A solicitação será imediatamente deletada da lista de solicitações da sua doação.
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className="modal-footer">
+                                                        <button className="btn waves-effect waves-light red accent-2" type="button" onClick={this.notAppearSolicitation.bind(this, solicitation.pk)}>
+                                                            <i className="material-icons right">cancel</i> Não Apareceu
+                                                        </button>
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                                     </div>
                                                 </div>
