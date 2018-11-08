@@ -423,9 +423,26 @@ export default class SolicitationsDonation extends React.Component{
                                                     <div className="modal-content">
                                                         <div className="row">
                                                             <h4>Finalizar solicitação {solicitation.slug}</h4>
+                                                            <div className="col s12 center-align">
+                                                                <div className="valign-wrapper row">
+                                                                    <div className="col card hoverable red accent-2 white-text">
+                                                                        <div className="card-content">
+                                                                            <div className="white-text center-align">
+                                                                                <p>
+                                                                                    Ao clicar em "Não Apareceu" nós assumimos que esse usuário não foi ao endereço de coleta da sua doação.
+                                                                                    A solicitação será imediatamente deletada da lista de solicitações da sua doação.
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className="modal-footer">
+                                                        <button className="btn waves-effect waves-light red accent-2" type="button">
+                                                            <i className="material-icons right">cancel</i> Finalizar
+                                                        </button>
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                                     </div>
                                                 </div>
