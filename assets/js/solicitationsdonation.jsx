@@ -1,7 +1,6 @@
 import React from 'react'
 import Preloader from './preloader'
 import { Link } from 'react-router-dom'
-import { relative } from 'path';
 
 export default class SolicitationsDonation extends React.Component{
 
@@ -9,26 +8,33 @@ export default class SolicitationsDonation extends React.Component{
         super(props);
         this.state = { donation: [], solicitations_of_donation: [] };
         this.handleActionsRender = this.handleActionsRender.bind(this)
+        this.acceptSolicitation = this.acceptSolicitation.bind(this)
     }
 
-    handleActionsRender(status){
+    handleActionsRender(status, pk){
         let conditional;
         if (status == 'Inválida') {
             conditional = <p className="red-text">Você não pode fazer nada em relação a essa solicitação. Pois sua doação está inválida.</p>
         } else if (status == 'Criada') {
+            //aceitar
+            //rejeitar
             conditional =
             <div>
-                <button type="button" className="btn">Aceitar</button>
-                <button type="button" className="btn">Rejeitar</button>
+                <a href={`#modal-accept-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Aceitar</a>&nbsp;
+                <a href={`#modal-reject-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Rejeitar</a>
             </div>
         } else if (status == 'Rejeitada') {
+            //desrejeitar
             conditional = <p className="red-text">Você rejeitou essa solicitação</p>
         } else if (status == 'Aceita') {
+            //desistir
+            //não apareceu
+            //finalizar
             conditional = <p className="green-text">Você aceitou essa solicitação</p>
         } else if (status == 'Em espera') {
             conditional = <p>Essa solicitação está em espera</p>
         } else if (status == 'Finalizada') {
-            conditional = <p>Esta solicitação foi atendida e concluida</p>
+            conditional = <p>Esta solicitação foi atendida e concluída</p>
         }
         return conditional;
     }
@@ -59,7 +65,7 @@ export default class SolicitationsDonation extends React.Component{
     rejectSolicitation(pk) {
         let values = {
             pk: pk,
-            reason_rejection: $("#reason-rejection").val()
+            reason_rejection: $(`#reason-rejection-${pk}`).val()
         }
         $.ajax({
             url: `/api/donation/rejects/${pk}/`,
@@ -78,16 +84,6 @@ export default class SolicitationsDonation extends React.Component{
                 }
             }
         })
-    }
-
-    handleClickReject(pk) {
-        $(`#reject-${pk}`).show().find('textarea').attr('disabled', false);
-        $(`#accept-${pk}`).hide().find('input').attr('disabled', true);
-    }
-
-    handleClickAccept(pk) {
-        $(`#reject-${pk}`).hide().find('textarea').attr('disabled', true);
-        $(`#accept-${pk}`).show().find('input').attr('disabled', false);
     }
 
     componentDidMount(){
@@ -135,6 +131,8 @@ export default class SolicitationsDonation extends React.Component{
     render(){
 
         $('.dropdown-button').dropdown();
+        
+        $('.modal').modal();
 
         if ( this.state.donation.length == 0 ) {
             return(
@@ -223,7 +221,51 @@ export default class SolicitationsDonation extends React.Component{
                                             <td><p>{ solicitation.status }</p></td>
                                             <td><p className="grey-text">{ solicitation.comment }</p></td>
                                             <td>
-                                                { this.handleActionsRender( solicitation.status ) }
+                                                { this.handleActionsRender( solicitation.status, solicitation.pk ) }
+
+                                                <div id={`modal-accept-solicitation-${solicitation.pk}`} className="modal purple-text">
+                                                    <div className="modal-content">
+                                                        <div className="row">
+                                                            <h4>Aceitar solicitação { solicitation.slug }</h4>
+                                                            <div className="input-field col s12">
+                                                                <input id="validity" type="text" name="validity" className="datepicker" />
+                                                                <label htmlFor="validity">Disponível até o dia <span className="red-text">*</span></label>
+                                                                <span className="validity-error-message red-text error"></span>
+                                                            </div>
+                                                            <div className="input-field col s12">
+                                                                <input id="validity-hour" name="validity_hour" type="text" className="timepicker" />
+                                                                <label htmlFor="validity_hour">Disponível até às <span className="red-text">*</span></label>
+                                                                <span className="validity_hour-error-message red-text error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button className="btn waves-effect waves-light teal darken-2" type="button" onClick={this.acceptSolicitation.bind(this, solicitation.pk)}>
+                                                            <i className="material-icons right">done</i> Aceitar
+                                                        </button>
+                                                        <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                                    </div>
+                                                </div>
+
+                                                <div id={`modal-reject-solicitation-${solicitation.pk}`} className="modal red-text">
+                                                    <div className="modal-content">
+                                                        <div className="row">
+                                                            <h4>Rejeitar solicitação {solicitation.slug}</h4>
+                                                            <div className="input-field col s12">
+                                                                <textarea id={`reason-rejection-${solicitation.pk}`} name="reason_rejection" className="materialize-textarea"></textarea>
+                                                                <label htmlFor="reason-rejection">Motivo da Rejeição <span className="red-text">*</span></label>
+                                                                <span className="reason_rejection-error-message red-text error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button className="btn waves-effect waves-light red accent-2" type="button" onClick={this.rejectSolicitation.bind(this, solicitation.pk)}>
+                                                            <i className="material-icons right">not_interested</i> Rejeitar
+                                                        </button>
+                                                        <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
+                                                    </div>
+                                                </div>
+
                                             </td>
                                         </tr>
                                     ) }

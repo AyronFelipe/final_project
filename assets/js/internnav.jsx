@@ -142,7 +142,7 @@ export default class InternNav extends React.Component{
                                             <Logout />
                                         </li>
                                         <li className="right hide-on-med-and-down">
-                                            <a href="#" data-activates="dropdown-options" title="Suas opções" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false" style={{ height: '63px' }}>
+                                            <a href="#" data-activates="dropdown-options" data-alignment="right" title="Suas opções" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false" style={{ height: '63px' }}>
                                                 <img className="responsive-img circle" style={{ width: '50px', height: '50px', marginTop: '6px' }} src={ user.photo } />
                                             </a>
                                         </li>

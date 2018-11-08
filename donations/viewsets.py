@@ -226,38 +226,40 @@ class AcceptSolicitation(APIView):
     permission_classes = (permissions.IsAuthenticated,)
     
     def post(self, request, pk=None):
-        import pdb; pdb.set_trace()
+
         validity = request.POST.get('validity')
         validity_hour = request.POST.get('validity_hour')
-        if validity == '' or validity_hour == '':
-            data = {}
-            data['message_error_validity'] = "Este campo não pode ficar em branco"
-            data['message_error_validity_hour'] = "Este campo não pode ficar em branco"
-            return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
-        solicitation = Solicitation.objects.get(pk=pk)
-        solicitation.is_accepted = True
-        solicitation.status = Solicitation.ACCEPTED
-        solicitation.validity = validity
-        solicitation.validity_hour = validity_hour
-        solicitation.save()
-        serializer = SolicitationSerializer(solicitation)
-        donation = Donation.objects.get(pk=solicitation.donation.pk)
-        for obj in donation.solicitations.all():
-            if obj.pk != solicitation.pk:
-                obj.status = Solicitation.ON_HOLD
-                obj.save()
-        message = 'A sua solicitação ' + solicitation.slug + ' foi aceita pelo usuário ' + donation.donator.get_name() + '.'
-        notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
-        pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
-        subject = "Sua solicitação foi aceita"
-        context = {}
-        context['user'] = solicitation.owner
-        context['domain'] = get_current_site(request).domain
-        context['protocol'] = 'https' if request.is_secure() else 'http'
-        context['donation'] = donation
-        context['solicitation'] = solicitation
-        send_mail_template(subject, "emails/notification_accept_solicitation_email.html", context, [solicitation.owner.email])
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            if validity == '' or validity_hour == '':
+                data = {}
+                data['message_error_validity'] = "Este campo não pode ficar em branco"
+                data['message_error_validity_hour'] = "Este campo não pode ficar em branco"
+                return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
+            solicitation = Solicitation.objects.get(pk=pk)
+            solicitation.is_accepted = True
+            solicitation.status = Solicitation.ACCEPTED
+            solicitation.validity = validity
+            solicitation.validity_hour = validity_hour
+            solicitation.save()
+            serializer = SolicitationSerializer(solicitation)
+            donation = Donation.objects.get(pk=solicitation.donation.pk)
+            for obj in donation.solicitations.all():
+                if obj.pk != solicitation.pk:
+                    obj.status = Solicitation.ON_HOLD
+                    obj.save()
+            message = 'A sua solicitação ' + solicitation.slug + ' foi aceita pelo usuário ' + donation.donator.get_name() + '.'
+            notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
+            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+            subject = "Sua solicitação foi aceita"
+            context = {}
+            context['user'] = solicitation.owner
+            context['domain'] = get_current_site(request).domain
+            context['protocol'] = 'https' if request.is_secure() else 'http'
+            context['donation'] = donation
+            context['solicitation'] = solicitation
+            send_mail_template(subject, "emails/notification_accept_solicitation_email.html", context, [solicitation.owner.email])
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RejectSolicitation(APIView):
@@ -268,26 +270,28 @@ class RejectSolicitation(APIView):
 
     def post(self, request, pk=None):
         reason_rejection = request.POST.get('reason_rejection')
-        if reason_rejection == '':
-            data = {}
-            data['message_error'] = "Este campo não pode ficar em branco."
-            return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
-        solicitation = Solicitation.objects.get(pk=pk)
-        solicitation.is_accepted = True
-        solicitation.status = Solicitation.REJECTED
-        solicitation.reason_rejection = reason_rejection
-        solicitation.save()
-        serializer = SolicitationSerializer(solicitation)
-        donation = Donation.objects.get(pk=solicitation.donation.pk)
-        message = 'A sua solicitação ' + solicitation.slug + ' foi rejeitada pelo usuário ' + donation.donator.get_name() + '.'
-        notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
-        pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
-        subject = "Sua solicitação foi rejeitada"
-        context = {}
-        context['user'] = solicitation.owner
-        context['domain'] = get_current_site(request).domain
-        context['protocol'] = 'https' if request.is_secure() else 'http'
-        context['donation'] = donation
-        context['solicitation'] = solicitation
-        send_mail_template(subject, "emails/notification_rejection_solicitation_email.html", context, [solicitation.owner.email])
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        with transaction.atomic():
+            if reason_rejection == '':
+                data = {}
+                data['message_error'] = "Este campo não pode ficar em branco."
+                return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
+            solicitation = Solicitation.objects.get(pk=pk)
+            solicitation.is_accepted = True
+            solicitation.status = Solicitation.REJECTED
+            solicitation.reason_rejection = reason_rejection
+            solicitation.save()
+            serializer = SolicitationSerializer(solicitation)
+            donation = Donation.objects.get(pk=solicitation.donation.pk)
+            message = 'A sua solicitação ' + solicitation.slug + ' foi rejeitada pelo usuário ' + donation.donator.get_name() + '.'
+            notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
+            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+            subject = "Sua solicitação foi rejeitada"
+            context = {}
+            context['user'] = solicitation.owner
+            context['domain'] = get_current_site(request).domain
+            context['protocol'] = 'https' if request.is_secure() else 'http'
+            context['donation'] = donation
+            context['solicitation'] = solicitation
+            send_mail_template(subject, "emails/notification_rejection_solicitation_email.html", context, [solicitation.owner.email])
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
