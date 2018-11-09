@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import Preloader from './preloader'
+import 'materialize-css'
+import 'materialize-css/dist/css/materialize.min.css'
 
 export default class MyDonations extends React.Component{
 
@@ -51,12 +53,12 @@ export default class MyDonations extends React.Component{
         });
     }
 
-    render(){
+    handleModalClick(pk){
+        $('.modal').modal();
+        $(`#modal-delete-${pk}`).modal('open');
+    }
 
-        const modalStyle = {
-            maxHeight: '100% !important',
-            overflowY: 'hidden !important'
-        };
+    render(){
 
         if (this.state.donations.length == 0) {
             return(
@@ -109,45 +111,6 @@ export default class MyDonations extends React.Component{
             )
         }
 
-        $('.dropdown-button').dropdown({
-            alignment: 'right'
-        })
-
-        $('.modal').modal()
-
-        $('.collapsible').collapsible()
-
-        $(".datepicker").pickadate({
-            selectMonths: true,
-            selectYears: 50,
-            today: 'Hoje',
-            clear: 'Limpar',
-            close: 'Ok',
-            closeOnSelect: true,
-            formatSubmit: 'yyyy-mm-dd',
-            monthsFull: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            weekdaysFull: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
-            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            editable: false,
-            hiddenName: true,
-            min: true,
-            showMonthsFull: true,
-            showWeekdaysShort: true,
-        })
-
-        $('.timepicker').pickatime({
-            default: 'now',
-            fromnow: 0,
-            twelvehour: false,
-            donetext: 'OK',
-            cleartext: 'Limpar',
-            canceltext: 'Cancelar',
-            container: undefined,
-            autoclose: false,
-            ampmclickable: true,
-        })
-
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
@@ -181,42 +144,31 @@ export default class MyDonations extends React.Component{
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.donations.map((donation, index) =>
+                                    {this.state.donations.map((donation, index) => 
                                         <tr key={donation.pk}>
                                             <td><Link to={ `/donations/donation/${donation.slug}/` }><img className="responsive-img circle" style={{ width: '20px', height: '20px' }} src={donation.main_photo} /> { donation.slug }</Link></td>
                                             <td>{ moment(donation.validity).format("DD/MM/YYYY") } até às { donation.validity_hour }</td>
                                             <td>{ donation.solicitations_count }</td>
                                             <td>{ donation.status }</td>
                                             <td>
-                                                <a href="#" 
-                                                className="dropdown-button btn-large waves-effect waves-light indigo accent-2 white-text" 
-                                                data-activates={ `dropdown-details-donation-${donation.pk}` }
-                                                data-constrainwidth="false"
-                                                title="Detalhes da Doação" >
-                                                    <i className="material-icons">arrow_drop_down</i>
-                                                </a>
-                                                <ul id={ `dropdown-details-donation-${donation.pk}` } className="dropdown-content">
-                                                    <Link to={`/donations/${donation.slug}/solicitations/`}>
-                                                        <li>
-                                                            <span>
-                                                                <i className="material-icons">settings</i> Gerenciar solicitações
-                                                            </span>
-                                                        </li>
-                                                    </Link>
-                                                    <Link to={`/donations/donation/${donation.slug}/`}>
-                                                        <li>
-                                                            <span>
-                                                                <i className="material-icons">zoom_in</i> Ver detalhes da Doação
-                                                            </span>
-                                                        </li>
-                                                    </Link>
-                                                    <li>
-                                                        <a href={`#modal-delete-${donation.pk}`} className="modal-trigger">
-                                                            <i className="material-icons">delete</i> Deletar Doação
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                                <div id={`modal-delete-${donation.pk}`} className="modal purple-text" style={ modalStyle }>
+                                                <Link to={`/donations/${donation.slug}/solicitations/`}>
+                                                    <button className="btn waves-effect waves-light indigo accent-2 white-text" title="Gerenciar solicitações" type="button">
+                                                        <i className="material-icons">settings</i>
+                                                    </button>
+                                                </Link>
+                                                &nbsp;
+                                                <Link to={`/donations/donation/${donation.slug}/`}>
+                                                    <button className="btn waves-effect waves-light indigo accent-2 white-text" title="Ver detalhes da Doação" type="button">
+                                                        <span>
+                                                            <i className="material-icons">zoom_in</i>
+                                                        </span>
+                                                    </button>
+                                                </Link>
+                                                &nbsp;
+                                                <button data-target={`modal-delete-${donation.pk}`} onClick={ () => this.handleModalClick(donation.pk) } className="btn waves-effect waves-light red accent-2 white-text modal-trigger" title="Deletar Doação">
+                                                    <i className="material-icons">delete</i>
+                                                </button>
+                                                <div id={`modal-delete-${donation.pk}`} className="modal purple-text">
                                                     <div className="modal-content">
                                                         <div className="row">
                                                             <div className="col s12">

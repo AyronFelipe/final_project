@@ -104,8 +104,6 @@ export default class DonationDetail extends React.Component{
                 console.log(request, status, err);
             }
         });
-
-        $('.modal').modal();
     }
 
     render(){

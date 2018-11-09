@@ -25,6 +25,7 @@ export default class Home extends React.Component{
     componentDidMount(){
         $('.button-collapse').sideNav();
         window.scrollTo(0, 0);
+        $('.modal').modal();
     }
 
     render(){
@@ -36,13 +37,13 @@ export default class Home extends React.Component{
                             <PrivateRoute authenticated={ this.state.authenticated } component={ InternNav } />
                         </header>
                         <main>
+                            <PrivateRoute authenticated={ this.state.authenticated } path="/donations/my-donations/" component={ MyDonations } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/donations/:slug/solicitations/" component={ SolicitationsDonation } />
                             <PrivateRoute exact authenticated={ this.state.authenticated } path="/donations/" component={ Donations } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/donations/donation/:slug/" component={ DonationDetail } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/accounts/profile/:pk/" component={ Profile } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/donations/my-solicitations/" component={ MySolicitations } />
-                            <PrivateRoute authenticated={ this.state.authenticated } path="/donations/my-donations/" component={ MyDonations } />
                         </main>
                     </div>
                 </BrowserRouter>
