@@ -125,6 +125,7 @@ export default class InternNav extends React.Component{
     }
 
     render(){
+        
         const background = `/static/images/background-user-details.jpg`
         const user = this.state.user
         const child = this.state.user.child

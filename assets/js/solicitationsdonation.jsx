@@ -11,6 +11,11 @@ export default class SolicitationsDonation extends React.Component{
         this.acceptSolicitation = this.acceptSolicitation.bind(this)
     }
 
+    handleClickModal(modal) {
+        $('.modal').modal();
+        $(`#${modal}`).modal('open');
+    }
+
     handleActionsRender(status, pk){
         let conditional;
         if (status == 'Inválida') {
@@ -18,8 +23,8 @@ export default class SolicitationsDonation extends React.Component{
         } else if (status == 'Criada') {
             conditional =
             <div>
-                <a href={`#modal-accept-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Aceitar</a>&nbsp;
-                <a href={`#modal-reject-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Rejeitar</a>
+                <button onClick={() => {this.handleClickModal(`modal-accept-solicitation-${pk}`)}} data-target={`modal-accept-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Aceitar</button>&nbsp;
+                <button onClick={() => {this.handleClickModal(`modal-reject-solicitation-${pk}`)}} data-target={`modal-reject-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Rejeitar</button>
             </div>
         } else if (status == 'Rejeitada') {
             //desrejeitar??
@@ -27,9 +32,9 @@ export default class SolicitationsDonation extends React.Component{
         } else if (status == 'Aceita') {
             conditional =
             <div>
-                <a href={`#modal-cancel-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Cancelar doação</a><br /><br />
-                <a href={`#modal-not-appear-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light indigo accent-2 white-text">Solicitante não apareceu</a><br /><br />
-                <a href={`#modal-finalize-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Doação finalizada</a>
+                <button onClick={() => {this.handleClickModal(`modal-cancel-solicitation-${pk}`)}} data-target={`modal-cancel-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Cancelar doação</button><br /><br />
+                <button onClick={() => {this.handleClickModal(`modal-not-appear-solicitation-${pk}`)}} data-target={`modal-not-appear-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light indigo accent-2 white-text">Solicitante não apareceu</button><br /><br />
+                <button onClick={() => {this.handleClickModal(`modal-finalize-solicitation-${pk}`)}} data-target={`modal-finalize-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Doação finalizada</button>
             </div>
         } else if (status == 'Em Espera') {
             conditional = <p className="grey-text">Essa solicitação está em espera</p>
@@ -175,10 +180,6 @@ export default class SolicitationsDonation extends React.Component{
     }
 
     render(){
-
-        $('.dropdown-button').dropdown();
-        
-        $('.modal').modal();
 
         $(".datepicker").pickadate({
             selectMonths: true,
