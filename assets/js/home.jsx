@@ -25,7 +25,6 @@ export default class Home extends React.Component{
     componentDidMount(){
         $('.button-collapse').sideNav();
         window.scrollTo(0, 0);
-        $('.modal').modal();
     }
 
     render(){
