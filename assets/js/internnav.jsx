@@ -7,6 +7,22 @@ import NameProject from './nameproject'
 import { Link } from 'react-router-dom'
 import Notifications from './notifications'
 import Pusher from 'pusher-js'
+import Preloader from './preloader'
+
+class NotificationCount extends React.Component{
+    
+    render(){
+        if (this.props.count == 1) {
+            return(
+                <span data-badge-caption="nova" className="new badge">{this.props.count}</span>
+            )
+        } else {
+            return(
+                <span data-badge-caption="novas" className="new badge">{this.props.count}</span>
+            )
+        }
+    }
+}
 
 export default class InternNav extends React.Component{
 
@@ -147,7 +163,7 @@ export default class InternNav extends React.Component{
                                             </a>
                                         </li>
                                         <li className="right" style={{ marginTop: '19px' }}>
-                                            <span data-badge-caption="novas" className="new badge">{ this.handleRenderNotifications() }</span>
+                                            <NotificationCount count={this.handleRenderNotifications()} />
                                         </li>
                                         <li className="right">
                                             <a href="#" onClick={() => { this.handleClickNotifications() } } data-activates="dropdown-notifications" title="Suas notificações" className="dropdown-button" data-beloworigin="true" data-constrainwidth="false">
@@ -217,19 +233,7 @@ export default class InternNav extends React.Component{
                                 <a href="#" className="brand-logo"><NameProject /></a>
                                 <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
                                 <ul id="nav-mobile" className="right hide-on-med-and-down">
-                                    <div className="preloader-wrapper small active">
-                                        <div className="spinner-layer spinner-green-only">
-                                            <div className="circle-clipper left">
-                                                <div className="circle"></div>
-                                            </div>
-                                            <div className="gap-patch">
-                                                <div className="circle"></div>
-                                            </div>
-                                            <div className="circle-clipper right">
-                                                <div className="circle"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Preloader />
                                     <Logout />
                                 </ul>
                                 <ul className="side-nav" id="mobile-demo">
