@@ -82,7 +82,7 @@ class Solicitation(CreationAndUpdateMixin):
     is_accepted = models.BooleanField(default=False)
     is_evaluated = models.BooleanField(default=False)
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
-    donation = models.ForeignKey(Donation, related_name='solicitations', on_delete=models.SET_NULL, null=True, blank=True)
+    donation = models.ForeignKey(Donation, related_name='solicitations', on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField(_('status'), max_length=1, null=True, blank=True, choices=STATUS_SOLICITATION, default=CREATED)
     reason_rejection = models.TextField(_('reason of rejection'), null=True, blank=True)
     comment = models.TextField(_('comment'), null=True, blank=True)
@@ -107,14 +107,15 @@ class Solicitation(CreationAndUpdateMixin):
         super(Solicitation, self).save()
 
     def update_status(self):
-        
-        if self.donation.status == Donation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
-            self.status = Solicitation.INVALID
-            self.save()
-        elif self.donation.status == Donation.ACTIVE and self.status == Solicitation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
-            self.status = Solicitation.CREATED
-            self.save()
-        return self
+
+        if self.donation:
+            if self.donation.status == Donation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
+                self.status = Solicitation.INVALID
+                self.save()
+            elif self.donation.status == Donation.ACTIVE and self.status == Solicitation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
+                self.status = Solicitation.CREATED
+                self.save()
+            return self
 
 
 class DonationTags(models.Model):
