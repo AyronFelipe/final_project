@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import 'gritter/js/jquery.gritter.min.js'
+import 'gritter/css/jquery.gritter.css'
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/main.css'

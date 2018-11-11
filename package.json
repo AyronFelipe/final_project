@@ -33,6 +33,7 @@
     "css-loader": "^0.28.9",
     "dropify": "^0.2.2",
     "file-loader": "^1.1.11",
+    "gritter": "^1.7.4",
     "inputmask": "^3.3.11",
     "jquery": "^3.2.1",
     "materialize-css": "^0.100.2",

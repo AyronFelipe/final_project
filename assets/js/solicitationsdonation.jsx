@@ -167,7 +167,7 @@ export default class SolicitationsDonation extends React.Component{
             },
             success: function (data) {
                 if (data.length == 0) {
-                    const collection = `<h6>Sua doação não possui solicitações.</h6>`;
+                    const collection = '<h6>Sua doação não possui solicitações.</h6>';
                     $('#table-content').html(collection);
                 } else {
                     this.setState({ solicitations_of_donation: data })
@@ -213,7 +213,7 @@ export default class SolicitationsDonation extends React.Component{
             ampmclickable: true,
         });
 
-        if ( this.state.donation.length == 0 ) {
+        if ( this.state.solicitations_of_donation.length == 0 ) {
             return(
                 <div>
                     <nav className="nav-extended deep-purple darken-2 white-text">
@@ -221,7 +221,7 @@ export default class SolicitationsDonation extends React.Component{
                             <div className="col s12">
                                 <div className="col s10 push-s1">
                                     <div className="nav-content">
-                                        <span className="nav-title">Solicitações da Doação <Preloader /></span>
+                                        <span className="nav-title">Solicitações da Doação {this.state.donation.slug}</span>
                                         <Link to="/donations/">
                                             <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
                                                 <i className="material-icons">home</i>
@@ -241,6 +241,9 @@ export default class SolicitationsDonation extends React.Component{
                                         <tr>
                                             <th>Solicitação</th>
                                             <th>Dono da Solicitação</th>
+                                            <th>Status da solicitação</th>
+                                            <th>Comentário do solicitante</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>

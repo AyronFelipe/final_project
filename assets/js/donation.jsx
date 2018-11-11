@@ -16,6 +16,11 @@ export default class Donation extends React.Component{
         $("#donation-form").find("input, textarea").each(function(){
             $(this).siblings('span.error').html('');
         })
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true
+        });
         let form = new FormData($("#donation-form").get(0));
         $.ajax({
             url: '/api/new-donation/',
@@ -46,7 +51,9 @@ export default class Donation extends React.Component{
                     $('#modal-erro').modal('open');
                 }
             }
-        })
+        }).always(function(){
+            $.gritter.removeAll();
+        });
     }
 
     componentDidMount(){
