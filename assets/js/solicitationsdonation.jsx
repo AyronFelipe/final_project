@@ -9,6 +9,8 @@ export default class SolicitationsDonation extends React.Component{
         this.state = { donation: [], solicitations_of_donation: [] };
         this.handleActionsRender = this.handleActionsRender.bind(this)
         this.acceptSolicitation = this.acceptSolicitation.bind(this)
+        this.handleTimePicker = this.handleTimePicker.bind(this);
+        this.handleDatePicker = this.handleDatePicker.bind(this);
     }
 
     handleClickModal(modal) {
@@ -180,10 +182,8 @@ export default class SolicitationsDonation extends React.Component{
     }
 
     handleDatePicker(validity){
-
         let date = new Date(validity);
         date.setDate(date.getDate() + 1);
-
         $(".datepicker").pickadate({
             selectMonths: true,
             selectYears: 50,
@@ -334,7 +334,7 @@ export default class SolicitationsDonation extends React.Component{
                                                                 <span className="validity-error-message red-text error"></span>
                                                             </div>
                                                             <div className="input-field col s12">
-                                                                <input id={`validity-hour-${solicitation.pk}`} name="validity_hour" type="text" className="timepicker" onClick={() => {this.handleTimePicker()}} />
+                                                                <input id={`validity-hour-${solicitation.pk}`} name="validity_hour" type="text" onClick={() => {this.handleTimePicker(this.state.donation.validity_hour)}} className="timepicker active" />
                                                                 <label htmlFor="validity_hour">Disponível até às <span className="red-text">*</span></label>
                                                                 <span className="validity_hour-error-message red-text error"></span>
                                                             </div>
