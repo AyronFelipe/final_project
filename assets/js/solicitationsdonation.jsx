@@ -179,7 +179,10 @@ export default class SolicitationsDonation extends React.Component{
         });
     }
 
-    render(){
+    handleDatePicker(validity){
+
+        let date = new Date(validity);
+        date.setDate(date.getDate() + 1);
 
         $(".datepicker").pickadate({
             selectMonths: true,
@@ -196,11 +199,13 @@ export default class SolicitationsDonation extends React.Component{
             editable: false,
             hiddenName: true,
             min: true,
-            max: this.state.donation.validity,
+            max: date,
             showMonthsFull: true,
             showWeekdaysShort: true,
         });
+    }
 
+    handleTimePicker(){
         $('.timepicker').pickatime({
             default: 'now',
             fromnow: 0,
@@ -212,6 +217,9 @@ export default class SolicitationsDonation extends React.Component{
             autoclose: false,
             ampmclickable: true,
         });
+    }
+
+    render(){
 
         if ( this.state.solicitations_of_donation.length == 0 ) {
             return(
@@ -305,7 +313,7 @@ export default class SolicitationsDonation extends React.Component{
                                             <td>
                                                 { this.handleActionsRender( solicitation.status, solicitation.pk ) }
 
-                                                <div id={`modal-accept-solicitation-${solicitation.pk}`} className="modal purple-text">
+                                                <div id={`modal-accept-solicitation-${solicitation.pk}`} className="modal teal-text">
                                                     <div className="modal-content">
                                                         <div className="row">
                                                             <h4>Aceitar solicitação { solicitation.slug }</h4>
@@ -321,12 +329,12 @@ export default class SolicitationsDonation extends React.Component{
                                                                 </div>
                                                             </div>
                                                             <div className="input-field col s12">
-                                                                <input id={`validity-${solicitation.pk}`} type="text" name="validity" className="datepicker" />
+                                                                <input id={`validity-${solicitation.pk}`} type="text" name="validity" onClick={() => {this.handleDatePicker(this.state.donation.validity)}} className="datepicker" />
                                                                 <label htmlFor="validity">Disponível até o dia <span className="red-text">*</span></label>
                                                                 <span className="validity-error-message red-text error"></span>
                                                             </div>
                                                             <div className="input-field col s12">
-                                                                <input id={`validity-hour-${solicitation.pk}`} name="validity_hour" type="text" className="timepicker" />
+                                                                <input id={`validity-hour-${solicitation.pk}`} name="validity_hour" type="text" className="timepicker" onClick={() => {this.handleTimePicker()}} />
                                                                 <label htmlFor="validity_hour">Disponível até às <span className="red-text">*</span></label>
                                                                 <span className="validity_hour-error-message red-text error"></span>
                                                             </div>

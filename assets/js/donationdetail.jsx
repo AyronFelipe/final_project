@@ -17,7 +17,12 @@ export default class DonationDetail extends React.Component{
     saveSolicitation(){
         $('#solicitation-form').find('input').each(function(){
             $(this).siblings('span.error-message').html('');
-        })
+        });
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true
+        });
         $.ajax({
             url: '/api/new-solicitation/',
             type: 'POST',
@@ -41,6 +46,8 @@ export default class DonationDetail extends React.Component{
                     }
                 }
             }
+        }).always(function(){
+            $.gritter.removeAll();
         });
     }
 
