@@ -51,7 +51,7 @@ export default class SolicitationsDonation extends React.Component{
         $('.validity_hour-error-message').html("");
         let values = {
             pk: pk,
-            validity: $(`#validity-${pk}`).val(),
+            validity: $(`[name=validity_${pk}]`).val(),
             validity_hour: $(`#validity-hour-${pk}`).val()
         }
         $.ajax({
@@ -139,6 +139,23 @@ export default class SolicitationsDonation extends React.Component{
         })
     }
 
+    finalizeSolicitation(pk) {
+        $.ajax({
+            url: `/api/donation/finalize/${pk}/`,
+            type: 'POST',
+            dataType: 'json',
+            headers: {
+                'Authorization': 'Token ' + localStorage.token
+            },
+            success: function (data) {
+                location.reload();
+            }.bind(this),
+            error: function (request, status, err) {
+                console.log(request, status, err);
+            }
+        })
+    }
+
     componentDidMount(){
 
         let pathname = window.location.pathname;
@@ -205,7 +222,7 @@ export default class SolicitationsDonation extends React.Component{
         });
     }
 
-    handleTimePicker(){
+    handleTimePicker(validity_hour){
         $('.timepicker').pickatime({
             default: 'now',
             fromnow: 0,
@@ -329,7 +346,7 @@ export default class SolicitationsDonation extends React.Component{
                                                                 </div>
                                                             </div>
                                                             <div className="input-field col s12">
-                                                                <input id={`validity-${solicitation.pk}`} type="text" name="validity" onClick={() => {this.handleDatePicker(this.state.donation.validity)}} className="datepicker" />
+                                                                <input id={`validity-${solicitation.pk}`} type="text" name={`validity_${solicitation.pk}`} onClick={() => {this.handleDatePicker(this.state.donation.validity)}} className="datepicker" />
                                                                 <label htmlFor="validity">Disponível até o dia <span className="red-text">*</span></label>
                                                                 <span className="validity-error-message red-text error"></span>
                                                             </div>
@@ -403,17 +420,17 @@ export default class SolicitationsDonation extends React.Component{
                                                     </div>
                                                 </div>
 
-                                                <div id={`modal-not-appear-solicitation-${solicitation.pk}`} className="modal purple-text">
+                                                <div id={`modal-not-appear-solicitation-${solicitation.pk}`} className="modal indigo-text">
                                                     <div className="modal-content">
                                                         <div className="row">
                                                             <h4>Dono da solicitação {solicitation.slug} não apareceu</h4>
                                                             <div className="col s12 center-align">
                                                                 <div className="valign-wrapper row">
-                                                                    <div className="col card hoverable red accent-2 white-text">
+                                                                    <div className="col card hoverable indigo accent-2 white-text">
                                                                         <div className="card-content">
                                                                             <div className="white-text center-align">
                                                                                 <p>
-                                                                                    Ao clicar em "Não Apareceu" nós assumimos que esse usuário não foi ao endereço de coleta da sua doação.
+                                                                                    Ao clicar em "Não Apareceu" nós assumimos que o { solicitation.owner } não foi ao endereço de coleta da sua doação.
                                                                                     A solicitação será imediatamente deletada da lista de solicitações da sua doação.
                                                                                 </p>
                                                                             </div>
@@ -424,8 +441,8 @@ export default class SolicitationsDonation extends React.Component{
                                                         </div>
                                                     </div>
                                                     <div className="modal-footer">
-                                                        <button className="btn waves-effect waves-light red accent-2" type="button" onClick={this.notAppearSolicitation.bind(this, solicitation.pk)}>
-                                                            <i className="material-icons right">cancel</i> Não Apareceu
+                                                        <button className="btn waves-effect waves-light indigo accent-2" type="button" onClick={this.notAppearSolicitation.bind(this, solicitation.pk)}>
+                                                            <i className="material-icons right">sentiment_dissatisfied</i> Não Apareceu
                                                         </button>
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                                     </div>
@@ -437,12 +454,12 @@ export default class SolicitationsDonation extends React.Component{
                                                             <h4>Finalizar solicitação {solicitation.slug}</h4>
                                                             <div className="col s12 center-align">
                                                                 <div className="valign-wrapper row">
-                                                                    <div className="col card hoverable red accent-2 white-text">
+                                                                    <div className="col card hoverable teal darken-2 white-text">
                                                                         <div className="card-content">
                                                                             <div className="white-text center-align">
                                                                                 <p>
-                                                                                    Ao clicar em "Não Apareceu" nós assumimos que esse usuário não foi ao endereço de coleta da sua doação.
-                                                                                    A solicitação será imediatamente deletada da lista de solicitações da sua doação.
+                                                                                    Ao clicar em "Finalizar" nós assumimos que tudo relacionado a essa solicitação e doação ocorreu dentro do esperado.
+                                                                                    Obrigado por ajudar! :D
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -452,8 +469,8 @@ export default class SolicitationsDonation extends React.Component{
                                                         </div>
                                                     </div>
                                                     <div className="modal-footer">
-                                                        <button className="btn waves-effect waves-light red accent-2" type="button">
-                                                            <i className="material-icons right">cancel</i> Finalizar
+                                                        <button className="btn waves-effect waves-light teal darken-2" type="button" onClick={ this.finalizeSolicitation.bind(this, solicitation.pk) }>
+                                                            <i className="material-icons right">done</i> Finalizar
                                                         </button>
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                                     </div>

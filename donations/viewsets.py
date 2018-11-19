@@ -367,3 +367,29 @@ class NotAppearDonationSolicitation(APIView):
                     obj.delete()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class FinalizeDonationSolicitation(APIView):
+
+    def post(self, request, pk=None):
+        solicitation = Solicitation.objects.get(pk=pk)
+        with transaction.atomic():
+            solicitation.status = Solicitation.COMPLETED
+            solicitation.save()
+            serializer = SolicitationSerializer(solicitation)
+            donation = Donation.objects.get(pk=solicitation.donation.pk)
+
+            message = 'A sua solicitação ' + solicitation.slug + ' da doação ' + donation.slug + 'foi finalizada. Obrigado por usar o AlimentAÍ.'
+            notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
+            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+            subject = "Sua solicitação foi finalizada"
+            context = {}
+            context['user'] = solicitation.owner
+            context['domain'] = get_current_site(request).domain
+            context['protocol'] = 'https' if request.is_secure() else 'http'
+            context['donation'] = donation
+            context['solicitation'] = solicitation
+            send_mail_template(subject, "emails/notification_finalize_solicitation_email.html", context, [solicitation.owner.email])
+
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
