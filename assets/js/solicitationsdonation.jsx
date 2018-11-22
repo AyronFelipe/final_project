@@ -40,8 +40,10 @@ export default class SolicitationsDonation extends React.Component{
             </div>
         } else if (status == 'Em Espera') {
             conditional = <p className="grey-text">Essa solicitação está em espera</p>
-        } else if (status == 'Finalizada') {
+        } else if (status == 'Finalizada - Doada') {
             conditional = <p className="teal-text">Esta solicitação foi atendida e concluída</p>
+        } else if (status == 'Finalizada - Não doada' ) {
+            conditional = <p className="teal-text">Esta solicitação foi concluída mas não atendida</p>
         }
         return conditional;
     }
