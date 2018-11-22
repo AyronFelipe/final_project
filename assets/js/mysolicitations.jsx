@@ -69,6 +69,11 @@ export default class MySolicitations extends React.Component{
         return tr;
     }
 
+    handleClickModal(modal) {
+        $('.modal').modal();
+        $(`#${modal}`).modal('open');
+    }
+
     render(){
         if (this.state.solicitations.length == 0) {
             return(
@@ -170,14 +175,10 @@ export default class MySolicitations extends React.Component{
                                             <td>{ this.handleValidity(solicitation.validity, solicitation.validity_hour) }</td>
                                             <td>{ solicitation.status }</td>
                                             <td>
-                                                <a href="#" className="dropdown-button btn-large waves-effect waves-light indigo accent-2 white-text" data-activates={ `dropdown-details-solicitation-${solicitation.id}` } data-constrainwidth="false" tittle="Detalhes da Solicitação">
-                                                    <i className="material-icons">arrow_drop_down</i>
-                                                </a>
-                                                <ul id={ `dropdown-details-solicitation-${solicitation.id}` } className="dropdown-content">
-                                                    <li><a href="#"><i className="material-icons">zoom_in</i> Ver detalhes da Solicitação</a></li>
-                                                    <li><a href={`#modal-delete-${solicitation.id}`} className="modal-trigger"><i className="material-icons">delete</i> Deletar Solicitação</a></li>
-                                                </ul>
-                                                <div id={`modal-delete-${solicitation.id}`} className="modal">
+                                                <button data-target={`#modal-delete-${solicitation.pk}`} onClick={() => this.handleClickModal(`modal-delete-${solicitation.pk}`)} className="btn waves-effect waves-light red accent-2 white-text modal-trigger" title="Deletar solicitação">
+                                                    <i className="material-icons">delete</i>
+                                                </button>
+                                                <div id={`modal-delete-${solicitation.pk}`} className="modal">
                                                     <div className="modal-content">
                                                         <h5 className="red-text">Tem certeza que deseja excluir a Solicitação { solicitation.slug }?</h5>
                                                         <br/>
@@ -190,7 +191,6 @@ export default class MySolicitations extends React.Component{
                                                     <div className="modal-footer">
                                                         <div className="row">
                                                             <div className="col s12">
-                                                                <a href="#!" className="modal-action modal-close waves-effect waves-light btn-flat ">Fechar</a>
                                                                 <button className="btn btn-large waves-effect waves-light red darken-2 white-text" onClick={this.deleteSolicitation.bind(this, solicitation.pk)}><i className="material-icons">delete</i> Eu quero excluir!</button>
                                                             </div>
                                                         </div>
