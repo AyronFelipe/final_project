@@ -137,7 +137,7 @@ export default class DonationDetail extends React.Component{
             "opacity": '0.8',
         })
 
-        if ((this.state.donation == undefined) {
+        if (this.state.donation == undefined) {
             return(
                 <div id="content">
                     <nav className="nav-extended deep-purple darken-2 white-text">
