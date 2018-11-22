@@ -11,12 +11,14 @@ from cloudinary.models import CloudinaryField
 
 class Donation(CreationAndUpdateMixin, AddressMixin):
 
-    ACTIVE = 'A'
+    COMPLETED = 'C'
     INVALID = 'I'
+    ACTIVE = 'A'
 
     STATUS_DONATION = (
         (ACTIVE, 'Ativa'),
         (INVALID, 'Inválida'),
+        (COMPLETED, 'Finalizada'),
     )
 
     name = models.CharField(max_length=255)
@@ -66,6 +68,7 @@ class Solicitation(CreationAndUpdateMixin):
     INVALID = 'I'
     ON_HOLD = 'O'
     COMPLETED = 'F'
+    UNCOMPLETED = 'U'
 
     STATUS_SOLICITATION = (
         (CREATED, 'Criada'),
@@ -73,7 +76,8 @@ class Solicitation(CreationAndUpdateMixin):
         (REJECTED, 'Rejeitada'),
         (INVALID, 'Inválida'),
         (ON_HOLD, 'Em Espera'),
-        (COMPLETED, 'Finalizada'),
+        (COMPLETED, 'Finalizada - Doada'),
+        (UNCOMPLETED, 'Finalizada - Não doada'),
     )
 
     owner = models.ForeignKey(get_user_model(), related_name='solicitations', on_delete=models.CASCADE, null=True, blank=True)
@@ -109,10 +113,10 @@ class Solicitation(CreationAndUpdateMixin):
     def update_status(self):
 
         if self.donation:
-            if self.donation.status == Donation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
+            if self.donation.status == Donation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED and self.status != Solicitation.UNCOMPLETED:
                 self.status = Solicitation.INVALID
                 self.save()
-            elif self.donation.status == Donation.ACTIVE and self.status == Solicitation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED:
+            elif self.donation.status == Donation.ACTIVE and self.status == Solicitation.INVALID and self.status != Solicitation.REJECTED and self.status != Solicitation.ACCEPTED and self.status != Solicitation.ON_HOLD and self.status != Solicitation.COMPLETED and self.status != Solicitation.UNCOMPLETED:
                 self.status = Solicitation.CREATED
                 self.save()
             return self
