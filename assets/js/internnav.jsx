@@ -215,7 +215,7 @@ export default class InternNav extends React.Component{
                         <li><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
                         <li><Link to="/donations/my-donations/"><i className="material-icons">room_service</i>Minhas doações</Link></li>
                     </ul>
-                    <ul id="dropdown-notifications" className="dropdown-content" style={{ width: '360px', overflowX: 'hidden', whiteSpace: 'normal' }}>
+                    <ul id="dropdown-notifications" className="dropdown-content" style={{ width: '380px', overflowX: 'hidden', whiteSpace: 'normal' }}>
                         <li>
                             <h6 className="purple-text" style={{ marginLeft: '15px' }}>NOTIFICAÇÕES</h6>
                         </li>
