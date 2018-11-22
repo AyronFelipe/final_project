@@ -113,10 +113,12 @@ export default class DonationDetail extends React.Component{
             }
         });
 
-        $('.modal').modal();
+       
     }
 
     render(){
+
+         $('.modal').modal();
         
         const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY"
 
@@ -136,87 +138,6 @@ export default class DonationDetail extends React.Component{
             "filter": 'blur(5px)',
             "opacity": '0.8',
         })
-
-        if (this.state.donation == undefined) {
-            return(
-                <div id="content">
-                    <nav className="nav-extended deep-purple darken-2 white-text">
-                        <div className="row">
-                            <div className="col s12">
-                                <div className="col s10 push-s1">
-                                    <div className="nav-content">
-                                        <span className="nav-title">Detalhe da Doação {this.state.donation.name}</span>
-                                        <Link to="/donations/">
-                                            <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
-                                                <i className="material-icons">home</i>
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </nav>
-                    <div id="bg"></div>
-                    <br /><br />
-                    <div className="row">
-                        <div className="col s12">
-                            <Preloader />
-                        </div>
-                    </div>
-                </div>
-            )
-        }
-
-        if (this.state.donation.status != 'Ativa') {
-            return(
-                <div id="content">
-                    <nav className="nav-extended deep-purple darken-2 white-text">
-                        <div className="row">
-                            <div className="col s12">
-                                <div className="col s10 push-s1">
-                                    <div className="nav-content">
-                                        <span className="nav-title">Detalhe da Doação {this.state.donation.name}</span>
-                                        <Link to="/donations/">
-                                            <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
-                                                <i className="material-icons">home</i>
-                                            </button>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </nav>
-                    <div id="bg"></div>
-                    <br /><br />
-                    <div className="row">
-                        <div className="col s12">
-                            <div className="col s10 push-s1">
-                                <div className="card grey lighten-2">
-                                    <div className="card-content">
-                                        <div className="row purple-text">
-                                            <div className="col l5 m12 s12">
-                                                <img className="responsive-img" src={this.state.donation.main_photo} />
-                                            </div>
-                                            <div className="col l7 m12 s12">
-                                                <h3>{this.state.donation.name}</h3>
-                                                <br />
-                                                <p>
-                                                    <span>{this.state.donation.description}</span>
-                                                </p>
-                                                <br />
-                                                <p><strong>Validade: </strong>Você só pode solicitar essa doação até o dia <span className="red-text">{local_date}</span>  até às <span className="red-text">{this.state.donation.validity_hour}</span></p>
-                                                <br />
-                                                <h2 className="teal-text">Esta doação não é mais válida!</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        }
 
         if (this.state.donation.status != 'Ativa' && now_major_date){
             return(
