@@ -4,6 +4,7 @@ import Carousel from './carousel'
 import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import Tags from './tags'
+import Preloader from './preloader'
 
 export default class DonationDetail extends React.Component{
 
@@ -135,6 +136,36 @@ export default class DonationDetail extends React.Component{
             "filter": 'blur(5px)',
             "opacity": '0.8',
         })
+
+        if ((this.state.donation == undefined) {
+            return(
+                <div id="content">
+                    <nav className="nav-extended deep-purple darken-2 white-text">
+                        <div className="row">
+                            <div className="col s12">
+                                <div className="col s10 push-s1">
+                                    <div className="nav-content">
+                                        <span className="nav-title">Detalhe da Doação {this.state.donation.name}</span>
+                                        <Link to="/donations/">
+                                            <button className="btn-floating btn-large halfway-fab waves-effect waves-light indigo accent-2 white-text">
+                                                <i className="material-icons">home</i>
+                                            </button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <div id="bg"></div>
+                    <br /><br />
+                    <div className="row">
+                        <div className="col s12">
+                            <Preloader />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
 
         if (this.state.donation.status != 'Ativa') {
             return(
