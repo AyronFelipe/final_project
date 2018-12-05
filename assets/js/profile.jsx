@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 import '../css/profile.css'
+import Comments from './comments'
 
 export default class Profile extends React.Component{
 
@@ -186,7 +187,9 @@ export default class Profile extends React.Component{
                         <div className="col m12 l4">
                             { this.handleRender(user, child, local_date) }
                         </div>
-                        <div className="col m12 l8"></div>
+                        <div className="col m12 l8">
+                            <Comments />
+                        </div>
                     </div>
                 </div>
             </div>

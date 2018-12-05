@@ -27,6 +27,12 @@ export default class Login extends React.Component{
     }
 
     login(){
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         $.ajax({
             url: '/login/',
             type: 'POST',
@@ -41,6 +47,8 @@ export default class Login extends React.Component{
             error: function(request, status, err){
                 $("#error-message").html("<p>" + request.responseJSON.message +"</p>");
             }
+        }).always(function(){
+            $.gritter.removeAll();
         });
     }
 

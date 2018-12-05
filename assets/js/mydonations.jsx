@@ -14,6 +14,12 @@ export default class MyDonations extends React.Component{
     }
 
     deleteDonation(pk){
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         $.ajax({
             url: `/api/my-donations/${pk}/`,
             type: 'DELETE',
@@ -27,7 +33,9 @@ export default class MyDonations extends React.Component{
             error: function (request, status, err) {
                 console.log(request, status, err);
             }
-        })
+        }).always(function(){
+            $.gritter.removeAll();
+        });
     }
 
     componentDidMount(){

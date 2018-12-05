@@ -19,7 +19,8 @@ export default class Donation extends React.Component{
         $.gritter.add({
             title: 'Aguarde!',
             text: 'Enviando dados...',
-            sticky: true
+            sticky: true,
+            class_name: 'black white-text',
         });
         let form = new FormData($("#donation-form").get(0));
         $.ajax({

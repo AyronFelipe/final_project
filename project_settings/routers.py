@@ -15,3 +15,4 @@ router.register(r'notifications', core_viewsets.NotificationViewSet, base_name='
 router.register(r'my-solicitations', donations_viewsets.MySolicitationsViewSet, base_name='my_notification')
 router.register(r'my-donations', donations_viewsets.MyDonationsViewSet, base_name='my_donation')
 router.register(r'unit-measurements', core_viewsets.UnitMeasurementViewset, base_name='unit_measurement')
+router.register(r'comments', core_viewsets.CommentViewset, base_name='comments')

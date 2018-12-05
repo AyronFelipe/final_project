@@ -22,7 +22,8 @@ export default class DonationDetail extends React.Component{
         $.gritter.add({
             title: 'Aguarde!',
             text: 'Enviando dados...',
-            sticky: true
+            sticky: true,
+            class_name: 'black white-text',
         });
         $.ajax({
             url: '/api/new-solicitation/',

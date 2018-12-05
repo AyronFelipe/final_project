@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
-from .models import Tag, Notification, UnitMeasurement
-from .serializers import TagSerializer, NotificationSerializer, UnitMeasurementSerializer
+from .models import Tag, Notification, UnitMeasurement, Comment
+from .serializers import TagSerializer, NotificationSerializer, UnitMeasurementSerializer, CommentSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
@@ -64,5 +64,20 @@ class UnitMeasurementViewset(viewsets.ViewSet):
 
         unit_measurement = UnitMeasurement.objects.get(pk=pk)
         serializer = UnitMeasurementSerializer(unit_measurement)
+        return Response(serializer.data)
+
+
+class CommentViewset(viewsets.ViewSet):
+
+    def list(self, request):
+
+        queryset = Comment.objects.filter(commented=request.user)
+        serializer = CommentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request):
+
+        comment = Comment.objects.get(pk=pk)
+        serializer = CommentSerializer(comment)
         return Response(serializer.data)
 

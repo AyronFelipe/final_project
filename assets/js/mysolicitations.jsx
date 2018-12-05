@@ -35,6 +35,12 @@ export default class MySolicitations extends React.Component{
     }
 
     deleteSolicitation(pk){
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         let form = new FormData();
         form.append('pk', pk);
         $.ajax({
@@ -56,6 +62,8 @@ export default class MySolicitations extends React.Component{
             error: function(request, status, err){
                 console.log(request, status, err);
             }
+        }).always(function(){
+            $.gritter.removeAll();
         });
     }
 

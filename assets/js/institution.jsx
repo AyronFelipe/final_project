@@ -18,6 +18,12 @@ export default class Institution extends React.Component{
         $("#institution-form").find(":input").each(function () {
             $(this).siblings('span.error-message').html('');
         });
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         let form = new FormData($("#institution-form").get(0));
         $.ajax({
             url: '/api/new-institution/',
@@ -42,7 +48,9 @@ export default class Institution extends React.Component{
                     }
                 }
             }
-        })
+        }).always(function(){
+            $.gritter.removeAll();
+        });
     }
 
     componentDidMount(){

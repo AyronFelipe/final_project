@@ -19,6 +19,12 @@ export default class Person extends React.Component{
         $("#person-form").find(":input").each(function(){
             $(this).siblings('span.error-message').html('');
         });
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         let form = new FormData($("#person-form").get(0));
         $.ajax({
             url: '/api/new-person/',
@@ -43,6 +49,8 @@ export default class Person extends React.Component{
                     }
                 }
             }
+        }).always(function(){
+            $.gritter.removeAll();
         });
     }
 

@@ -55,7 +55,13 @@ export default class SolicitationsDonation extends React.Component{
             pk: pk,
             validity: $(`[name=validity_${pk}]`).val(),
             validity_hour: $(`#validity-hour-${pk}`).val()
-        }
+        };
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         $.ajax({
             url: `/api/donation/accepts/${pk}/`,
             type: 'POST',
@@ -77,6 +83,8 @@ export default class SolicitationsDonation extends React.Component{
                     }
                 }
             }
+        }).always(function(){
+            $.gritter.removeAll();
         });
     }
 
@@ -85,7 +93,13 @@ export default class SolicitationsDonation extends React.Component{
         let values = {
             pk: pk,
             reason_rejection: $(`#reason-rejection-${pk}`).val()
-        }
+        };
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         $.ajax({
             url: `/api/donation/rejects/${pk}/`,
             type: 'POST',
@@ -102,11 +116,18 @@ export default class SolicitationsDonation extends React.Component{
                     $('.reason_rejection-error-message').html(request.responseJSON.message_error)
                 }
             }
-        })
+        }).always(function(){
+            $.gritter.removeAll();
+        });
     }
     
     cancelSolicitation(pk) {
-
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         $.ajax({
             url: `/api/donation/cancels/${pk}/`,
             type: 'POST',
@@ -120,11 +141,18 @@ export default class SolicitationsDonation extends React.Component{
             error: function (request, status, err) {
                 console.log(request, status, err);
             }
-        })
+        }).always(function(){
+            $.gritter.removeAll();
+        });
     }
     
     notAppearSolicitation(pk) {
-
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         $.ajax({
             url: `/api/donation/not-appear/${pk}/`,
             type: 'POST',
@@ -138,10 +166,18 @@ export default class SolicitationsDonation extends React.Component{
             error: function (request, status, err) {
                 console.log(request, status, err);
             }
-        })
+        }).always(function(){
+            $.gritter.removeAll();
+        });
     }
 
     finalizeSolicitation(pk) {
+        $.gritter.add({
+            title: 'Aguarde!',
+            text: 'Enviando dados...',
+            sticky: true,
+            class_name: 'black white-text',
+        });
         $.ajax({
             url: `/api/donation/finalize/${pk}/`,
             type: 'POST',
@@ -155,7 +191,9 @@ export default class SolicitationsDonation extends React.Component{
             error: function (request, status, err) {
                 console.log(request, status, err);
             }
-        })
+        }).always(function(){
+            $.gritter.removeAll();
+        });
     }
 
     componentDidMount(){

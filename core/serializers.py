@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Photo, Tag, Notification, UnitMeasurement
+from .models import Photo, Tag, Notification, UnitMeasurement, Comment
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -58,4 +58,15 @@ class UnitMeasurementSerializer(serializers.ModelSerializer):
             'pk',
             'initials',
             'name'
+        ]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = [
+            'content',
+            'commenter',
+            'commented',
         ]

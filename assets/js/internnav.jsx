@@ -139,9 +139,9 @@ export default class InternNav extends React.Component{
 
         channel.bind('my-event', (data) => {
             if (user.pk == data.notified) {
-                { this.loadNotifications() }
-                { this.handleRenderNotifications() }
-                Materialize.toast("Você possui uma nova notificação", 5000)
+                { this.loadNotifications() };
+                { this.handleRenderNotifications() };
+                Materialize.toast("Você possui uma nova notificação", 5000).unbind();
             }
         });
 
