@@ -13,6 +13,8 @@ import 'materialize-css/dist/css/materialize.min.css'
 import { storageToken, isAuthenticated } from './auth'
 import Home from './home2'
 import PrivateRoute from './privateroute'
+import 'gritter/js/jquery.gritter.min.js'
+import 'gritter/css/jquery.gritter.css'
 
 class Initial extends React.Component{
     render(){
