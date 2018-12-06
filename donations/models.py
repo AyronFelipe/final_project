@@ -14,11 +14,13 @@ class Donation(CreationAndUpdateMixin, AddressMixin):
     COMPLETED = 'C'
     INVALID = 'I'
     ACTIVE = 'A'
+    ON_HOLD = 'O'
 
     STATUS_DONATION = (
         (ACTIVE, 'Ativa'),
         (INVALID, 'Inválida'),
         (COMPLETED, 'Finalizada'),
+        (ON_HOLD, 'Em Espera'),
     )
 
     name = models.CharField(max_length=255)

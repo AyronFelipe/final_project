@@ -241,6 +241,8 @@ class AcceptSolicitation(APIView):
 
             solicitation = Solicitation.objects.get(pk=pk)
             donation = Donation.objects.get(pk=solicitation.donation.pk)
+            donation.status = Donation.ON_HOLD
+            donation.save()
 
             solicitation.is_accepted = True
             solicitation.status = Solicitation.ACCEPTED
