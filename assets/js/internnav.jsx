@@ -122,6 +122,17 @@ export default class InternNav extends React.Component{
                 console.log(request, status, err);
             }
         });
+
+        /*
+        setInterval(function(){ 
+            this.loadNotifications()
+        }.bind(this), 60000);
+        if (user.pk == data.notified) {
+            { this.loadNotifications() };
+            { this.handleRenderNotifications() };
+            Materialize.toast("Você possui uma nova notificação", 5000).unbind();
+        }
+        */
     }
 
     render(){
@@ -136,7 +147,7 @@ export default class InternNav extends React.Component{
         });
 
         var channel = pusher.subscribe('my-channel');
-
+        
         channel.bind('my-event', (data) => {
             if (user.pk == data.notified) {
                 { this.loadNotifications() };

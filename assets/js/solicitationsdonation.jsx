@@ -1,5 +1,7 @@
 import React from 'react'
 import Preloader from './preloader'
+import * as moment from 'moment';
+import 'moment/locale/pt-br';
 import { Link } from 'react-router-dom'
 
 export default class SolicitationsDonation extends React.Component{
@@ -25,8 +27,8 @@ export default class SolicitationsDonation extends React.Component{
         } else if (status == 'Criada') {
             conditional =
             <div>
-                <button onClick={() => {this.handleClickModal(`modal-accept-solicitation-${pk}`)}} data-target={`modal-accept-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Aceitar</button>&nbsp;
-                <button onClick={() => {this.handleClickModal(`modal-reject-solicitation-${pk}`)}} data-target={`modal-reject-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Rejeitar</button>
+                <button onClick={() => {this.handleClickModal(`modal-accept-solicitation-${pk}`)}} data-target={`modal-accept-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text" title="Aceitar solicitação"><i className="material-icons">check</i></button>&nbsp;
+                <button onClick={() => {this.handleClickModal(`modal-reject-solicitation-${pk}`)}} data-target={`modal-reject-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text" title="Rejeitar solicitação"><i className="material-icons">block</i></button>
             </div>
         } else if (status == 'Rejeitada') {
             //desrejeitar??
@@ -34,9 +36,9 @@ export default class SolicitationsDonation extends React.Component{
         } else if (status == 'Aceita') {
             conditional =
             <div>
-                <button onClick={() => {this.handleClickModal(`modal-cancel-solicitation-${pk}`)}} data-target={`modal-cancel-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text">Cancelar doação</button><br /><br />
-                <button onClick={() => {this.handleClickModal(`modal-not-appear-solicitation-${pk}`)}} data-target={`modal-not-appear-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light indigo accent-2 white-text">Solicitante não apareceu</button><br /><br />
-                <button onClick={() => {this.handleClickModal(`modal-finalize-solicitation-${pk}`)}} data-target={`modal-finalize-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text">Doação finalizada</button>
+                <button onClick={() => {this.handleClickModal(`modal-cancel-solicitation-${pk}`)}} data-target={`modal-cancel-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light red accent-2 white-text" title="Cancelar doação"><i className="material-icons">clear</i></button>&nbsp;
+                <button onClick={() => {this.handleClickModal(`modal-not-appear-solicitation-${pk}`)}} data-target={`modal-not-appear-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light indigo accent-2 white-text" title="Solicitante não apareceu"><i className="material-icons">sentiment_dissatisfied</i></button>&nbsp;
+                <button onClick={() => {this.handleClickModal(`modal-finalize-solicitation-${pk}`)}} data-target={`modal-finalize-solicitation-${pk}`} className="btn modal-trigger waves-effect waves-light teal darken-2 white-text" title="Doação finalizada"><i className="material-icons">done_all</i></button>&nbsp;
             </div>
         } else if (status == 'Em Espera') {
             conditional = <p className="grey-text">Essa solicitação está em espera</p>
@@ -276,6 +278,17 @@ export default class SolicitationsDonation extends React.Component{
         });
     }
 
+    handleValidity(validity, validity_hour){
+        let conditional = ''
+        if (validity == null && validity_hour == null) {
+            conditional = <p>Não possui data de validade</p>;
+        } else {
+            let local_date = moment(validity).format("DD/MM/YYYY")
+            conditional = <p>{local_date}<br/>{validity_hour}</p>;
+        }
+        return conditional;
+    }
+
     render(){
 
         if ( this.state.solicitations_of_donation.length == 0 ) {
@@ -305,7 +318,9 @@ export default class SolicitationsDonation extends React.Component{
                                     <thead>
                                         <tr>
                                             <th>Solicitação</th>
+                                            <th>Validade da sua doação</th>
                                             <th>Dono da Solicitação</th>
+                                            <th>Validade que você deu para essa solicitação</th>
                                             <th>Status da solicitação</th>
                                             <th>Comentário do solicitante</th>
                                             <th>Ações</th>
@@ -355,6 +370,7 @@ export default class SolicitationsDonation extends React.Component{
                                     <tr>
                                         <th>Solicitação</th>
                                         <th>Dono da Solicitação</th>
+                                        <th>Validade dessa solicitação</th>
                                         <th>Status da solicitação</th>
                                         <th>Comentário do solicitante</th>
                                         <th>Ações</th>
@@ -365,6 +381,7 @@ export default class SolicitationsDonation extends React.Component{
                                         <tr key={ solicitation.pk }>
                                             <td>{ solicitation.slug }</td>
                                             <td><Link to={`/accounts/profile/${solicitation.owner_pk}/`}><img className="responsive-img circle" style={{ width: '50px', height: '50px', marginTop: '6px' }} src={ solicitation.owner_photo } /> {solicitation.owner}</Link></td>
+                                            <td>{ this.handleValidity(solicitation.validity, solicitation.validity_hour) }</td>
                                             <td><p>{ solicitation.status }</p></td>
                                             <td><p className="grey-text">{ solicitation.comment }</p></td>
                                             <td>
@@ -454,7 +471,7 @@ export default class SolicitationsDonation extends React.Component{
                                                     </div>
                                                     <div className="modal-footer">
                                                         <button className="btn waves-effect waves-light red accent-2" type="button" onClick={this.cancelSolicitation.bind(this, solicitation.pk)}>
-                                                            <i className="material-icons right">cancel</i> Cancelar
+                                                            <i className="material-icons right">clear</i> Cancelar
                                                         </button>
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                                     </div>
@@ -510,7 +527,7 @@ export default class SolicitationsDonation extends React.Component{
                                                     </div>
                                                     <div className="modal-footer">
                                                         <button className="btn waves-effect waves-light teal darken-2" type="button" onClick={ this.finalizeSolicitation.bind(this, solicitation.pk) }>
-                                                            <i className="material-icons right">done</i> Finalizar
+                                                            <i className="material-icons right">done_all</i> Finalizar
                                                         </button>
                                                         <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                                     </div>
