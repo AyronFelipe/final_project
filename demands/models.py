@@ -33,3 +33,15 @@ class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
            date.year, date.month, date.day, self.id, self.owner.pk, slugify(self.name)
         )
         super(Demand, self).save()
+
+
+class Gift(CreationAndUpdateMixin):
+
+    demand = models.ForeignKey(Demand, related_name='gifts', on_delete=models.CASCADE, null=True, blank=True,)
+    owner = models.ForeignKey(get_user_model(), related_name='gifts', on_delete=models.CASCADE, null=True, blank=True,)
+
+    class Meta:
+
+        verbose_name = _('gift')
+        verbose_name_plural = _('gifts')
+

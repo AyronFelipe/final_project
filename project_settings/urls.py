@@ -13,6 +13,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('donations/', include('donations.urls', namespace='donations')),
+    path('demands/', include('demands.urls', namespace='demands')),
     path('login/', login, name='login'),
     path('api/', include(router.urls), name='api'),
     path('api/new-person/', CreatePersonViewSet.as_view(), name='new-person'),

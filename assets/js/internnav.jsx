@@ -141,6 +141,8 @@ export default class InternNav extends React.Component{
         const user = this.state.user
         const child = this.state.user.child
 
+        Pusher.logToConsole = true;
+
         var pusher = new Pusher('1ab67094ad1ec71707db', {
             cluster: 'us2',
             forceTLS: true
@@ -148,11 +150,9 @@ export default class InternNav extends React.Component{
 
         var channel = pusher.subscribe('my-channel');
         
-        channel.bind('my-event', (data) => {
+        channel.bind('my-event', function(data){
             if (user.pk == data.notified) {
-                { this.loadNotifications() };
-                { this.handleRenderNotifications() };
-                Materialize.toast("Você possui uma nova notificação", 5000).unbind();
+                Materialize.toast("Você possui uma nova notificação", 3000);
             }
         });
 

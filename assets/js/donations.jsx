@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import 'moment/locale/pt-br';
 import Preloader from './preloader'
 import Login from './login'
+import Demands from './demands'
 
 const SEARCH_LIMIT_SIZE = 3;
 const SEARCH_LIMIT_EMPTY = 0;
@@ -271,6 +272,12 @@ export default class Donations extends React.Component{
                             </div>
                         </nav>
                         <div className="row">
+                            <ul id="tabs-swipe" className="tabs">
+                                <div className="col s11 push-s1">
+                                    <li className="tab col s6"><a href="#doacoes" className="active">Doações</a></li>
+                                    <li className="tab col s6"><a href="#pedidos">Pedidos</a></li>
+                                </div>
+                            </ul>
                             <div id="doacoes">
                                 <div className="row">
                                     <div className="col l10 m12 s12">
@@ -282,13 +289,28 @@ export default class Donations extends React.Component{
                                         { this.handleTagRender() }
                                     </div>
                                 </div>
+                                <div className="fixed-action-btn">
+                                    <Link to="/donations/new-donation/">
+                                        <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
+                                            <i className="material-icons">add</i>
+                                        </button>
+                                    </Link>
+                                </div>
                             </div>
-                            <div className="fixed-action-btn">
-                                <Link to="/donations/new-donation/">
-                                    <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
-                                        <i className="material-icons">add</i>
-                                    </button>
-                                </Link>
+                            <div id="pedidos">
+                                <div className="row">
+                                    <div className="col s12 center-align">
+                                        <br/><br/><br/>
+                                        <Demands />
+                                    </div>
+                                </div>
+                                <div className="fixed-action-btn">
+                                    <Link to="/demands/new-demand/">
+                                        <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar um pedido">
+                                            <i className="material-icons">add</i>
+                                        </button>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                         <div id="modal-search-donations-empty" className="modal">
@@ -320,6 +342,12 @@ export default class Donations extends React.Component{
                         </div>
                     </nav>
                     <div className="row">
+                        <ul id="tabs-swipe" className="tabs">
+                            <div className="col s11 push-s1">
+                                <li className="tab col s6"><a href="#doacoes" className="active">Doações</a></li>
+                                <li className="tab col s6"><a href="#pedidos">Pedidos</a></li>
+                            </div>
+                        </ul>
                         <div id="doacoes">
                             <div className="row">
                                 <div className="col l10 m12 s12 center-align">
@@ -332,13 +360,28 @@ export default class Donations extends React.Component{
                                     { this.handleTagRender() }
                                 </div>
                             </div>
+                            <div className="fixed-action-btn">
+                                <Link to="/donations/new-donation/">
+                                    <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
+                                        <i className="material-icons">add</i>
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
-                        <div className="fixed-action-btn">
-                            <Link to="/donations/new-donation/">
-                                <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar uma doação">
-                                    <i className="material-icons">add</i>
-                                </button>
-                            </Link>
+                        <div id="pedidos">
+                            <div className="row">
+                                <div className="col s12 center-align">
+                                    <br/><br/><br/>
+                                    <Demands />
+                                </div>
+                            </div>
+                            <div className="fixed-action-btn">
+                                <Link to="/demands/new-demand/">
+                                    <button type="button" className="btn btn-floating btn-large waves-effect waves-light indigo accent-2 white-text pulse" title="Adcionar um pedido">
+                                        <i className="material-icons">add</i>
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
