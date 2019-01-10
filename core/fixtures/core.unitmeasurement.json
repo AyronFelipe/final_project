@@ -1,0 +1,26 @@
+[
+{
+  "model": "core.unitmeasurement",
+  "pk": 1,
+  "fields": {
+    "name": "Quilos",
+    "initials": "kg"
+  }
+},
+{
+  "model": "core.unitmeasurement",
+  "pk": 2,
+  "fields": {
+    "name": "Gramas",
+    "initials": "g"
+  }
+},
+{
+  "model": "core.unitmeasurement",
+  "pk": 3,
+  "fields": {
+    "name": "Toneladas",
+    "initials": "ton"
+  }
+}
+]

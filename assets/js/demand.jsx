@@ -96,7 +96,6 @@ export default class Demand extends React.Component{
 
     render(){
 
-
         return(
             <div>
                 <nav className="nav-extended deep-purple darken-2 white-text">
