@@ -15,7 +15,7 @@ export default class Donation extends React.Component{
     saveDonation(){
         $("#donation-form").find("input, textarea").each(function(){
             $(this).siblings('span.error').html('');
-        })
+        });
         $.gritter.add({
             title: 'Aguarde!',
             text: 'Enviando dados...',
