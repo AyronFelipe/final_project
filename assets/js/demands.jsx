@@ -5,16 +5,21 @@ import * as moment from 'moment';
 
 export default class Demands extends React.Component{
 
-	componentDidMount(){
-		$.ajax({
-			'url': '/api/demands/',
-			'type': 'GET',
-			'dataType': 'json',
-			headers: {
+    constructor(props){
+        super(props);
+        this.state = { demands: [] }
+    }
+
+    componentDidMount(){
+        $.ajax({
+            'url': '/api/demands/',
+            'type': 'GET',
+            'dataType': 'json',
+            headers: {
                 'Authorization': 'Token ' + localStorage.token
             },
             success: function(data){
-            	if(data.length == 0){
+                if(data.length == 0){
                     const collection = 
                     `<div class="row">
                         <div class="col s12 center-align">
@@ -33,15 +38,46 @@ export default class Demands extends React.Component{
                         </div>
                     </div>`;
                     $('#card-demands-section').html(collection);
-            	}
-            }
+                } else {
+                    this.setState({'demands': data})
+                }
+            }.bind(this)
 		})
 	}
 	
 	render(){
+        if (this.state.demands.length > 0) {
+            return(
+                <div id="card-demands-section">
+                    { this.state.demands.map((demand) =>
+                        <div className="row" key={ demand.pk }>
+                            <div className="col s10 push-s1 purple-text">
+                                <div className="card horizontal">
+                                    <div className="card-image">
+                                        <img src={ demand.main_photo } alt="main_photo"/>
+                                    </div>
+                                    <div className="card-stacked">
+                                        <span class="card-title">{ demand.name }</span>
+                                        <div className="card-content">
+                                            <p>{ demand.description }</p>
+                                        </div>
+                                        <div className="card-action"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) }
+                </div>
+            )
+        }
 		return(
 			<div id="card-demands-section">
-            	<h1>OLÁ</h1>
+                <div className="row">
+                    <div className="col s12">
+                        <br /><br /><br />
+                        <Preloader />
+                    </div>
+                </div>
             </div>
 		)
 	}	

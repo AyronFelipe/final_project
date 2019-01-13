@@ -18,6 +18,7 @@ class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
     main_photo = CloudinaryField(_('main photo'), null=True, blank=True)
     quantity = models.DecimalField(_('quatity'), max_digits=5, decimal_places=1, null=True, blank=True)
     unit_measurement = models.ForeignKey(UnitMeasurement, related_name='unit_demands', on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(_('status'), max_length=2, null=True, blank=True)
 
     class Meta:
 

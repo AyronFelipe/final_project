@@ -13,6 +13,12 @@ class DemandViewSet(viewsets.ViewSet):
         queryset = Demand.objects.all()
         serializer = DemandSerializer(queryset, many=True)
         return Response(serializer.data)
+    
+    def retrieve(self, request, pk=None):
+
+        demand = Demand.objects.get(pk=pk)
+        serializer = DemandSerializer(demand)
+        return Response(serializer.data)
 
     def create(self, request):
 
@@ -53,4 +59,3 @@ class DemandViewSet(viewsets.ViewSet):
                     demand.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED,)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
