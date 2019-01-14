@@ -21,12 +21,12 @@ export default class Demands extends React.Component{
             success: function(data){
                 if(data.length == 0){
                     const collection = 
-                    `<div class="row">
-                        <div class="col s12 center-align">
-                            <div class="valign-wrapper row">
-                                <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
-                                    <div class="card-content">
-                                        <div class="white-text center-align card-title">
+                    `<div className="row">
+                        <div className="col s12 center-align">
+                            <div className="valign-wrapper row">
+                                <div className="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4 deep-purple white-text">
+                                    <div className="card-content">
+                                        <div className="white-text center-align card-title">
                                             <h3>Nenhum pedido encontrado</h3>
                                         </div>
                                     </div>
@@ -54,12 +54,21 @@ export default class Demands extends React.Component{
                             <div className="col s10 push-s1 purple-text">
                                 <div className="card horizontal">
                                     <div className="card-image">
-                                        <img src={ demand.main_photo } alt="main_photo"/>
+                                        <img className="responsive-img" src={ demand.main_photo } alt="main_photo" style={{ height: '100%' }}/>
                                     </div>
                                     <div className="card-stacked">
-                                        <span class="card-title">{ demand.name }</span>
                                         <div className="card-content">
-                                            <p>{ demand.description }</p>
+                                            <div className="row">
+                                                <div className="col m6 s12 left-align" style={{ marginTop: '10px' }}>
+                                                    <span className="card-title">{ demand.name }</span>
+                                                </div>
+                                                <div className="col m6 s12 right-align">
+                                                    <img className="responsive-img circle" style={{ width: '50px', height: '50px' }} src={ demand.owner_main_photo } />
+                                                </div>
+                                                <div className="col s12 left-align">
+                                                    <p>{ demand.description }</p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className="card-action"></div>
                                     </div>

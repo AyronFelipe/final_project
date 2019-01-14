@@ -40,6 +40,8 @@ class Gift(CreationAndUpdateMixin):
 
     demand = models.ForeignKey(Demand, related_name='gifts', on_delete=models.CASCADE, null=True, blank=True,)
     owner = models.ForeignKey(get_user_model(), related_name='gifts', on_delete=models.CASCADE, null=True, blank=True,)
+    quantity = models.DecimalField(_('quatity'), max_digits=5, decimal_places=1, null=True, blank=True)
+    unit_measurement = models.ForeignKey(UnitMeasurement, related_name='unit_gifts', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
 
