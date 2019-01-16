@@ -7,6 +7,7 @@ export default class Demands extends React.Component{
 
     constructor(props){
         super(props);
+        this.ownerHandler = this.ownerHandler.bind(this);
         this.state = { demands: [] }
     }
 
@@ -42,10 +43,26 @@ export default class Demands extends React.Component{
                     this.setState({'demands': data})
                 }
             }.bind(this)
-		})
-	}
-	
-	render(){
+        })
+    }
+
+    ownerHandler(owner){
+        let collection = ''
+        if (owner.child.cpf) {
+            collection =
+            <div>
+                <p><strong>Nome: </strong>{owner.child.first_name} {owner.child.last_name}</p>
+                <p><strong>E-mail: </strong>{owner.email}</p>
+                <p><strong>Telefone: </strong>{owner.phone}</p>
+                <p><strong>Celular: </strong>{owner.cell_phone}</p>
+            </div>
+        } else {
+            collection = ''
+        }
+        return collection;
+    }
+
+    render(){
         if (this.state.demands.length > 0) {
             return(
                 <div id="card-demands-section">
@@ -60,11 +77,34 @@ export default class Demands extends React.Component{
                                         <div className="card-content">
                                             <div className="row">
                                                 <div className="col m6 s12 left-align" style={{ marginTop: '10px' }}>
-                                                    <span className="card-title">{ demand.name }</span>
+                                                    <h4>{ demand.name }</h4>
                                                 </div>
                                                 <div className="col m6 s12 right-align">
-                                                    <img className="responsive-img circle" style={{ width: '50px', height: '50px' }} src={ demand.owner_main_photo } />
+                                                    <img className="responsive-img circle" style={{ width: '50px', height: '50px' }} src={ demand.owner.photo } />
                                                 </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col m6 s12">
+                                                    <div className="card deep-purple white-text">
+                                                        <div className="card-content white-text">
+                                                            <span className="card-title">Local de Entrega</span>
+                                                            <p><strong>Logradouro: </strong>{ demand.owner.street }, { demand.owner.number }</p>
+                                                            <p><strong>Bairro: </strong>{demand.owner.neighborhood }</p>
+                                                            <p><strong>CEP: </strong>{ demand.owner.cep }</p>
+                                                            <p><strong>Cidade: </strong>{ demand.owner.city } - { demand.owner.uf }</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="col m6 s12">
+                                                    <div className="card deep-purple white-text">
+                                                        <div className="card-content white-text">
+                                                            <span className="card-title">{demand.identifier}</span>
+                                                            { this.ownerHandler(demand.owner) }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row">
                                                 <div className="col s12 left-align">
                                                     <p>{ demand.description }</p>
                                                 </div>
