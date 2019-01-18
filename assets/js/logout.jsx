@@ -18,7 +18,7 @@ export default class Logout extends React.Component{
 
     render(){
         return(
-            <a className="btn waves-effect waves-light indigo accent-2 white-text" onClick={ this.logoutHandler }>Sair</a>
+            <a className="btn waves-effect waves-light indigo accent-2 white-text" onClick={ this.logoutHandler } style={{ width: '90%' }}>Sair</a>
         )
     }
 }
