@@ -246,6 +246,7 @@ export default class Donations extends React.Component{
         } else {
             //Se tiver dados no state donations
             $('.modal').modal();
+            $('ul.tabs').tabs();
             if(this.state.donations.length){
                 return(
                     <div>
@@ -273,7 +274,7 @@ export default class Donations extends React.Component{
                         </nav>
                         <div className="row">
                             <ul id="tabs-swipe" className="tabs">
-                                <div className="col s11 push-s1">
+                                <div className="col s12">
                                     <li className="tab col s6"><a href="#doacoes" className="active">Doações</a></li>
                                     <li className="tab col s6"><a href="#pedidos">Pedidos</a></li>
                                 </div>
@@ -299,8 +300,7 @@ export default class Donations extends React.Component{
                             </div>
                             <div id="pedidos">
                                 <div className="row">
-                                    <div className="col s12 center-align">
-                                        <br/><br/><br/>
+                                    <div className="col s12">
                                         <Demands />
                                     </div>
                                 </div>
@@ -371,7 +371,6 @@ export default class Donations extends React.Component{
                         <div id="pedidos">
                             <div className="row">
                                 <div className="col s12 center-align">
-                                    <br/><br/><br/>
                                     <Demands />
                                 </div>
                             </div>

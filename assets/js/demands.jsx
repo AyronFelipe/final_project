@@ -43,7 +43,8 @@ export default class Demands extends React.Component{
                     this.setState({'demands': data})
                 }
             }.bind(this)
-        })
+        });
+        $('ul.tabs').tabs();
     }
 
     ownerHandler(owner){
@@ -64,53 +65,59 @@ export default class Demands extends React.Component{
 
     render(){
         if (this.state.demands.length > 0) {
+            $('ul.tabs').tabs();
             return(
                 <div id="card-demands-section">
                     { this.state.demands.map((demand) =>
                         <div className="row" key={ demand.pk }>
-                            <div className="col s10 push-s1 purple-text">
-                                <div className="card horizontal">
+                            <div className="col l8 push-l2 m10 push-m1 s12">
+                                <div className="card hoverable">
                                     <div className="card-image">
-                                        <img className="responsive-img" src={ demand.main_photo } alt="main_photo" style={{ height: '100%' }}/>
+                                        <img className="responsive-img" src={ demand.main_photo } alt="main_photo"/>
+                                        <button className="btn-floating halfway-fab waves-effect waves-light indigo accent-2"><i className="material-icons">menu</i></button>
                                     </div>
-                                    <div className="card-stacked">
-                                        <div className="card-content">
-                                            <div className="row">
-                                                <div className="col m6 s12 left-align" style={{ marginTop: '10px' }}>
-                                                    <h4>{ demand.name }</h4>
-                                                </div>
-                                                <div className="col m6 s12 right-align">
-                                                    <img className="responsive-img circle" style={{ width: '50px', height: '50px' }} src={ demand.owner.photo } />
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col m6 s12">
-                                                    <div className="card deep-purple white-text">
-                                                        <div className="card-content white-text">
-                                                            <span className="card-title">Local de Entrega</span>
-                                                            <p><strong>Logradouro: </strong>{ demand.owner.street }, { demand.owner.number }</p>
-                                                            <p><strong>Bairro: </strong>{demand.owner.neighborhood }</p>
-                                                            <p><strong>CEP: </strong>{ demand.owner.cep }</p>
-                                                            <p><strong>Cidade: </strong>{ demand.owner.city } - { demand.owner.uf }</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col m6 s12">
-                                                    <div className="card deep-purple white-text">
-                                                        <div className="card-content white-text">
-                                                            <span className="card-title">{demand.identifier}</span>
-                                                            { this.ownerHandler(demand.owner) }
-                                                        </div>
+                                    <div className="card-content">
+                                        <span className="card-title">{ demand.name }</span>
+                                        <p>{ demand.description }</p>
+                                        <br/>
+                                        <div className="divider"></div>
+                                        <br />
+                                        <div className="row">
+                                            <div className="col m6 s12">
+                                                <div className="card deep-purple white-text">
+                                                    <div className="card-content white-text">
+                                                        <br/>
+                                                        <span className="card-title">Local de Entrega</span>
+                                                        <div className="divider"></div>
+                                                        <br />
+                                                        <p><strong>Logradouro: </strong>{ demand.owner.street }, { demand.owner.number }</p>
+                                                        <p><strong>Bairro: </strong>{demand.owner.neighborhood }</p>
+                                                        <p><strong>CEP: </strong>{ demand.owner.cep }</p>
+                                                        <p><strong>Cidade: </strong>{ demand.owner.city } - { demand.owner.uf }</p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="row">
-                                                <div className="col s12 left-align">
-                                                    <p>{ demand.description }</p>
+                                            <div className="col m6 s12">
+                                                <div className="card deep-purple white-text">
+                                                    <div className="card-content white-text">
+                                                        <div className="row" style={{ marginBottom: '0px' }}>
+                                                            <div className="col s6 left-align" style={{ paddingLeft: '0px' }}>
+                                                                <br/>
+                                                                <span className="card-title">{demand.identifier}</span>
+                                                            </div>
+                                                            <div className="col s6 right-align" style={{ paddingRight: '0px' }}>
+                                                                <img className="responsive-img circle" src={ demand.owner.photo } style={{ width: '50px', height: '50px' }}/>
+                                                            </div>
+                                                        </div>
+                                                        <div className="divider"></div>
+                                                        <br />
+                                                        { this.ownerHandler(demand.owner) }
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="card-action"></div>
+                                    </div>
+                                    <div className="card-action">
                                     </div>
                                 </div>
                             </div>

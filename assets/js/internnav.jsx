@@ -16,9 +16,13 @@ class NotificationCount extends React.Component{
             return(
                 <span data-badge-caption="nova" className="new badge">{this.props.count}</span>
             )
-        } else {
+        } else if (this.props.count > 1) {
             return(
                 <span data-badge-caption="novas" className="new badge">{this.props.count}</span>
+            )
+        } else {
+            return(
+                ''
             )
         }
     }
