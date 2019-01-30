@@ -8,6 +8,7 @@ export default class Demands extends React.Component{
     constructor(props){
         super(props);
         this.ownerHandler = this.ownerHandler.bind(this);
+        this.handleClickModal = this.handleClickModal.bind(this);
         this.state = { demands: [] }
     }
 
@@ -61,6 +62,11 @@ export default class Demands extends React.Component{
             collection = ''
         }
         return collection;
+    }
+
+    handleClickModal(modal) {
+        $('.modal').modal();
+        $(`#${modal}`).modal('open');
     }
 
     render(){
@@ -118,7 +124,24 @@ export default class Demands extends React.Component{
                                         </div>
                                     </div>
                                     <div className="card-action">
+                                        <div className="row">
+                                            <div className="col s12">
+                                                <div className="right-align">
+                                                    <button onClick={() => { this.handleClickModal(`modal-intention-${demand.pk}`) }} data-target={`modal-intention-${demand.pk}`} className="right-align btn modal-trigger waves-effect waves-light waves-light indigo accent-2 white-text">Atender Pedido</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div id={`modal-intention-${demand.pk}`} className="modal teal-text">
+                                <div className="modal-content">
+                                    <div className="row">
+                                        <h4>OI</h4>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +152,7 @@ export default class Demands extends React.Component{
 		return(
 			<div id="card-demands-section">
                 <div className="row">
-                    <div className="col s12">
+                    <div className="col s12 center-align">
                         <br /><br /><br />
                         <Preloader />
                     </div>
