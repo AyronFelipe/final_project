@@ -125,10 +125,10 @@ export default class Demands extends React.Component{
                                     </div>
                                     <div className="card-action">
                                         <div className="row">
-                                            <div className="col s12">
-                                                <div className="right-align">
-                                                    <button onClick={() => { this.handleClickModal(`modal-intention-${demand.pk}`) }} data-target={`modal-intention-${demand.pk}`} className="right-align btn modal-trigger waves-effect waves-light waves-light indigo accent-2 white-text">Atender Pedido</button>
-                                                </div>
+                                            <div className="col s12 right-align">
+                                                <button onClick={() => { this.handleClickModal(`modal-intention-${demand.pk}`) }} data-target={`modal-intention-${demand.pk}`} className="right-align btn modal-trigger waves-effect waves-light waves-light indigo accent-2 white-text">
+                                                    Atender Pedido
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
