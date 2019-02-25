@@ -145,7 +145,7 @@ export default class InternNav extends React.Component{
         const user = this.state.user
         const child = this.state.user.child
 
-        Pusher.logToConsole = true;
+        //Pusher.logToConsole = true;
 
         var pusher = new Pusher('1ab67094ad1ec71707db', {
             cluster: 'us2',
@@ -198,14 +198,14 @@ export default class InternNav extends React.Component{
                                                         { child.first_name }
                                                     </a>
                                                     <p style={{ marginTop: '-35px', marginLeft: '27px' }}>
-                                                        { child.last_name }
+                                                    { child.last_name }
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="no-padding">
                                             <ul>
-                                                <li><a><i className="material-icons">account_circle</i>Editar perfil</a></li>
+                                                <li><Link to="/accounts/user/edit/"><i className="material-icons">account_circle</i>Editar perfil</Link></li>
                                                 <li><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
                                                 <li><Link to="/donations/my-donations/"><i className="material-icons">room_service</i>Minhas doações</Link></li>
                                             </ul>
@@ -226,7 +226,7 @@ export default class InternNav extends React.Component{
                             </Link>
                         </li>
                         <li className="divider"></li>
-                        <li><a><i className="material-icons">account_circle</i>Editar perfil</a></li>
+                        <li><Link to="/accounts/user/edit/"><i className="material-icons">account_circle</i>Editar perfil</Link></li>
                         <li><Link to="/donations/my-solicitations/"><i className="material-icons">shopping_basket</i>Minhas solicitações</Link></li>
                         <li><Link to="/donations/my-donations/"><i className="material-icons">room_service</i>Minhas doações</Link></li>
                     </ul>

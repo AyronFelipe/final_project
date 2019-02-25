@@ -8,6 +8,7 @@ urlpatterns = [
     path('new-institution/', views.new_institution, name='new_institution'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('profile/<int:id>/', views.profile, name='profile'),
+    path('user/edit/', views.edit_profile, name='edit_profile'),
 ]
 
 

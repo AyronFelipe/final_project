@@ -17,6 +17,7 @@ import InternNav from './internnav'
 import MySolicitations from './mysolicitations'
 import MyDonations from './mydonations'
 import SolicitationsDonation from './solicitationsdonation'
+import EditUser from './edit_user'
 
 export default class Home extends React.Component{
 
@@ -45,6 +46,7 @@ export default class Home extends React.Component{
                             <PrivateRoute authenticated={ this.state.authenticated } path="/donations/new-donation/" component={ Donation } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/demands/new-demand/" component={ Demand } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/donations/donation/:slug/" component={ DonationDetail } />
+                            <PrivateRoute authenticated={this.state.authenticated} path="/accounts/user/edit/" component={ EditUser } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/accounts/profile/:pk/" component={ Profile } />
                             <PrivateRoute authenticated={ this.state.authenticated } path="/donations/my-solicitations/" component={ MySolicitations } />
                         </main>

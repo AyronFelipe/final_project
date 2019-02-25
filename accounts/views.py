@@ -36,6 +36,13 @@ def profile(request, id):
     return render(request, template_name, context)
 
 
+def edit_profile(request):
+
+    template_name = 'accounts/edit_profile.html'
+    context = {}
+    return render(request, template_name, context)
+
+
 def activate(request, uidb64, token):
 
     context = {}
