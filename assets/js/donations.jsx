@@ -21,7 +21,7 @@ class CardDonation extends React.Component{
                     let date = moment(donation.validity).format("DD/MM/YYYY")
                     return(
                         <div className="row" key={ donation.pk }>
-                            <div className="col l10 push-l2 m10 push-m1 s12">
+                            <div className="col l10 offset-l2 m10 offset-m1 s12">
                                 <Link to={ '/donations/donation/'+donation.slug+'/' }>
                                     <div className="card hoverable">
                                         <div className="card-image">
@@ -253,8 +253,8 @@ export default class Donations extends React.Component{
                     <div>
                         <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
                             <div className="row">
-                                <div className="col s12">
-                                    <div className="col s10 push-s1">
+                                <div className="col s12 m12 l12 xl12">
+                                    <div className="col s10 offset-s1">
                                         <div className="nav-content">
                                             <span className="nav-title">Início { this.state.title }</span>
                                         </div>
@@ -334,7 +334,7 @@ export default class Donations extends React.Component{
                     <nav className="nav-extended deep-purple darken-2 white-text hide-on-med-and-down">
                         <div className="row">
                             <div className="col s12">
-                                <div className="col s10 push-s1">
+                                <div className="col s10 offset-s1">
                                     <div className="nav-content">
                                         <span className="nav-title">Início { this.state.title }</span>
                                     </div>

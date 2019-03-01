@@ -76,7 +76,7 @@ export default class Demands extends React.Component{
                 <div id="card-demands-section">
                     { this.state.demands.map((demand) =>
                         <div className="row" key={ demand.pk }>
-                            <div className="col l8 push-l2 m10 push-m1 s12">
+                            <div className="col l8 offset-l2 m10 offset-m1 s12">
                                 <div className="card hoverable">
                                     <div className="card-image">
                                         <img className="responsive-img" src={ demand.main_photo } alt="main_photo"/>

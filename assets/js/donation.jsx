@@ -128,7 +128,7 @@ export default class Donation extends React.Component{
                 <nav className="nav-extended deep-purple darken-2 white-text">
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <div className="nav-content">
                                     <span className="nav-title">Nova Doação</span>
                                     <Link to="/donations/">
@@ -143,7 +143,7 @@ export default class Donation extends React.Component{
                 </nav>
                 <div className="row purple-text">
                     <div className="col s12">
-                        <div className="col s10 push-s1">
+                        <div className="col s10 offset-s1">
                             <h4 className="center-align">Cadastre abaixo as informações sobre a sua doação!</h4>
                         </div>
                         <div className="container">

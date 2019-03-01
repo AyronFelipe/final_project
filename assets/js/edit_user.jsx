@@ -29,6 +29,8 @@ export default class EditUser extends React.Component{
             }
         });
 
+        $("input").focus();
+
     }
 
     render(){
@@ -38,7 +40,7 @@ export default class EditUser extends React.Component{
                     <nav className="nav-extended deep-purple darken-2 white-text">
                         <div className="row">
                             <div className="col s12">
-                                <div className="col s10 push-s1">
+                                <div className="col s10 offset-s1">
                                     <div className="nav-content">
                                         <span className="nav-title">
                                             Gerenciar suas Informações
@@ -57,7 +59,7 @@ export default class EditUser extends React.Component{
                     <div className="row">
                         <div className="col s12 center">
                             <Preloader />
-                        </div>  
+                        </div>
                     </div>
                 </div>
             )
@@ -67,7 +69,7 @@ export default class EditUser extends React.Component{
                 <nav className="nav-extended deep-purple darken-2 white-text">
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <div className="nav-content">
                                     <span className="nav-title">
                                         Gerenciar suas Informações
@@ -85,7 +87,7 @@ export default class EditUser extends React.Component{
                 <br/><br/>
                 <div className="row">
                     <div className="col s12 center">
-                        { this.state.user.child.cpf ? <EditUserPerson /> : <EditUserInstitution /> }
+                        { this.state.user.child.cpf ? <EditUserPerson user={this.state.user} /> : <EditUserInstitution user={this.state.user} /> }
                     </div>  
                 </div>
             </div>

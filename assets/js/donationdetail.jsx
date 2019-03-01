@@ -146,7 +146,7 @@ export default class DonationDetail extends React.Component{
                     <nav className="nav-extended deep-purple darken-2 white-text">
                         <div className="row">
                             <div className="col s12">
-                                <div className="col s10 push-s1">
+                                <div className="col s10 offset-s1">
                                     <div className="nav-content">
                                         <span className="nav-title">Detalhe da Doação { this.state.donation.name }</span>
                                         <Link to="/donations/">
@@ -163,7 +163,7 @@ export default class DonationDetail extends React.Component{
                     <br/><br/>
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <div className="card grey lighten-2">
                                     <div className="card-content">
                                         <div className="row purple-text">
@@ -195,7 +195,7 @@ export default class DonationDetail extends React.Component{
                     <nav className="nav-extended deep-purple darken-2 white-text">
                         <div className="row">
                             <div className="col s12">
-                                <div className="col s10 push-s1">
+                                <div className="col s10 offset-s1">
                                     <div className="nav-content">
                                         <span className="nav-title">Detalhe da Doação { this.state.donation.name }</span>
                                         <Link to="/donations/">
@@ -212,7 +212,7 @@ export default class DonationDetail extends React.Component{
                     <br/><br/>
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <div className="card grey lighten-2">
                                     <div className="card-content">
                                         <div className="row purple-text">
@@ -244,7 +244,7 @@ export default class DonationDetail extends React.Component{
                     <nav className="nav-extended deep-purple darken-2 white-text">
                         <div className="row">
                             <div className="col s12">
-                                <div className="col s10 push-s1">
+                                <div className="col s10 offset-s1">
                                     <div className="nav-content">
                                         <span className="nav-title">Detalhe da Doação { this.state.donation.name }</span>
                                         <Link to="/donations/">
@@ -261,7 +261,7 @@ export default class DonationDetail extends React.Component{
                     <br/><br/>
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <div className="card grey lighten-2">
                                     <div className="card-content">
                                         <div className="row purple-text">
@@ -294,7 +294,7 @@ export default class DonationDetail extends React.Component{
                 <nav className="nav-extended deep-purple darken-2 white-text">
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <div className="nav-content">
                                     <span className="nav-title">Detalhe da Doação { this.state.donation.name }</span>
                                     <Link to="/donations/">
@@ -311,7 +311,7 @@ export default class DonationDetail extends React.Component{
                 <br/><br/>
                 <div className="row">
                     <div className="col s12">
-                        <div className="col s10 push-s1">
+                        <div className="col s10 offset-s1">
                             <div className="card">
                                 <div className="card-content">
                                     <div className="row purple-text">

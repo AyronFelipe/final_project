@@ -94,7 +94,7 @@ export default class Institution extends React.Component{
                     <br/><br/>
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <Link to="/">
                                     <button title="Voltar para a página inicial" className="btn-floating btn-large waves-effect waves-light indigo accent-2 white-text">
                                         <i className="material-icons">arrow_back</i>
@@ -105,7 +105,7 @@ export default class Institution extends React.Component{
                     </div>
                     <div className="row">
                         <div className="col s12">
-                            <div className="col s10 push-s1">
+                            <div className="col s10 offset-s1">
                                 <h4 className="center-align">Olá, para começar a ajudar é só colocar as suas informações abaixo</h4>
                             </div>
                             <div className="container">
