@@ -137,10 +137,19 @@ export default class Demands extends React.Component{
                             <div id={`modal-intention-${demand.pk}`} className="modal teal-text">
                                 <div className="modal-content">
                                     <div className="row">
-                                        <h4>OI</h4>
+                                        <h4>Você realmente deseja atender este pedido?</h4>
+                                        <div className="col s12">
+                                            <div className="card deep-purple white-text">
+                                                <div className="card-content white-text">
+                                                    Dependendo de sua doação este pedido continurá no feed de pedidos.
+                                                </div>
+                                                <form action=""></form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="modal-footer">
+                                    <button className="btn waves-effect waves-light waves-light indigo accent-2 white-text">Atender</button>
                                     <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat">Fechar</a>
                                 </div>
                             </div>
