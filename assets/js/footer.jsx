@@ -18,12 +18,12 @@ export default class Footer extends React.Component{
                                     Ayron
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item d-none d-sm-block d-md-block">
                                 <a className="nav-link" href="#">
                                     Ajuda
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item d-none d-sm-block d-md-block">
                                 <a className="nav-link" href="#">
                                     Licenças
                                 </a>
