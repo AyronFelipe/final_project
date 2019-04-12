@@ -9,7 +9,7 @@ export default class Footer extends React.Component{
 
     render(){
         return(
-            <footer className="footer mt-auto">
+            <footer className="footer">
                 <div className="container">
                     <nav className="pull-left">
                         <ul className="nav">
