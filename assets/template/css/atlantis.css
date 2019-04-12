@@ -2961,7 +2961,6 @@ label {
   .curves-shadow:before {
     content: '';
     position: absolute;
-    background: url(../img/img-shadow.png);
     background-size: cover;
     width: 100%;
     height: 100%;
