@@ -1,5 +1,6 @@
-const path = require('path')
-const webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
+var BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
     context: __dirname,
@@ -13,6 +14,7 @@ module.exports = {
     },
 
     plugins: [
+        new BundleTracker({ filename: './webpack-stats.json' }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',

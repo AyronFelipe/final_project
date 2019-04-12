@@ -43,6 +43,7 @@
     "style-loader": "^0.19.1",
     "url-loader": "^1.0.1",
     "webpack": "^4.29.6",
+    "webpack-bundle-tracker": "^0.4.2-beta",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1"
   },
