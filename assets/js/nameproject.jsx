@@ -1,14 +1,15 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-import 'materialize-css'
-import 'materialize-css/dist/css/materialize.min.css'
-import '../css/main.css'
+import React from 'react';
 
 export default class NameProject extends React.Component{
 
+    constructor(props){
+        super(props);
+        this.state = { name: 'Alimentaí'}
+    }
+
     render(){
         return(
-            <span className="truncate">AlimentAI</span>
+            this.state.name
         )
     }
 }

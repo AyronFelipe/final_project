@@ -1,29 +1,19 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-import Header from './header'
-import Main from './main'
-import Footer from './footer'
-import '../css/main.css'
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
-import Login from './login'
-import Person from './person'
-import Institution from './institution'
-import 'materialize-css'
-import 'materialize-css/dist/css/materialize.min.css'
-import { storageToken, isAuthenticated } from './auth'
-import Home from './home2'
-import PrivateRoute from './privateroute'
-import 'gritter/js/jquery.gritter.min.js'
-import 'gritter/css/jquery.gritter.css'
+import React from 'react';
+import ReactDom from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Header from './header';
+import Main from './main';
+import Footer from './footer';
+import Login from './login';
 
-class Initial extends React.Component{
+class Initial extends React.Component {
     render(){
         return(
-            <div>
+            <React.Fragment>
                 <Header />
                 <Main />
                 <Footer />
-            </div>
+            </React.Fragment>
         )
     }
 }
@@ -31,47 +21,24 @@ class Initial extends React.Component{
 class App extends React.Component{
 
     constructor(props){
-        super(props)
-        this.state = {authenticated: false}
-    }
-
-    componentDidMount(){
-        if ( localStorage.token == "" || localStorage.token == undefined ) {
-            storageToken("")
-            this.setState({authenticated: false})
-        } else {
-            storageToken(localStorage.token)
-            this.setState({ authenticated: true })
-        }
+        super(props);
     }
 
     render(){
-        if (localStorage.token == "" || localStorage.token == undefined) {
-            return(
-                <div className="deep-purple white-text">
-                    <Route exact path="/" component={ Initial } />
-                    <Route path="/accounts/login/" component={ Login } />
-                    <Route path="/accounts/new-person/" component={ Person } />
-                    <Route path="/accounts/new-institution/" component={ Institution } />
-                </div>
-            )
-        } else {
-            return(
-                <div>
-                    <Switch>
-                        <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/" component={ Home } />
-                        <Redirect to="/donations/" />
-                    </Switch>
-                </div>
-            )
-        }
+        return(
+            <div className="wrapper horizontal-layout-3">
+                <Route exact path="/" component={Initial} />
+                <Route exact path="/accounts/login/" component={Login} />
+            </div>
+        )
     }
 }
 
 ReactDom.render((
     <BrowserRouter>
-        <div>
+        <React.Fragment>
             <App />
-        </div>
+        </React.Fragment>
     </BrowserRouter>), document.getElementById('app')
 );
+

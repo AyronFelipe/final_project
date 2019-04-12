@@ -1,11 +1,12 @@
-body {
-    font-family: 'Arvo', serif;
+.alimentai-name {
+    color: #ffffff !important;
 }
 
-.page-title {
-    font-size: 48px;
+.alimentai-name:hover {
+    color: #48abf7!important;
+    text-decoration: none;
 }
 
-.no-padding {
-    padding: 0;
+.horizontal-layout-3 {
+    overflow: hidden;
 }

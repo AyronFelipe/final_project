@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const BundleTracker = require('webpack-bundle-tracker')
 
 module.exports = {
     context: __dirname,
@@ -14,7 +13,6 @@ module.exports = {
     },
 
     plugins: [
-        new BundleTracker({filename: './webpack-stats.json'}),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
@@ -23,42 +21,27 @@ module.exports = {
     ],
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['react', 'stage-3'],
-                    plugins: ['transform-class-properties']
+                use: {
+                    loader: 'babel-loader',
                 }
             },
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
             },
-            {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-                loader: 'url-loader?limit=10000&mimetype=application/font-woff'
-            },
-            {
-                test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, 
-                loader: 'file-loader'
-            },
-            {
-                test: /\.(png|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {}
-                    }
-                ]
-            }
         ]
     },
 
     resolve: {
         modules: ['node_modules'],
         extensions: ['*', '.js', '.jsx']
-    }
+    },
+
+    devServer: {
+        historyApiFallback: true,
+    },
 }

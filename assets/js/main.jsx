@@ -1,40 +1,26 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Main extends React.Component{
 
     render(){
         return(
-            <div>
-                <main>
-                    <div className="section deep-purple white-text" id="como-funciona">
-                        <h1 className="center-align ">Como Funciona?</h1>
+            <div className="main-panel bg-primary">
+                <div className="position-relative overflow-hidden text-center animated fadeIn">
+                    <h1 className="pt-5 display-3 text-white">Quer começar a ajudar?</h1>
+                    <h3 className="text-white pt-3">
+                        Cadastre-se clicando nos botões abaixo de acordo com o tipo de pessoa
+                    </h3>
+                    <div className="d-flex flex-md-row flex-sm-column flex-column justify-content-md-center pt-3">
+                        <Link to="/accounts/new-person/">
+                            <button className="mx-3 my-3 btn btn-info btn-lg btn-round">Pessoa Física</button>
+                        </Link>
+                        <Link to="accounts/new-institution/">
+                            <button className="mx-3 my-3 btn btn-info btn-lg btn-round">Pessoa Jurídica</button>
+                        </Link>
                     </div>
-                    <div className="section deep-purple lighten-4 white-text" id="comecar">
-                        <h1 className="center-align">Começar</h1>
-                        <div className="container">
-                            <h5 className="center-align">Comece agora a fazer parte de nossa comunidade e a ajudar aqueles que estão precisando</h5>
-                            <div className="row center-align">
-                                <div className="col m6 s12">
-                                    <br/>
-                                    <Link to="/accounts/new-person/">
-                                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text">Sou uma pessoa física. Quero ajudar!</button>
-                                    </Link>
-                                </div>
-                                <div className="col m6 s12">
-                                    <br/>
-                                    <Link to="/accounts/new-institution/">
-                                        <button className="btn-large waves-effect waves-light indigo accent-2 white-text">Sou uma empresa. Quero ajudar!</button>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="section deep-purple white-text" id="quem-somos">
-                        <h1 className="center-align">Quem Somos?</h1>
-                    </div>
-                </main>
-            </div>     
+                </div>
+            </div>
         )
     }
 }
