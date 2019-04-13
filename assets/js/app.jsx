@@ -5,6 +5,7 @@ import Header from './header';
 import Main from './main';
 import Footer from './footer';
 import Login from './login';
+import NewPerson from './new_person';
 
 class Initial extends React.Component {
     render(){
@@ -29,6 +30,7 @@ class App extends React.Component{
             <div className="wrapper horizontal-layout-3">
                 <Route exact path="/" component={Initial} />
                 <Route exact path="/accounts/login/" component={Login} />
+                <Route exact path="/accounts/new-person" component={NewPerson} />
             </div>
         )
     }

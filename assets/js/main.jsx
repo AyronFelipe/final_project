@@ -13,10 +13,10 @@ export default class Main extends React.Component{
                     </h3>
                     <div className="d-flex flex-md-row flex-sm-column flex-column justify-content-md-center pt-3">
                         <Link to="/accounts/new-person/">
-                            <button className="mx-3 my-3 btn btn-info btn-lg btn-round">Pessoa Física</button>
+                            <button className="mx-3 my-3 btn btn-info btn-lg btn-round"><i className="icon-user mr-1"></i> Pessoa Física</button>
                         </Link>
                         <Link to="accounts/new-institution/">
-                            <button className="mx-3 my-3 btn btn-info btn-lg btn-round">Pessoa Jurídica</button>
+                            <button className="mx-3 my-3 btn btn-info btn-lg btn-round"><i className="fab fa-houzz mr-1"></i> Pessoa Jurídica</button>
                         </Link>
                     </div>
                 </div>

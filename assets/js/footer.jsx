@@ -15,7 +15,7 @@ export default class Footer extends React.Component{
                         <ul className="nav">
                             <li className="nav-item">
                                 <a className="nav-link" href="#">
-                                    Ayron
+                                    O Alimentaí
                                 </a>
                             </li>
                             <li className="nav-item d-none d-sm-block d-md-block">
@@ -31,7 +31,7 @@ export default class Footer extends React.Component{
                         </ul>
                     </nav>
                     <div className="copyright ml-auto">
-                        {this.state.anoAtual}, feito com <i className="fa fa-heart heart text-danger"></i> by <a href="#">Ayron</a>
+                        {this.state.anoAtual}, feito por Ayron Felipe
                     </div>
                 </div>
             </footer>

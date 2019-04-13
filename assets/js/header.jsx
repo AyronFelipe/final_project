@@ -31,7 +31,7 @@ export default class Header extends React.Component{
                                 <ul className="navbar-nav topbar-nav ml-md-auto align-items-center">
                                     <li className="nav-item">
                                         <Link to="/accounts/login/">
-                                            <button className="btn btn-info btn-round">Login</button>
+                                            <button className="btn btn-info btn-round"><i className="icon-login mr-1"></i> Login</button>
                                         </Link>
                                     </li>
                                 </ul>

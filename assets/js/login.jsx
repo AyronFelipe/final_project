@@ -68,7 +68,7 @@ export default class Login extends React.Component{
                                         <input type="checkbox" className="custom-control-input" id="rememberme" />
                                         <label className="custom-control-label m-0" htmlFor="rememberme">Lembrar-me</label>
                                     </div>
-                                    <button type="submit" className="btn btn-primary col-md-5 float-right mt-3 mt-sm-0 fw-bold">Entrar</button>
+                                    <button type="submit" className="btn btn-info btn-round col-md-5 float-right mt-3 mt-sm-0 fw-bold"><i class="icon-login mr-1"></i> Entrar</button>
                                 </div>
                             </form>
                             <div className="login-account">
