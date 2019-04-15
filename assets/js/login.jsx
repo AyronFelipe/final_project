@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
+import { storageToken, isAuthenticated } from './auth'
 
 export default class Login extends React.Component{
 
@@ -27,7 +28,10 @@ export default class Login extends React.Component{
         }
         axios.post('/login/', qs.stringify(body))
         .then((response) => {
-            console.log(response);
+            storageToken(response.data.token);
+            if (isAuthenticated()) {
+                console.log('pode passar!');
+            }
         })
         .catch((error) => {
             swal("Erro!", `${error.response.data.message}`, {
@@ -68,7 +72,7 @@ export default class Login extends React.Component{
                                         <input type="checkbox" className="custom-control-input" id="rememberme" />
                                         <label className="custom-control-label m-0" htmlFor="rememberme">Lembrar-me</label>
                                     </div>
-                                    <button type="submit" className="btn btn-info btn-round col-md-5 float-right mt-3 mt-sm-0 fw-bold"><i class="icon-login mr-1"></i> Entrar</button>
+                                    <button type="submit" className="btn btn-info btn-round col-md-5 float-right mt-3 mt-sm-0 fw-bold"><i className="icon-login mr-1"></i> Entrar</button>
                                 </div>
                             </form>
                             <div className="login-account">

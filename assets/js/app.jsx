@@ -6,6 +6,7 @@ import Main from './main';
 import Footer from './footer';
 import Login from './login';
 import NewPerson from './new_person';
+import NewInstitution from './new_institution';
 
 class Initial extends React.Component {
     render(){
@@ -27,10 +28,11 @@ class App extends React.Component{
 
     render(){
         return(
-            <div className="wrapper horizontal-layout-3">
+            <div className="wrapper horizontal-layout-3 bg-primary">
                 <Route exact path="/" component={Initial} />
                 <Route exact path="/accounts/login/" component={Login} />
-                <Route exact path="/accounts/new-person" component={NewPerson} />
+                <Route exact path="/accounts/new-person/" component={NewPerson} />
+                <Route exact path="/accounts/new-institution/" component={NewInstitution} />
             </div>
         )
     }
