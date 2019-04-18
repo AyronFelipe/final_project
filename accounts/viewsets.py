@@ -17,6 +17,9 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from rest_framework.parsers import MultiPartParser, FormParser
 import cloudinary.uploader
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.tokens import default_token_generator
+
 
 User = get_user_model()
 
@@ -42,6 +45,32 @@ def login(request):
         else:
             data["message"] = "Um dos campos foi preenchido incorretamente."
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["POST"])
+def forget_password(request):
+   
+    data = {}
+    EMAIL_TYPE = 'E'
+    type = request.POST.get('type_forget')
+    if type == EMAIL_TYPE:
+        email = request.POST.get('forget_email')
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            data['message'] = 'Usuário não encontrado'
+            return Response(data, status=status.HTTP_404_NOT_FOUND,)
+        else:
+            subject = "Esqueceu sua senha?"
+            context = {}
+            context['user'] = user
+            context['domain'] = get_current_site(request).domain
+            context['uid'] = urlsafe_base64_encode(force_bytes(user.pk)).decode()
+            context['token'] = default_token_generator.make_token(user)
+            context['protocol'] = 'https' if request.is_secure() else 'http'
+            send_mail_template(subject, "emails/forget_password_email.html", context, [email])
+            return Response(data, status=status.HTTP_200_OK,)
+
 
 
 @api_view(["GET"])

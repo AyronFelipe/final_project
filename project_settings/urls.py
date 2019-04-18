@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
-from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, login, logged_user
+from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, login, logged_user, forget_password
 from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet, DestroySolicitationViewSet, SolicitationsOfDonationViewSet, AcceptSolicitation, RejectSolicitation, CancelDonationSolicitation, NotAppearDonationSolicitation, FinalizeDonationSolicitation
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -15,6 +15,7 @@ urlpatterns = [
     path('donations/', include('donations.urls', namespace='donations')),
     path('demands/', include('demands.urls', namespace='demands')),
     path('login/', login, name='login'),
+    path('forget-password/', forget_password, name='forget_password'),
     path('api/', include(router.urls), name='api'),
     path('api/new-person/', CreatePersonViewSet.as_view(), name='new-person'),
     path('api/new-institution/', CreateInstitutionViewSet.as_view(), name='new_institution'),

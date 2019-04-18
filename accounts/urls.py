@@ -7,6 +7,7 @@ urlpatterns = [
     path('new-person/', views.new_person, name='new_person'),
     path('new-institution/', views.new_institution, name='new_institution'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    path('forget-password/<uidb64>/<token>/', views.forget_password, name='forget_password'),
     path('profile/<int:id>/', views.profile, name='profile'),
     path('user/edit/', views.edit_profile, name='edit_profile'),
 ]

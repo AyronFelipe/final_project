@@ -12,6 +12,60 @@ export default class Login extends React.Component{
         this.password = React.createRef();
     }
 
+    handleForgetPassword = (e) => {
+        swal({
+            title: "Digite seu e-mail",
+            html: '',
+            content: {
+                element: "input",
+                attributes: {
+                    placeholder: "E-mail",
+                    type: "email",
+                    id: "forget-email",
+                    className: "form-control",
+                    name: "forget_email"
+                },
+            },
+            buttons: {
+                confirm: {
+                    className: 'btn btn-success',
+                    closeModal: true,
+                }
+            }
+        }).then((email) => {
+            if (!email) {
+                throw null;
+            } else {
+                let form = new FormData();
+                form.append('forget_email', email);
+                form.append('type_forget', 'E');
+                axios.post('/forget-password/', form)
+                .then((response) => {
+                    swal("Muito bem!", "Enviamos um e-mail para você sobre como proceder. Muito obrigado por usar o Alimentaí!", {
+                        icon: "success",
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-success'
+                            }
+                        },
+                    }).then(() => {
+                        window.location = "/";
+                    });
+                })
+                .catch((error) => {
+                    swal("Erro!", `${error.response.data.message}`, {
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-danger'
+                            }
+                        },
+                    });
+                });
+            }
+        });
+    }
+
     changePasswordType = (e) => {
         return this.password.current.type == 'password' ? this.setState({ type: 'text', icon: 'far fa-eye-slash' }) : this.setState({ type: 'password', icon: 'far fa-eye' });
     }
@@ -54,12 +108,12 @@ export default class Login extends React.Component{
                         <div className="login-form">
                             <form onSubmit={this.handleSubmit} id="form-login">
                                 <div className="form-group">
-                                    <label htmlFor="email" className="placeholder"><b>E-mail</b></label>
+                                    <label htmlFor="email" className="placeholder"><span className="required-label">*</span> <b>E-mail</b></label>
                                     <input id="email" name="email" type="email" className="form-control" required onChange={this.changeHandler}></input>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="password" className="placeholder"><b>Senha</b></label>
-                                    <a href="#" className="link float-right">Esqueceu sua senha?</a>
+                                    <label htmlFor="password" className="placeholder"><span className="required-label">*</span> <b>Senha</b></label>
+                                    <a href="#" className="link float-right" onClick={this.handleForgetPassword}>Esqueceu sua senha?</a>
                                     <div className="position-relative">
                                         <input id="password" ref={this.password} name="password" type={this.state.type} className="form-control" required onChange={this.changeHandler} />
                                         <div className="show-password" onClick={this.changePasswordType}>
