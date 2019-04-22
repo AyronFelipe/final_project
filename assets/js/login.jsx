@@ -84,7 +84,7 @@ export default class Login extends React.Component{
         .then((response) => {
             storageToken(response.data.token);
             if (isAuthenticated()) {
-                console.log('pode passar!');
+                window.location = "/donations/";
             }
         })
         .catch((error) => {

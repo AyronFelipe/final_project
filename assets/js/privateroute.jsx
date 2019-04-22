@@ -9,7 +9,7 @@ export default class PrivateRoute extends React.Component{
         const {component: Component, authenticated, ...rest} = this.props;
 
         return(
-            <div>
+            <React.Fragment>
                 <Route
                     {...rest}
                     render={props => authenticated == true 
@@ -22,7 +22,7 @@ export default class PrivateRoute extends React.Component{
                         )
                     }
                 />
-            </div>
+            </React.Fragment>
         )
     }
 }
