@@ -29,6 +29,7 @@ class CreateDonationViewSet(generics.CreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
+        import pdb;pdb.set_trace()
         serializer = DonationSerializer(data=request.data)
         if serializer.is_valid():
             instance = serializer.validated_data

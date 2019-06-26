@@ -2,7 +2,6 @@ import React from 'react';
 import Inputmask from 'inputmask';
 import { readURL } from './utils';
 import axios from 'axios';
-import qs from 'qs';
 
 const CEP_LENGTH = 9;
 
