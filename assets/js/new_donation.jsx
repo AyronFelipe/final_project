@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { readURL } from './utils';
 import '../template/js/plugin/datepicker/bootstrap-datetimepicker.min.js';
 import '../template/js/plugin/dropzone/dropzone.min.js';
-import '../template/js/plugin/bootstrap-tagsinput/bootstrap-tagsinput.min.js';
 import Inputmask from 'inputmask';
 import axios from 'axios';
 import Dropzone from './dropzone';
+import NewTag from './new_tag';
 
 const CEP_LENGTH = 9;
 
@@ -56,7 +56,7 @@ export default class NewDonation extends React.Component {
         let form = new FormData();
         form.append('name', this.state.name);
         form.append('description', this.state.description);
-        form.append('tags', $('#tags').tagsinput('items'));
+        form.append('tags', this.state.tags);
         form.append('validity', this.state.validity);
         form.append('validity_hour', this.state.validity_hour);
         form.append('neighborhood', this.state.neighborhood);
@@ -110,10 +110,6 @@ export default class NewDonation extends React.Component {
             locale: 'pt-br',
         });
 
-        $('#tags').tagsinput({
-            tagClass: 'badge-primary'
-        });
-
         $('.bootstrap-tagsinput').addClass('form-control');
     }
 
@@ -157,6 +153,10 @@ export default class NewDonation extends React.Component {
         for (let i = 0; i < $('#dropzone-alimentai')[0].files.length; i++) {
             this.setState({ photos: [...this.state.photos, $('#dropzone-alimentai')[0].files[i]] })
         }
+    }
+
+    handleChangeTags = (tag) => { 
+        this.setState(({ tags: [...this.state.tags, tag] }));
     }
 
     render() {
@@ -220,7 +220,7 @@ export default class NewDonation extends React.Component {
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="tags">Tags da Doação</label>
-                                                    <select name="tags" id="tags" className="form-control" onChange={this.changeHandler} data-role="tagsinput" multiple></select>
+                                                    <NewTag name="tags" id="tags" onChange={this.handleChangeTags} />
                                                 </div>
                                             </div>
                                         </div>
