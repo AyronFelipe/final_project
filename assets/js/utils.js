@@ -9,5 +9,8 @@ module.exports = {
 
             reader.readAsDataURL(input.files[0]);
         }
+    },
+    formatDate: function(date){
+        return `${date.split('/')[2]}-${date.split('/')[1]}-${date.split('/')[0]}`
     }
 }

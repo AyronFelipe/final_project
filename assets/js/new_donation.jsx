@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { readURL } from './utils';
+import { readURL, formatDate } from './utils';
 import '../template/js/plugin/datepicker/bootstrap-datetimepicker.min.js';
 import '../template/js/plugin/dropzone/dropzone.min.js';
 import Inputmask from 'inputmask';
@@ -56,8 +56,10 @@ export default class NewDonation extends React.Component {
         let form = new FormData();
         form.append('name', this.state.name);
         form.append('description', this.state.description);
-        form.append('tags', this.state.tags);
-        form.append('validity', this.state.validity);
+        this.state.tags.map((tag) => {
+            form.append('tags', tag)
+        });
+        form.append('validity', formatDate(this.state.validity));
         form.append('validity_hour', this.state.validity_hour);
         form.append('neighborhood', this.state.neighborhood);
         form.append('street', this.state.street);
@@ -155,8 +157,8 @@ export default class NewDonation extends React.Component {
         }
     }
 
-    handleChangeTags = (tag) => { 
-        this.setState(({ tags: [...this.state.tags, tag] }));
+    handleChangeTags = (tag) => {
+        this.setState(({ tags: [...this.state.tags, tag.text] }));
     }
 
     render() {
