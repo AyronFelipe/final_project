@@ -6,6 +6,7 @@ import { isAuthenticated } from './auth';
 import InternNav from './internnav';
 import DonationsMain from './donations_main';
 import NewDonation from './new_donation';
+import DetailDonation from './detail_donation';
 
 class Home extends React.Component{
 
@@ -24,6 +25,7 @@ class Home extends React.Component{
                     <div className="main-panel">
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/" component={DonationsMain} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/new-donation/" component={NewDonation} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/donation/:slug/" component={DetailDonation} />
                     </div>
                 </div>
             </BrowserRouter>
