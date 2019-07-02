@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Carousel from './carousel';
 
 
 export default class DetailDonation extends React.Component{
@@ -81,7 +82,9 @@ export default class DetailDonation extends React.Component{
                 </div>
                 {
                     this.state.isLoading ?
-                        <div className="loader loader-lg"></div>
+                        <div className="d-flex justify-content-center mt-5">
+                            <div className="loader loader-lg"></div>
+                        </div>
                     :
                         <div className="page-inner">
                             <div className="row">
@@ -91,6 +94,11 @@ export default class DetailDonation extends React.Component{
                                             <h2>{this.state.donation.name}</h2>
                                         </div>
                                         <div className="card-body">
+                                            <div className="row">
+                                                <div className="col-12 col-sm-6">
+                                                    <Carousel images={this.state.donation.photos} />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
