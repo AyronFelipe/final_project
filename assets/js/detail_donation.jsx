@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Carousel from './carousel';
+import { unformatDate } from './utils';
 
 
 export default class DetailDonation extends React.Component{
@@ -94,10 +95,57 @@ export default class DetailDonation extends React.Component{
                                             <h2>{this.state.donation.name}</h2>
                                         </div>
                                         <div className="card-body">
-                                            <div className="row">
+                                            <div className="row mt-3">
+                                                <div className="col-md-4 info-invoice">
+                                                    <h5 className="sub">Validade</h5>
+                                                    {
+                                                        this.state.donation.validity == undefined ?
+                                                            <div className="loader loader-lg"></div>
+                                                        :
+                                                        <p>
+                                                            {unformatDate(this.state.donation.validity)} até às {this.state.donation.validity_hour}
+                                                        </p>
+                                                    }
+                                                </div>
+                                                <div className="col-md-4 info-invoice">
+                                                    <h5 className="sub">Solicitações feitas</h5>
+                                                    {
+                                                        this.state.donation.solicitations_count == 1 ?
+                                                            <p>{ this.state.donation.solicitations_count } solicitação</p>
+                                                        :
+                                                            <p>{this.state.donation.solicitations_count} solicitações</p>
+                                                    }
+                                                </div>
+                                                <div className="col-md-4 info-invoice">
+                                                    <h5 className="sub">Tags</h5>
+                                                    { 
+                                                        this.state.donation.tags == undefined ?
+                                                            <div className="loader loader-lg"></div>
+                                                        :
+                                                            <div>
+                                                                { this.state.donation.tags.map((tag) =>
+                                                                    <span key={tag.pk} className="badge badge-info">{tag.name}</span>
+                                                                ) }
+                                                            </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="separator-solid"></div>
+                                            <div className="row mt-3">
+                                                <div className="col-12">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Descrição</h6>
+                                                    <p className="text-muted">
+                                                        { this.state.donation.description }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="row mt-3">
                                                 <div className="col-12 col-sm-6">
                                                     <Carousel images={this.state.donation.photos} />
                                                 </div>
+                                            </div>
+                                            <div className="text-right mt-3 mb-3">
+                                                <button className="btn btn-info btn-block">Solicitar doação</button>
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +161,14 @@ export default class DetailDonation extends React.Component{
                                         </div>
                                         <div className="card-body">
                                             <div className="user-profile text-center">
-                                                <div className="name">{ this.state.user.child.first_name } { this.state.user.child.last_name }</div>
+                                                    {
+                                                        this.state.user.child == undefined ?
+                                                            <div className="loader loader-lg"></div>
+                                                        :
+                                                            <div className="name">
+                                                                { this.state.user.child.first_name } { this.state.user.child.last_name }
+                                                            </div>
+                                                    }
                                             </div>
                                         </div>
                                     </div>

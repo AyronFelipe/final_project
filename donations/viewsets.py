@@ -61,7 +61,7 @@ class CreateDonationViewSet(generics.CreateAPIView):
 
 class DonationViewSet(viewsets.ViewSet):
     '''
-    Listagem das Instituições
+    Listagem das Doações
     '''
 
     def list(self, request):
