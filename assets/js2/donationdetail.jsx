@@ -121,7 +121,7 @@ export default class DonationDetail extends React.Component{
 
          $('.modal').modal();
         
-        const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY"
+        const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY";
 
         let date = new Date(this.state.donation.validity + ' ' + this.state.donation.validity_hour)
         let local_date = moment(this.state.donation.validity).format("DD/MM/YYYY")

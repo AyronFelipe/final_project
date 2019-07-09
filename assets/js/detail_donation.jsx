@@ -5,22 +5,22 @@ import Carousel from './carousel';
 import { unformatDate } from './utils';
 
 
+const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY";
+
+const config = {
+    headers: { 'Authorization': `Token ${localStorage.token}` }
+};
+
 export default class DetailDonation extends React.Component{
 
     constructor(props) {
         super(props);
-        this.state = { donation: [], isLoading: true, user: [] };
+        this.state = { donation: [], isLoading: true, user: [], owner: [], comment: '' };
     }
 
     getDonation = () => {
         let pathname = window.location.pathname;
         let slug = pathname.split('/')[3];
-
-        let config = {
-            headers: {
-                'Authorization': `Token ${localStorage.token}`
-            }
-        };
 
         axios.get(`/api/donations/${slug.split('-')[2].split('.')[1]}/`, config)
         .then((res) => {
@@ -31,22 +31,64 @@ export default class DetailDonation extends React.Component{
         })
     }
 
+    changeHandler = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
     getLoggedUser = () => {
-        let config = {
-            headers: { 'Authorization': `Token ${localStorage.token}` }
-        };
         axios.get('/api/logged-user/', config)
-            .then((res) => {
-                this.setState({ user: res.data, isLoading: false });
-            })
-            .catch((error) => {
-                console.log(error.response);
-            })
+        .then((res) => {
+            this.setState({ user: res.data, isLoading: false });
+        })
+        .catch((error) => {
+            console.log(error.response);
+        });
+    }
+
+    getDonationOwner = () => {
+        let pathname = window.location.pathname;
+        let slug = pathname.split('/')[3];
+
+        axios.get(`/api/users/${slug.split('-')[2].split('.')[2]}/`, config)
+        .then((res) => {
+            this.setState({ owner: res.data });
+        })
+        .catch((error) => {
+            console.log(error.response);
+        });
+    }
+
+    handleSubmit = (e) => {
+
+        e.preventDefault();
+
+        let form = new FormData();
+        form.append('comment', this.state.comment);
+        form.append('donation', this.state.donation.pk)
+
+        axios.post('/api/new-solicitation/', form, config)
+        .then((res) => {
+            $('#modal-solicitation').modal('hide');
+            swal("Solicitação feita com sucesso!", {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            }).then(() => {
+                window.location.href = '/donations/my-solicitations/';
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     componentDidMount = () => {
         this.getDonation();
         this.getLoggedUser();
+        this.getDonationOwner();
     }
 
     render(){
@@ -92,12 +134,32 @@ export default class DetailDonation extends React.Component{
                                 <div className="col-md-8">
                                     <div className="card">
                                         <div className="card-header">
-                                            <h2>{this.state.donation.name}</h2>
+                                            <div className="d-flex align-items-center">
+                                                <h2 className="card-title">{this.state.donation.name}</h2>
+                                                { this.state.user.child != undefined ?
+                                                    <React.Fragment>
+                                                        { 
+                                                            this.state.donation.donator == this.state.user.child.first_name ?
+                                                                null
+                                                            :
+                                                                <button type="button" className="btn btn-info ml-auto" data-toggle="modal" data-target="#modal-solicitation">Solicitar Doação</button>
+                                                        }
+                                                    </React.Fragment>
+                                                    :
+                                                    <div className="loader loader-lg"></div>
+                                                }
+                                            </div>
                                         </div>
                                         <div className="card-body">
                                             <div className="row mt-3">
+                                                <div className="col-12">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Foto Principal</h6>
+                                                    <img src={ this.state.donation.main_photo } alt="..." className="rounded img-fluid" />
+                                                </div>
+                                            </div>
+                                            <div className="row mt-3">
                                                 <div className="col-md-4 info-invoice">
-                                                    <h5 className="sub">Validade</h5>
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Validade</h6>
                                                     {
                                                         this.state.donation.validity == undefined ?
                                                             <div className="loader loader-lg"></div>
@@ -108,7 +170,7 @@ export default class DetailDonation extends React.Component{
                                                     }
                                                 </div>
                                                 <div className="col-md-4 info-invoice">
-                                                    <h5 className="sub">Solicitações feitas</h5>
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Solicitações feitas</h6>
                                                     {
                                                         this.state.donation.solicitations_count == 1 ?
                                                             <p>{ this.state.donation.solicitations_count } solicitação</p>
@@ -117,7 +179,7 @@ export default class DetailDonation extends React.Component{
                                                     }
                                                 </div>
                                                 <div className="col-md-4 info-invoice">
-                                                    <h5 className="sub">Tags</h5>
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Tags</h6>
                                                     { 
                                                         this.state.donation.tags == undefined ?
                                                             <div className="loader loader-lg"></div>
@@ -140,13 +202,34 @@ export default class DetailDonation extends React.Component{
                                                 </div>
                                             </div>
                                             <div className="row mt-3">
-                                                <div className="col-12 col-sm-6">
+                                                <div className="col-12 col-sm-12 col-md-6">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Ponto de Encontro</h6>
+                                                    <iframe
+                                                        width="100%"
+                                                        height="288"
+                                                        frameBorder="0"
+                                                        style={{ border: 0 }}
+                                                        src={`https://www.google.com/maps/embed/v1/place?q=${this.state.donation.cep},${this.state.donation.neighborhood},${this.state.donation.street},${this.state.donation.number},+Brasil&key=${API_KEY}`} allowFullScreen></iframe>
+                                                </div>
+                                                <div className="col-12 col-sm-12 col-md-6">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Fotos</h6>
                                                     <Carousel images={this.state.donation.photos} />
                                                 </div>
                                             </div>
-                                            <div className="text-right mt-3 mb-3">
-                                                <button className="btn btn-info btn-block">Solicitar doação</button>
-                                            </div>
+                                            {this.state.user.child != undefined ?
+                                                <React.Fragment>
+                                                    {
+                                                        this.state.donation.donator == this.state.user.child.first_name ?
+                                                            null
+                                                            :
+                                                            <div className="text-right mt-3 mb-3">
+                                                                <button type="button" className="btn btn-info btn-block" data-toggle="modal" data-target="#modal-solicitation">Solicitar doação</button>
+                                                            </div>
+                                                    }
+                                                </React.Fragment>
+                                                :
+                                                <div className="loader loader-lg"></div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -155,22 +238,77 @@ export default class DetailDonation extends React.Component{
                                         <div className="card-header" style={{ "backgroundImage": "url('/static/images/blogpost.jpg')" }}>
                                             <div className="profile-picture">
                                                 <div className="avatar avatar-xl">
-                                                    <img src={ this.state.user.photo } alt="..." className="avatar-img rounded-circle" />
+                                                    <img src={ this.state.owner.photo } alt="..." className="avatar-img rounded-circle" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="card-body">
                                             <div className="user-profile text-center">
-                                                    {
-                                                        this.state.user.child == undefined ?
-                                                            <div className="loader loader-lg"></div>
-                                                        :
+                                                {
+                                                    this.state.owner.child == undefined ?
+                                                        <div className="loader loader-lg"></div>
+                                                    :
+                                                        <React.Fragment>
                                                             <div className="name">
-                                                                { this.state.user.child.first_name } { this.state.user.child.last_name }
+                                                                { this.state.owner.child.first_name } { this.state.owner.child.last_name }
                                                             </div>
-                                                    }
+                                                            <div className="job">{ this.state.owner.email }</div>
+                                                            <div className="desc">{ this.state.owner.cell_phone }</div>
+                                                            <div className="view-profile">
+                                                                <a href="#" className="btn btn-info btn-block">Ver Perfil</a>
+                                                            </div>
+                                                        </React.Fragment>
+                                                }
                                             </div>
                                         </div>
+                                        <div className="card-footer">
+                                            <div className="row user-stats text-center">
+                                                <div className="col">
+                                                    <div className="number">{ this.state.owner.donations_count }</div>
+                                                    <div className="title">Doações Cadastradas</div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="number">{ this.state.owner.donations_accepted }</div>
+                                                    <div className="title">Doações Finalizadas</div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="number"></div>
+                                                    <div className="title">Confiabilidade</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal fade" id="modal-solicitation">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <form onSubmit={this.handleSubmit}>
+                                            <div className="modal-header">
+                                                <h5 className="modal-title">Solicitar esta doação</h5>
+                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <div className="row">
+                                                    <div className="col-12">
+                                                        <div className="alert alert-info" role="alert">
+                                                            Ao clicar em sim, você entrará na lista dos solicitantes dessa doação. Você receberá e-mails com as atualizações do status de sua solicitação. Aguarde a resposta do dono da doação.
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label htmlFor="comment">Comentário sobre sua solicitação (opcional)</label>
+                                                            <textarea name="comment" id="comment" className="form-control" rows="4" onChange={this.changeHandler}></textarea>
+                                                        </div>
+                                                        <input type="hidden" name="donation" defaultValue={ this.state.donation.pk } />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" className="btn btn-info">Salvar solicitação</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
