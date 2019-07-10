@@ -46,16 +46,25 @@ class DemandViewSet(viewsets.ViewSet):
                     demand.unit_measurement = UnitMeasurement.objects.get(pk=int(unit_measurement))
                     demand.description = description
                     demand.main_photo = request.FILES.get('main_photo')
-                    demand.neighborhood = request.user.neighborhood
-                    demand.street = request.user.street
-                    demand.number = request.user.number
-                    demand.cep = request.user.cep
-                    demand.uf = request.user.uf
-                    demand.city = request.user.city
-                    demand.complement = request.user.complement
+                    demand.owner = request.user
                     demand.phone = request.user.phone
                     demand.cell_phone = request.user.cell_phone
-                    demand.owner = request.user
+                    if request.POST.get('aparecer') == True:
+                        demand.neighborhood = request.POST.get('neighborhood')
+                        demand.street = request.POST.get('street')
+                        demand.number = request.POST.get('number')
+                        demand.cep = request.POST.get('cep')
+                        demand.uf = request.POST.get('uf')
+                        demand.city = request.POST.get('city')
+                        demand.complement = request.POST.get('complement')
+                    else:
+                        demand.neighborhood = request.user.neighborhood
+                        demand.street = request.user.street
+                        demand.number = request.user.number
+                        demand.cep = request.user.cep
+                        demand.uf = request.user.uf
+                        demand.city = request.user.city
+                        demand.complement = request.user.complement
                     demand.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED,)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

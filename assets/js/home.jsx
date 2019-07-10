@@ -7,6 +7,7 @@ import InternNav from './internnav';
 import DonationsMain from './donations_main';
 import NewDonation from './new_donation';
 import DetailDonation from './detail_donation';
+import NewDemand from './new_demand';
 
 class Home extends React.Component{
 
@@ -26,6 +27,7 @@ class Home extends React.Component{
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/" component={DonationsMain} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/new-donation/" component={NewDonation} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/donation/:slug/" component={DetailDonation} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/new-demand/" component={NewDemand} />
                     </div>
                 </div>
             </BrowserRouter>

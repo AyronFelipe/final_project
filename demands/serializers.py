@@ -6,6 +6,7 @@ from accounts.serializers import UserSerializer
 class DemandSerializer(serializers.ModelSerializer):
 
     main_photo = serializers.SerializerMethodField()
+    owner = serializers.SerializerMethodField()
 
     class Meta:
         model = Demand
@@ -18,6 +19,15 @@ class DemandSerializer(serializers.ModelSerializer):
             'quantity',
             'unit_measurement',
         ]
+
+    def get_owner(self, obj):
+
+        if hasattr(obj, 'owner'):
+            return UserSerializer(obj.owner).data
+
+    def get_main_photo(self, obj):
+        if hasattr(obj, 'main_photo'):
+            return obj.main_photo.url
 
 
 class DemandCardSerializer(serializers.ModelSerializer):
