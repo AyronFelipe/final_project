@@ -47,7 +47,7 @@ export default class Demands extends React.Component {
                                             <div className="card-body">
                                                 <h5 className="card-title mb-2 fw-mediumbold">{demand.name}</h5>
                                                 <p className="card-text">{truncate(demand.description)}</p>
-                                                <Link to={`/demands/${demand.slug}/`}>
+                                                <Link to={`/demands/demand/${demand.slug}/`}>
                                                     <button className="btn btn-info">Ver pedido</button>
                                                 </Link>
                                             </div>

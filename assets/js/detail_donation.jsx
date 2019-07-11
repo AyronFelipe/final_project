@@ -112,11 +112,9 @@ export default class DetailDonation extends React.Component{
                                         <i className="flaticon-right-arrow"></i>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/donations/new-donation">
-                                            <span className="text-white">Detalhe da Doação 
-                                                {this.state.isLoading ? <div className="loader loader-lg"></div> : <span>{this.state.donation.name}</span>}
-                                            </span>
-                                        </Link>
+                                        <span className="text-white">Detalhe da Doação 
+                                            {this.state.isLoading ? <div className="loader loader-lg"></div> : <span>{this.state.donation.name}</span>}
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
