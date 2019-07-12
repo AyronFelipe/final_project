@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Preloader from './preloader';
+
 
 const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY";
 
@@ -62,6 +64,62 @@ class DetailDemand extends React.Component {
                         </div>
                     </div>
                 </div>
+                {
+                    this.state.isLoading ?
+                        <Preloader />
+                    :
+                        <div className="page-inner">
+                            <div className="row">
+                                <div className="col-md-8">
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <div className="d-flex align-items-center">
+                                                <h2 className="card-title">{ this.state.demand.name }</h2>
+                                            </div>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="row mt-3">
+                                                <div className="col-12">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Foto Principal</h6>
+                                                    <img src={ this.state.demand.main_photo } alt="" className="rounded img-fluid" />
+                                                </div>
+                                            </div>
+                                            <div className="row mt-3">
+                                                <div className="col-md-4 info-invoice">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Quantidade</h6>
+                                                    {
+                                                        this.state.demand.quantity == undefined && this.state.demand.unit_measurement == undefined ?
+                                                            <div className="loader loader-lg"></div>
+                                                        :
+                                                            <p>{ this.state.demand.quantity } { this.state.demand.unit_measurement }</p>
+                                                    }
+                                                </div>
+                                                <div className="col-md-4 info-invoice">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Status</h6>
+                                                    { this.state.demand.status == undefined ?
+                                                        <div className="loader loader-lg"></div>
+                                                        :
+                                                        <p>{ this.state.demand.status }</p>
+                                                    }
+                                                </div>
+                                                <div className="col-md-4 info-invoice">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Quantidade Atendida</h6>
+                                                    { this.state.demand.status == undefined ?
+                                                        <div className="loader loader-lg"></div>
+                                                        :
+                                                        <p>{this.state.demand.quantity_received} {this.state.demand.unit_measurement}</p>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-4">
+                                    <div className="card card-profile"></div>
+                                </div>
+                            </div>
+                        </div>
+                }
             </div>
         );
     }

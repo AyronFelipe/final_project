@@ -1,6 +1,6 @@
 from rest_framework import generics, viewsets, permissions
 from .models import *
-from .serializers import DemandSerializer, DemandCardSerializer
+from .serializers import DemandSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
@@ -11,13 +11,13 @@ class DemandViewSet(viewsets.ViewSet):
     def list(self, request):
 
         queryset = Demand.objects.all()
-        serializer = DemandCardSerializer(queryset, many=True)
+        serializer = DemandSerializer(queryset, many=True)
         return Response(serializer.data)
-    
+
     def retrieve(self, request, pk=None):
 
         demand = Demand.objects.get(pk=pk)
-        serializer = DemandCardSerializer(demand)
+        serializer = DemandSerializer(demand)
         return Response(serializer.data)
 
     def create(self, request):
