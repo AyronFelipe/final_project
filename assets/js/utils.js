@@ -20,6 +20,6 @@ module.exports = {
         return array.slice(0, max).join(' ') + ellipsis;
     },
     unformatDate: function(date){
-        return `${date.split('-')[1]}/${date.split('-')[2]}/${date.split('-')[0]}`
+        return `${formated.split('-')[1]}/${formated.split('-')[2]}/${formated.split('-')[0]}`;
     }
 }

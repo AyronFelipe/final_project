@@ -11,6 +11,18 @@ from cloudinary.models import CloudinaryField
 
 class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
 
+    COMPLETED = 'C'
+    INVALID = 'I'
+    ACTIVE = 'A'
+    ON_HOLD = 'O'
+
+    STATUS_DEMAND = (
+        (ACTIVE, 'Ativa'),
+        (INVALID, 'Inválida'),
+        (COMPLETED, 'Finalizada'),
+        (ON_HOLD, 'Em Espera'),
+    )
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=255, blank=True, null=True, unique=True)
@@ -18,7 +30,7 @@ class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
     main_photo = CloudinaryField(_('main photo'), null=True, blank=True)
     quantity = models.DecimalField(_('quatity'), max_digits=5, decimal_places=1, null=True, blank=True)
     unit_measurement = models.ForeignKey(UnitMeasurement, related_name='unit_demands', on_delete=models.SET_NULL, null=True, blank=True)
-    status = models.CharField(_('status'), max_length=2, null=True, blank=True)
+    status = models.CharField(_('status'), max_length=2, null=True, blank=True, choices=STATUS_DEMAND, default=ACTIVE)
 
     class Meta:
 
