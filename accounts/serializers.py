@@ -55,8 +55,10 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.donated_donations.filter(is_accepted=True).count()
 
     def get_photo(self, obj):
-        if hasattr(obj, 'photo'):
+        if obj.photo:
             return obj.photo.url
+        else:
+            return '/static/images/default-user-image.png'
 
 
 class PersonSerializer(serializers.ModelSerializer):
