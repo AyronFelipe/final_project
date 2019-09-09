@@ -33,20 +33,28 @@ class CreateDonationViewSet(generics.CreateAPIView):
         serializer = DonationSerializer(data=request.data)
         if serializer.is_valid():
             instance = serializer.validated_data
-            donation = Donation(
-                name = instance.get('name'),
-                description = instance.get('description'),
-                validity = instance.get('validity'),
-                validity_hour = instance.get('validity_hour'),
-                neighborhood=instance.get('neighborhood'), 
-                street=instance.get('street'), 
-                number=instance.get('number'), 
-                cep=instance.get("cep"), 
-                uf=instance.get("uf"), 
-                city=instance.get("city"), 
-                complement=instance.get("complement"),
-            )
+            donation = Donation()
             with transaction.atomic():
+                donation.name = request.POST.get('name')
+                donation.description = request.POST.get('description')
+                donation.validity = request.POST.get('validity')
+                donation.validity_hour = request.POST.get('validity_hour')
+                if request.POST.aparecer == True:
+                    donation.neighborhood = request.POST.get('neighborhood')
+                    donation.street = request.POST.get('street')
+                    donation.number = request.POST.get('number')
+                    donation.cep = request.POST.get("cep")
+                    donation.uf = request.POST.get("uf")
+                    donation.city = request.POST.get("city")
+                    donation.complement = request.POST.get("complement")
+                else:
+                    donation.neighborhood = request.user.neighborhood
+                    donation.street = request.user.street
+                    donation.number = request.user.number
+                    donation.cep = request.user.cep
+                    donation.uf= request.user.uf
+                    donation.city = request.user.city
+                    donation.complement = request.user.complement
                 donation.donator = request.user
                 donation.main_photo = request.FILES.get('main_photo')
                 donation.save()

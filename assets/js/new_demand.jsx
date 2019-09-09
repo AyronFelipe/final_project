@@ -240,8 +240,8 @@ export default class NewDemand extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        { this.state.aparecer == true ?
-                                            <div className="row" className="address">
+                                        { this.state.aparecer ?
+                                            <div className="row address">
                                                 <div className="col-12">
                                                     <div className="row">
                                                         <div className="col-sm-12 col-md-3">

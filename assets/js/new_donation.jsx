@@ -61,13 +61,17 @@ export default class NewDonation extends React.Component {
         });
         form.append('validity', formatDate(this.state.validity));
         form.append('validity_hour', this.state.validity_hour);
-        form.append('neighborhood', this.state.neighborhood);
-        form.append('street', this.state.street);
-        form.append('number', this.state.number);
-        form.append('cep', this.state.cep);
-        form.append('uf', this.state.uf);
-        form.append('city', this.state.city);
-        form.append('complement', this.state.complement);
+        let aparecer = $('.form-check-input').is(':checked');
+        if (aparecer) {
+            form.append('aparecer', aparecer);
+            form.append('neighborhood', this.state.neighborhood);
+            form.append('street', this.state.street);
+            form.append('number', this.state.number);
+            form.append('cep', this.state.cep);
+            form.append('uf', this.state.uf);
+            form.append('city', this.state.city);
+            form.append('complement', this.state.complement);
+        }
         form.append('main_photo', this.state.main_photo);
         this.state.photos.map((photo) => {
             form.append('photos', photo);
@@ -159,6 +163,11 @@ export default class NewDonation extends React.Component {
 
     handleChangeTags = (tag) => {
         this.setState(({ tags: [...this.state.tags, tag.text] }));
+    }
+
+    handleClick = () => {
+        let aparecer = $('.form-check-input').is(':checked');
+        this.setState({ aparecer: aparecer });
     }
 
     render() {
@@ -255,45 +264,64 @@ export default class NewDonation extends React.Component {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <div className="col-sm-12 col-md-3">
+                                            <div className="col-12">
                                                 <div className="form-group">
-                                                    <label htmlFor="cep"><span className="required-label">*</span> CEP</label>
-                                                    <input type="text" name="cep" id="cep" className="form-control" onBlur={this.loadCepInfo} onInput={this.loadMask} onChange={this.changeHandler} required />
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-12 col-md-5">
-                                                <div className="form-group">
-                                                    <label htmlFor="street">Logradouro</label>
-                                                    <input type="text" readOnly name="street" ref={this.street} id="street" className="form-control" />
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-12 col-md-4">
-                                                <div className="form-group">
-                                                    <label htmlFor="neighborhood">Bairro</label>
-                                                    <input type="text" readOnly name="neighborhood" ref={this.neighborhood} id="neighborhood" className="form-control" />
+                                                    <div className="alert alert-info">
+                                                        <strong>Atenção!</strong> O local de coleta das doações é definido automaticamente como o local cadastrado no momento do cadastro de usuário.
+                                                        Porém, se você desejar pode informar um lugar diferente para a coleta é só selecionar a opção abaixo.
+                                                        <div className="form-check">
+                                                            <label className="form-check-label">
+                                                                <input className="form-check-input" type="checkbox" onClick={this.handleClick} />
+                                                                <span className="form-check-sign">Desejo informar um local de coleta diferente</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="row">
-                                            <div className="col-sm-12 col-md-4">
-                                                <div className="form-group">
-                                                    <label htmlFor="city">Cidade</label>
-                                                    <input type="text" readOnly name="city" ref={this.city} id="city" className="form-control" />
+                                        {
+                                            this.state.aparecer ?
+                                                <div className="row address">
+                                                    <div className="col-sm-12 col-md-3">
+                                                        <div className="form-group">
+                                                            <label htmlFor="cep"><span className="required-label">*</span> CEP</label>
+                                                            <input type="text" name="cep" id="cep" className="form-control" onBlur={this.loadCepInfo} onInput={this.loadMask} onChange={this.changeHandler} required />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-sm-12 col-md-5">
+                                                        <div className="form-group">
+                                                            <label htmlFor="street">Logradouro</label>
+                                                            <input type="text" readOnly name="street" ref={this.street} id="street" className="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-sm-12 col-md-4">
+                                                        <div className="form-group">
+                                                            <label htmlFor="neighborhood">Bairro</label>
+                                                            <input type="text" readOnly name="neighborhood" ref={this.neighborhood} id="neighborhood" className="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-sm-12 col-md-4">
+                                                        <div className="form-group">
+                                                            <label htmlFor="city">Cidade</label>
+                                                            <input type="text" readOnly name="city" ref={this.city} id="city" className="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-sm-12 col-md-4">
+                                                        <div className="form-group">
+                                                            <label htmlFor="uf">UF</label>
+                                                            <input type="text" readOnly name="uf" ref={this.uf} id="uf" className="form-control" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col-sm-12 col-md-4">
+                                                        <div className="form-group">
+                                                            <label htmlFor="number">Número</label>
+                                                            <input type="text" name="number" id="number" className="form-control" onChange={this.changeHandler} />
+                                                        </div>
+                                                    </div>>
                                                 </div>
-                                            </div>
-                                            <div className="col-sm-12 col-md-4">
-                                                <div className="form-group">
-                                                    <label htmlFor="uf">UF</label>
-                                                    <input type="text" readOnly name="uf" ref={this.uf} id="uf" className="form-control" />
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-12 col-md-4">
-                                                <div className="form-group">
-                                                    <label htmlFor="number">Número</label>
-                                                    <input type="text" name="number" id="number" className="form-control" onChange={this.changeHandler} />
-                                                </div>
-                                            </div>
-                                        </div>
+                                            :
+                                                null
+                                        }
                                         <div className="row">
                                             <div className="col-12 well">
                                                 <div className="form-group">
