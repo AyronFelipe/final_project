@@ -189,8 +189,8 @@ export default class NewDonation extends React.Component {
                     </div>
                 </div>
                 <div className="page-inner">
-                    <div className="row">
-                        <div className="col-12">
+                    <div className="row justify-content-center">
+                        <div className="col-10">
                             <form id="form-donation" onSubmit={this.handleSubmit} method="/api/new-donation/">
                                 <div className="card mt-5 animated fadeIn">
                                     <div className="card-header">
