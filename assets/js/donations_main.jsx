@@ -9,14 +9,14 @@ export default class DonationsMain extends React.Component{
 
     constructor(props){
         super(props)
-        this.state = { user: [], isLoading: true, buttonMessage: 'Novas Doações', link: '/donations/new-donation/' };
+        this.state = { user: [], isLoading: true, buttonMessage: 'Nova Doação', link: '/donations/new-donation/' };
     }
 
     handleClickTab = () => {
-        if (this.state.buttonMessage == 'Novas Doações') {
-            this.setState({ buttonMessage: 'Novos Pedidos', link: '/demands/new-demand/' });
+        if (this.state.buttonMessage == 'Nova Doação') {
+            this.setState({ buttonMessage: 'Novo Pedido', link: '/demands/new-demand/' });
         }else{
-            this.setState({ buttonMessage: 'Novas Doações', link: '/donations/new-donation/' });
+            this.setState({ buttonMessage: 'Nova Doação', link: '/donations/new-donation/' });
         }
     }
 
@@ -48,7 +48,7 @@ export default class DonationsMain extends React.Component{
                             </div>
                             <div className="ml-md-auto py-2 py-md-0">
                                 <Link to={this.state.link}>
-                                    <button className="btn btn-info btn-round"><i className="la flaticon-add"></i> {this.state.buttonMessage}</button>
+                                    <button className="btn btn-info btn-round"><i className="la flaticon-add mr-1"></i> {this.state.buttonMessage}</button>
                                 </Link>
                             </div>
                         </div>

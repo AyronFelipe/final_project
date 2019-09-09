@@ -24,19 +24,14 @@ export default class Demands extends React.Component {
         });
     }
 
-    componentDidMount = () => {
-        this.getDemands();
-    }
-
-    render() {
-        return (
-            <div className="page-inner">
-                {
-                    this.state.isLoading ?
-                        <div className="d-flex justify-content-center mt-5">
-                            <div className="loader loader-lg"></div>
-                        </div>
-                    :
+    renderDemands = () => {
+        if (this.state.isLoading) {
+            return <div className="d-flex justify-content-center mt-5">
+                <div className="loader loader-lg"></div>
+            </div>
+        } else {
+            if (this.state.demands.length >= 1) {
+                return(
                     <div className="row">
                         {
                             this.state.demands.map((demand) => {
@@ -57,7 +52,27 @@ export default class Demands extends React.Component {
                             })
                         }
                     </div>
-                }
+                );
+            } else {
+                return <div className="d-flex align-items-center flex-column mt-5">
+                    <h1 className="font-weight-bold">Nenhum pedido encontrado</h1>
+                    <p className="lead">Comece a fazer parte da nossa comunidade. Clique no botão abaixo para fazer um novo pedido.</p>
+                    <Link to={'/demands/new-demand/'}>
+                        <button class="btn btn-info btn-lg btn-round"><i class="la flaticon-add mr-1"></i> Novo Pedido</button>
+                    </Link>
+                </div>
+            }
+        }
+    }
+
+    componentDidMount = () => {
+        this.getDemands();
+    }
+
+    render() {
+        return (
+            <div className="page-inner">
+                { this.renderDemands() }
             </div>
         )
     }

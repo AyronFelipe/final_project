@@ -6,15 +6,32 @@ import os
 from datetime import date
 import pusher
 from decouple import config
+import threading
+
+
+class EmailThread(threading.Thread):
+
+    def __init__(self, subject, template_name, context, recipient_list, from_email, fail_silently):
+        self.subject = subject
+        self.template_name = template_name
+        self.context = context
+        self.recipient_list = recipient_list
+        self.from_email = settings.DEFAULT_FROM_EMAIL
+        self.fail_silently = False
+        threading.Thread.__init__(self)
+
+    def run(self):
+        message_html = render_to_string(self.template_name, self.context)
+        message_txt = striptags(message_html)
+        email = EmailMultiAlternatives(subject=self.subject, body=message_txt, from_email=self.from_email, to=self.recipient_list)
+        email.attach_alternative(message_html, "text/html")
+        email.send(fail_silently=self.fail_silently) 
+
 
 
 def send_mail_template(subject, template_name, context, recipient_list, from_email=settings.DEFAULT_FROM_EMAIL, fail_silently=False):
-    
-    message_html = render_to_string(template_name, context)
-    message_txt = striptags(message_html)
-    email = EmailMultiAlternatives(subject=subject, body=message_txt, from_email=from_email, to=recipient_list)
-    email.attach_alternative(message_html, "text/html")
-    email.send(fail_silently=fail_silently)
+
+    EmailThread(subject, template_name, context, recipient_list, from_email=settings.DEFAULT_FROM_EMAIL, fail_silently=False).start()
 
 
 def img_path(instance, filename):
