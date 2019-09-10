@@ -58,7 +58,7 @@ export default class Demands extends React.Component {
                     <h1 className="font-weight-bold">Nenhum pedido encontrado</h1>
                     <p className="lead">Comece a fazer parte da nossa comunidade. Clique no botão abaixo para fazer um novo pedido.</p>
                     <Link to={'/demands/new-demand/'}>
-                        <button class="btn btn-info btn-lg btn-round"><i class="la flaticon-add mr-1"></i> Novo Pedido</button>
+                        <button className="btn btn-info btn-lg btn-round"><i className="la flaticon-add mr-1"></i> Novo Pedido</button>
                     </Link>
                 </div>
             }

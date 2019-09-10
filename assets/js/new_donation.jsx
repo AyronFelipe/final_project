@@ -62,8 +62,8 @@ export default class NewDonation extends React.Component {
         form.append('validity', formatDate(this.state.validity));
         form.append('validity_hour', this.state.validity_hour);
         let aparecer = $('.form-check-input').is(':checked');
+        form.append('aparecer', aparecer);
         if (aparecer) {
-            form.append('aparecer', aparecer);
             form.append('neighborhood', this.state.neighborhood);
             form.append('street', this.state.street);
             form.append('number', this.state.number);
@@ -199,7 +199,7 @@ export default class NewDonation extends React.Component {
                 </div>
                 <div className="page-inner">
                     <div className="row justify-content-center">
-                        <div className="col-10">
+                        <div className="col-sm-10 col-12">
                             <form id="form-donation" onSubmit={this.handleSubmit} method="/api/new-donation/">
                                 <div className="card mt-5 animated fadeIn">
                                     <div className="card-header">
@@ -317,7 +317,7 @@ export default class NewDonation extends React.Component {
                                                             <label htmlFor="number">Número</label>
                                                             <input type="text" name="number" id="number" className="form-control" onChange={this.changeHandler} />
                                                         </div>
-                                                    </div>>
+                                                    </div>
                                                 </div>
                                             :
                                                 null

@@ -173,7 +173,7 @@ export default class NewDemand extends React.Component {
                 </div>
                 <div className="page-inner">
                     <div className="row justify-content-center">
-                        <div className="col-10">
+                        <div className="col-sm-10 col-12">
                             <form id="form-demand" onSubmit={this.handleSubmit}>
                                 <div className="card mt-5 animated fadeIn">
                                     <div className="card-header">

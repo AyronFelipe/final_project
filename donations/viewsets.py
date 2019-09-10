@@ -29,7 +29,6 @@ class CreateDonationViewSet(generics.CreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
-        import pdb;pdb.set_trace()
         serializer = DonationSerializer(data=request.data)
         if serializer.is_valid():
             instance = serializer.validated_data
@@ -39,11 +38,16 @@ class CreateDonationViewSet(generics.CreateAPIView):
                 donation.description = request.POST.get('description')
                 donation.validity = request.POST.get('validity')
                 donation.validity_hour = request.POST.get('validity_hour')
-                if request.POST.aparecer == True:
+                if 'aparecer' in request.POST and request.POST.get('aparecer') == True:
                     donation.neighborhood = request.POST.get('neighborhood')
                     donation.street = request.POST.get('street')
                     donation.number = request.POST.get('number')
-                    donation.cep = request.POST.get("cep")
+                    if request.POST.get("cep") == '':
+                        data = []
+                        data['cep'] = 'O preenchimento do CEP é obrigatório.'
+                        return Response(data, status=status.HTTP_400_BAD_REQUEST)
+                    else:
+                        donation.cep = request.POST.get("cep")
                     donation.uf = request.POST.get("uf")
                     donation.city = request.POST.get("city")
                     donation.complement = request.POST.get("complement")

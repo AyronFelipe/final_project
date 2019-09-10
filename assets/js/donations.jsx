@@ -41,12 +41,12 @@ export default class Donations extends React.Component{
                                 return (
                                     <div className="col-sm-4 col-12" key={donation.pk}>
                                         <div className="card">
-                                            <img className="card-img-top" src={donation.main_photo} alt="Card image cap" />
+                                            <img className="card-img-top" src={donation.main_photo} alt="Card image cap" height={'310px'} />
                                             <div className="card-body">
                                                 <h5 className="card-title mb-2 fw-mediumbold">{donation.name}</h5>
                                                 <p className="card-text">{truncate(donation.description)}</p>
                                                 <Link to={`/donations/donation/${donation.slug}/`}>
-                                                    <button className="btn btn-info">Ver pedido</button>
+                                                    <button className="btn btn-info">Ver doação</button>
                                                 </Link>
                                             </div>
                                         </div>
@@ -61,7 +61,7 @@ export default class Donations extends React.Component{
                     <h1 className="font-weight-bold">Nenhuma doação encontrada</h1>
                     <p className="lead">Comece a fazer parte da nossa comunidade. Clique no botão abaixo para fazer uma nova doação.</p>
                     <Link to={'/donations/new-donation/'}>
-                        <button class="btn btn-info btn-lg btn-round"><i class="la flaticon-add mr-1"></i> Nova Doação</button>
+                        <button className="btn btn-info btn-lg btn-round"><i className="la flaticon-add mr-1"></i> Nova Doação</button>
                     </Link>
                 </div>
             }
