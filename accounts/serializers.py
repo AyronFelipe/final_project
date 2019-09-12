@@ -15,6 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
     donations_count = serializers.SerializerMethodField()
     donations_accepted = serializers.SerializerMethodField()
     photo = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -36,6 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
             'child',
             'donations_count',
             'donations_accepted',
+            'username',
         ]
 
     def get_child(self, obj):
@@ -59,6 +61,10 @@ class UserSerializer(serializers.ModelSerializer):
             return obj.photo.url
         else:
             return '/static/images/default-user-image.png'
+    
+    def get_username(self, obj):
+
+        return obj.username
 
 
 class PersonSerializer(serializers.ModelSerializer):

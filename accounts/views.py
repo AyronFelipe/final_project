@@ -30,20 +30,6 @@ def new_institution(request):
     return render(request, template_name, context)
 
 
-def profile(request, id):
-
-    template_name = 'accounts/profile.html'
-    context = {}
-    return render(request, template_name, context)
-
-
-def edit_profile(request):
-
-    template_name = 'accounts/edit_profile.html'
-    context = {}
-    return render(request, template_name, context)
-
-
 def activate(request, uidb64, token):
 
     context = {}
@@ -85,4 +71,11 @@ def forget_password(request, uidb64, token):
             return JsonResponse(data)
     else:
         template_name = 'accounts/forget_password_error.html'
+    return render(request, template_name, context)
+
+
+def profile(request, username):
+
+    template_name = 'accounts/profile.html'
+    context = {}
     return render(request, template_name, context)

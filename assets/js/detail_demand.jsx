@@ -176,7 +176,7 @@ class DetailDemand extends React.Component {
                                                             <div className="job">{ this.state.owner.email }</div>
                                                             <div className="desc">{ this.state.owner.cell_phone }</div>
                                                             <div className="view-profile">
-                                                                <a href="#" className="btn btn-info btn-block">Ver Perfil</a>
+                                                                <Link to={`/accounts/profile/${this.state.owner.username}/`} style={{ textDecoration: 'none' }}><button className="btn btn-info btn-block">Ver Perfil</button></Link>
                                                             </div>
                                                         </React.Fragment>
                                                 }

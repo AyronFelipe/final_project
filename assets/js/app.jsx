@@ -7,6 +7,7 @@ import Footer from './footer';
 import Login from './login';
 import NewPerson from './new_person';
 import NewInstitution from './new_institution';
+import { isAuthenticated } from './auth';
 
 class Initial extends React.Component {
     render(){
@@ -27,6 +28,9 @@ class App extends React.Component{
     }
 
     render(){
+        if (isAuthenticated()) {
+            window.location.href = "/donations/";
+        }
         return(
             <div className="wrapper horizontal-layout-3 bg-primary">
                 <Route exact path="/" component={Initial} />

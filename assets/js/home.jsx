@@ -9,6 +9,7 @@ import NewDonation from './new_donation';
 import DetailDonation from './detail_donation';
 import NewDemand from './new_demand';
 import DetailDemand from './detail_demand';
+import Profile from './profile';
 
 class Home extends React.Component{
 
@@ -30,6 +31,7 @@ class Home extends React.Component{
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/donation/:slug/" component={DetailDonation} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/new-demand/" component={NewDemand} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/demand/:slug/" component={DetailDemand} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/accounts/profile/:username/" component={Profile} />
                     </div>
                 </div>
             </BrowserRouter>

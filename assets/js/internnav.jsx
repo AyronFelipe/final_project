@@ -3,6 +3,7 @@ import { logout } from './auth';
 import axios from 'axios';
 import Preloader from './preloader';
 import Notifications from './notifications';
+import { Link } from 'react-router-dom';
 
 export default class InternNav extends React.Component {
 
@@ -79,13 +80,19 @@ export default class InternNav extends React.Component {
                                                         <div className="u-text">
                                                             {this.state.user.child != undefined ? <h4>{this.state.user.child.first_name}</h4> : <Preloader /> }
                                                             <p className="text-muted">{this.state.user.email}</p>
-                                                            <a href="profile.html" className="btn btn-xs btn-secondary btn-sm">Ver Perfil</a>
+                                                            <Link to={`/accounts/profile/${this.state.user.username}/`}><button className="btn btn-xs btn-secondary btn-sm">Ver Perfil</button></Link>
                                                         </div>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div className="dropdown-divider"></div>
-                                                    <a className="dropdown-item" href="#">My Perfil</a>
+                                                    <a className="dropdown-item" href="#">Minhas doações</a>
+                                                    <div className="dropdown-divider"></div>
+                                                    <a className="dropdown-item" href="#">Minhas solicitações</a>
+                                                    <div className="dropdown-divider"></div>
+                                                    <a className="dropdown-item" href="#">Meus gifts</a>
+                                                    <div className="dropdown-divider"></div>
+                                                    <a className="dropdown-item" href="#">Meus pedidos</a>
                                                     <div className="dropdown-divider"></div>
                                                     <a className="dropdown-item" onClick={this.log_out}>Sair</a>
                                                 </li>

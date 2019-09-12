@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from .managers import UserManager
 from core.utils import img_path
 from cloudinary.models import CloudinaryField
+from django.utils.functional import cached_property
 
 
 class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixin, AddressMixin):
@@ -33,6 +34,15 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
             return self.person.first_name
         else:
             return self.institution.name
+        return None
+    
+    @cached_property
+    def username(self):
+
+        if hasattr(self, 'person'):
+            return "%s-%s" % (self.person.first_name.lower().replace(" ", "."), self.pk)
+        else:
+            return "%s-%s" % (self.institution.name.lower().replace(" ", "."), self.pk)
         return None
 
     def __str__(self):
