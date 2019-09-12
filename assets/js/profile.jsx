@@ -50,7 +50,7 @@ export default class Profile extends React.Component {
                                         <i className="flaticon-right-arrow"></i>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to={`/profile/${this.state.user.username}/`}>
+                                        <Link to={`/accounts/profile/${this.state.user.username}/`}>
                                             <span className="text-white">Perfil</span>
                                         </Link>
                                     </li>
