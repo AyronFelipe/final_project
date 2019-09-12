@@ -40,16 +40,16 @@ export default class Donations extends React.Component{
                             this.state.donations.map((donation) => {
                                 return (
                                     <div className="col-sm-4 col-12" key={donation.pk}>
-                                        <div className="card">
-                                            <img className="card-img-top" src={donation.main_photo} alt="Card image cap" height={'310px'} />
-                                            <div className="card-body">
-                                                <h5 className="card-title mb-2 fw-mediumbold">{donation.name}</h5>
-                                                <p className="card-text">{truncate(donation.description)}</p>
-                                                <Link to={`/donations/donation/${donation.slug}/`}>
-                                                    <button className="btn btn-info">Ver doação</button>
-                                                </Link>
+                                        <Link to={`/donations/donation/${donation.slug}/`} style={{ textDecoration: 'none' }}>
+                                            <div className="card">
+                                                <img className="card-img-top" src={donation.main_photo} alt="Card image cap" height={'310px'} />
+                                                <div className="card-body">
+                                                    <h5 className="card-title mb-2 fw-mediumbold">{donation.name}</h5>
+                                                    <p className="card-text">{truncate(donation.description)}</p>
+                                                    <button className="btn btn-info btn-block">Ver doação</button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </div>
                                 );
                             })

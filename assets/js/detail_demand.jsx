@@ -66,7 +66,7 @@ class DetailDemand extends React.Component {
                                         <i className="flaticon-right-arrow"></i>
                                     </li>
                                     <li className="nav-item">
-                                        <span className="text-white">Detalhe da Doação
+                                        <span className="text-white">Detalhe do Pedido
                                             {this.state.isLoading ? <div className="loader loader-lg"></div> : <span> {this.state.demand.name}</span>}
                                         </span>
                                     </li>

@@ -37,16 +37,16 @@ export default class Demands extends React.Component {
                             this.state.demands.map((demand) => {
                                 return (
                                     <div className="col-sm-4 col-12" key={demand.pk}>
-                                        <div className="card">
-                                            <img className="card-img-top" src={demand.main_photo} alt="Card image cap" height={'310px'} />
-                                            <div className="card-body">
-                                                <h5 className="card-title mb-2 fw-mediumbold">{demand.name}</h5>
-                                                <p className="card-text">{truncate(demand.description)}</p>
-                                                <Link to={`/demands/demand/${demand.slug}/`}>
-                                                    <button className="btn btn-info">Ver pedido</button>
-                                                </Link>
+                                        <Link to={`/demands/demand/${demand.slug}/`} style={{ textDecoration: 'none' }}>
+                                            <div className="card">
+                                                <img className="card-img-top" src={demand.main_photo} alt="Card image cap" height={'310px'} />
+                                                <div className="card-body">
+                                                    <h5 className="card-title mb-2 fw-mediumbold">{demand.name}</h5>
+                                                    <p className="card-text">{truncate(demand.description)}</p>
+                                                        <button className="btn btn-info btn-block">Ver pedido</button>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     </div>
                                 );
                             })
