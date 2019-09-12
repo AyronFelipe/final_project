@@ -25,6 +25,7 @@ export default class DetailDonation extends React.Component{
         axios.get(`/api/donations/${slug.split('-')[2].split('.')[1]}/`, config)
         .then((res) => {
             this.setState({ donation: res.data, isLoading: false });
+            this.getDonationOwner();
         })
         .catch((error) => {
             console.log(error.response);
@@ -46,10 +47,7 @@ export default class DetailDonation extends React.Component{
     }
 
     getDonationOwner = () => {
-        let pathname = window.location.pathname;
-        let slug = pathname.split('/')[3];
-
-        axios.get(`/api/users/${slug.split('-')[2].split('.')[2]}/`, config)
+        axios.get(`/api/users/${this.state.donation.donator_pk}/`, config)
         .then((res) => {
             this.setState({ owner: res.data });
         })
@@ -88,7 +86,6 @@ export default class DetailDonation extends React.Component{
     componentDidMount = () => {
         this.getDonation();
         this.getLoggedUser();
-        this.getDonationOwner();
     }
 
     render(){
@@ -137,7 +134,7 @@ export default class DetailDonation extends React.Component{
                                                 { this.state.user.child != undefined ?
                                                     <React.Fragment>
                                                         { 
-                                                            this.state.donation.donator == this.state.user.child.first_name ?
+                                                            this.state.donation.donator_pk == this.state.user.pk ?
                                                                 null
                                                             :
                                                                 <button type="button" className="btn btn-info ml-auto" data-toggle="modal" data-target="#modal-solicitation">Solicitar Doação</button>
@@ -217,7 +214,7 @@ export default class DetailDonation extends React.Component{
                                             {this.state.user.child != undefined ?
                                                 <React.Fragment>
                                                     {
-                                                        this.state.donation.donator == this.state.user.child.first_name ?
+                                                        this.state.donation.donator_pk == this.state.user.pk ?
                                                             null
                                                             :
                                                             <div className="text-right mt-3 mb-3">

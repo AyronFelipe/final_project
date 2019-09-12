@@ -14,7 +14,7 @@ class DetailDemand extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { demand: [], isLoading: true, }
+        this.state = { demand: [], isLoading: true, owner: [] }
     }
 
     getDemand = () => {
@@ -24,6 +24,17 @@ class DetailDemand extends React.Component {
         axios.get(`/api/demands/${slug.split('-')[2].split('.')[1]}/`, config)
         .then((res) => {
             this.setState({ demand: res.data, isLoading: false });
+            this.getDemandOwner();
+        })
+        .catch((error) => {
+            console.log(error.response);
+        });
+    }
+
+    getDemandOwner = () => {
+        axios.get(`/api/users/${this.state.demand.owner_pk}/`, config)
+        .then((res) => {
+            this.setState({ owner: res.data });
         })
         .catch((error) => {
             console.log(error.response);
@@ -85,16 +96,23 @@ class DetailDemand extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="row mt-3">
-                                                <div className="col-md-4 info-invoice">
+                                                <div className="col-md-3 info-invoice">
                                                     <h6 className="text-uppercase mb-3 fw-bold">Quantidade</h6>
                                                     {
                                                         this.state.demand.quantity == undefined && this.state.demand.unit_measurement == undefined ?
                                                             <div className="loader loader-lg"></div>
                                                         :
-                                                            <p>{ this.state.demand.quantity } { this.state.demand.unit_measurement }</p>
+                                                            <p>
+                                                                { 
+                                                                    this.state.demand.quantity > 0 ?
+                                                                        <span>{ this.state.demand.quantity } { this.state.demand.unit_measurement }s</span>
+                                                                    :
+                                                                        <span>{ this.state.demand.quantity } { this.state.demand.unit_measurement }</span>
+                                                                }
+                                                            </p>
                                                     }
                                                 </div>
-                                                <div className="col-md-4 info-invoice">
+                                                <div className="col-md-3 info-invoice">
                                                     <h6 className="text-uppercase mb-3 fw-bold">Status</h6>
                                                     { this.state.demand.status == undefined ?
                                                         <div className="loader loader-lg"></div>
@@ -102,7 +120,7 @@ class DetailDemand extends React.Component {
                                                         <p>{ this.state.demand.status }</p>
                                                     }
                                                 </div>
-                                                <div className="col-md-4 info-invoice">
+                                                <div className="col-md-3 info-invoice">
                                                     <h6 className="text-uppercase mb-3 fw-bold">Quantidade Atendida</h6>
                                                     { this.state.demand.status == undefined ?
                                                         <div className="loader loader-lg"></div>
@@ -110,12 +128,77 @@ class DetailDemand extends React.Component {
                                                         <p>{this.state.demand.quantity_received} {this.state.demand.unit_measurement}</p>
                                                     }
                                                 </div>
+                                                <div className="col-md-3 info-invoice">
+                                                <h6 className="text-uppercase mb-3 fw-bold">Tags</h6>
+                                                    { 
+                                                        this.state.demand.tags == undefined ?
+                                                            <div className="loader loader-lg"></div>
+                                                        :
+                                                            <div>
+                                                                { this.state.demand.tags.map((tag) =>
+                                                                    <span key={tag.pk} className="badge badge-info">{tag.name}</span>
+                                                                ) }
+                                                            </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div className="separator-solid"></div>
+                                            <div className="row mt-3">
+                                                <div className="col-12">
+                                                    <h6 className="text-uppercase mb-3 fw-bold">Descrição</h6>
+                                                    <p className="text-muted">
+                                                        { this.state.demand.description }
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-md-4">
-                                    <div className="card card-profile"></div>
+                                    <div className="card card-profile">
+                                        <div className="card-header" style={{ "backgroundImage": "url('/static/images/blogpost.jpg')" }}>
+                                            <div className="profile-picture">
+                                                <div className="avatar avatar-xl">
+                                                    <img src={ this.state.owner.photo } alt="..." className="avatar-img rounded-circle" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="card-body">
+                                            <div className="user-profile text-center">
+                                                {
+                                                    this.state.owner.child == undefined ?
+                                                        <div className="loader loader-lg"></div>
+                                                    :
+                                                        <React.Fragment>
+                                                            <div className="name">
+                                                                { this.state.owner.child.first_name } { this.state.owner.child.last_name }
+                                                            </div>
+                                                            <div className="job">{ this.state.owner.email }</div>
+                                                            <div className="desc">{ this.state.owner.cell_phone }</div>
+                                                            <div className="view-profile">
+                                                                <a href="#" className="btn btn-info btn-block">Ver Perfil</a>
+                                                            </div>
+                                                        </React.Fragment>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className="card-footer">
+                                            <div className="row user-stats text-center">
+                                                <div className="col">
+                                                    <div className="number">{ this.state.owner.donations_count }</div>
+                                                    <div className="title">Doações Cadastradas</div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="number">{ this.state.owner.donations_accepted }</div>
+                                                    <div className="title">Doações Finalizadas</div>
+                                                </div>
+                                                <div className="col">
+                                                    <div className="number"></div>
+                                                    <div className="title">Confiabilidade</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

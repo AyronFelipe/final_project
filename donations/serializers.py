@@ -5,18 +5,16 @@ from core.serializers import PhotoSerializer, TagSerializer
 
 class DonationSerializer(serializers.ModelSerializer):
 
-
-    donator = serializers.SerializerMethodField()
     photos = PhotoSerializer(many=True, read_only=True)
     tags = serializers.SerializerMethodField()
     solicitations_count = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
     main_photo = serializers.SerializerMethodField()
+    donator_pk = serializers.SerializerMethodField()
 
     class Meta:
         model = Donation
         fields = [
-            'donator',
             'name',
             'description',
             'validity',
@@ -34,15 +32,9 @@ class DonationSerializer(serializers.ModelSerializer):
             'photos',
             'tags',
             'solicitations_count',
-            'status'
+            'status',
+            'donator_pk',
         ]
-
-    def get_donator(self, obj):
-
-        if hasattr(obj, 'donator'):
-            if hasattr(obj.donator, 'institution'):
-                return obj.donator.institution.name
-            return obj.donator.person.first_name
 
     def get_tags(self, obj):
 
@@ -64,9 +56,15 @@ class DonationSerializer(serializers.ModelSerializer):
             return obj.get_status_display()
     
     def get_main_photo(self, obj):
-
         if hasattr(obj, 'main_photo'):
-            return obj.main_photo.url
+            if obj.main_photo:
+                return obj.main_photo.url
+            else:
+                return '/static/images/default-placeholder.png'
+
+    def get_donator_pk(self, obj):
+
+        return obj.donator.pk
 
 
 class SolicitationSerializer(serializers.ModelSerializer):

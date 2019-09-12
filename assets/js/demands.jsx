@@ -38,7 +38,7 @@ export default class Demands extends React.Component {
                                 return (
                                     <div className="col-sm-4 col-12" key={demand.pk}>
                                         <div className="card">
-                                            <img className="card-img-top" src={demand.main_photo} alt="Card image cap" />
+                                            <img className="card-img-top" src={demand.main_photo} alt="Card image cap" height={'310px'} />
                                             <div className="card-body">
                                                 <h5 className="card-title mb-2 fw-mediumbold">{demand.name}</h5>
                                                 <p className="card-text">{truncate(demand.description)}</p>

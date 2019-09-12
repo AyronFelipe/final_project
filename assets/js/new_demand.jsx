@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { readURL } from './utils';
 import axios from 'axios';
+import NewTag from './new_tag';
 
 
 const config = {
@@ -27,7 +28,7 @@ export default class NewDemand extends React.Component {
             city: '',
             uf: '',
             number: '',
-            aparecer: 'false',
+            aparecer: false,
         };
         this.cep = React.createRef();
         this.street = React.createRef();
@@ -124,6 +125,9 @@ export default class NewDemand extends React.Component {
             form.append('uf', this.state.uf);
             form.append('number', this.state.number);
         }
+        this.state.tags.map((tag) => {
+            form.append('tags', tag)
+        });
 
         axios.post(`/api/demands/`, form, config)
         .then((response) => {
@@ -198,6 +202,10 @@ export default class NewDemand extends React.Component {
                                                 <div className="form-group">
                                                     <label htmlFor="description">Descrição</label>
                                                     <textarea className="form-control" id="description" rows="5" name="description" onChange={this.changeHandler}></textarea>
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="tags">Tags da Doação</label>
+                                                    <NewTag name="tags" id="tags" onChange={this.handleChangeTags} />
                                                 </div>
                                             </div>
                                             <div className="col-12 col-sm-6">

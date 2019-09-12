@@ -29,6 +29,7 @@ export default class NewDonation extends React.Component {
             main_photo: '',
             photos: [],
             tags: [],
+            aparecer: false,
         }
         this.cep = React.createRef();
         this.street = React.createRef();

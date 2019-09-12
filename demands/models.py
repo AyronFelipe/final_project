@@ -60,3 +60,19 @@ class Gift(CreationAndUpdateMixin):
         verbose_name = _('gift')
         verbose_name_plural = _('gifts')
 
+
+class DemandTags(models.Model):
+
+    demand = models.ForeignKey(Demand, null=True, blank=True, on_delete=models.SET_NULL, related_name='demand_tags')
+    tag = models.ForeignKey('core.Tag', null=True, blank=True, on_delete=models.CASCADE, related_name='tag_demands')
+    
+    class Meta:
+
+        verbose_name=_('Tag of Demand')
+        verbose_name_plural=_('Tags of Demands')
+
+    def __str__(self):
+
+        return '%s - %s' % (self.demand, self.tag)
+
+
