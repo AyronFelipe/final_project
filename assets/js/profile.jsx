@@ -25,7 +25,7 @@ export default class Profile extends React.Component {
         })
         .catch((error) => {
             console.log(error.response);
-        })
+        });
     }
 
     componentDidMount(){
@@ -60,7 +60,119 @@ export default class Profile extends React.Component {
                     </div>
                 </div>
                 <div className="page-inner">
-                    <div className="row justify-content-center"></div>
+                    <div className="row">
+                        <div className="col-md-10 col-12 mx-auto">
+                            <div className="card card-profile">
+                                <div className="card-header" >
+                                    <div className="profile-picture">
+                                        <img src={ this.state.user.photo } alt="..." className="avatar-img rounded-circle" style={{ width: '160px', maxWidth: '160px' }} />
+                                    </div>
+                                </div>
+                                <div className="card-body">
+                                    <div className="user-profile text-center">
+                                        {
+                                            this.state.user.child == undefined ?
+                                                <div className="loader loader-lg"></div>
+                                            :
+                                                <React.Fragment>
+                                                    <div className="name">{ this.state.user.child.first_name } { this.state.user.child.last_name }</div>
+                                                    <div className="job">{ this.state.user.email }</div>
+                                                    <div className="desc">{ this.state.user.cell_phone }</div>
+                                                </React.Fragment>
+                                        }
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-sm-12 col-md-4">
+                                            <div className="card card-stats card-round">
+                                                <div className="card-body">
+                                                    <div className="row">
+                                                        <div className="col-5">
+                                                            <div className="icon-big text-center">
+                                                                <i className="fas fa-hand-holding text-info"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-7 col-stats">
+                                                            <div className="numbers">
+                                                                <p className="numbers">
+                                                                    <p className="card-category">Doações Cadastradas</p>
+                                                                    <h4 className="card-title">{ this.state.user.donations_count }</h4>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-sm-12 col-md-4">
+                                            <div className="card card-stats card-round">
+                                                <div className="card-body">
+                                                    <div className="row">
+                                                        <div className="col-5">
+                                                            <div className="icon-big text-center">
+                                                                <i className="fas fa-hand-holding-heart text-success"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-7 col-stats">
+                                                            <div className="numbers">
+                                                                <p className="numbers">
+                                                                    <p className="card-category">Doações Finalizadas</p>
+                                                                    <h4 className="card-title">{ this.state.user.donations_accepted }</h4>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-sm-12 col-md-4">
+                                            <div className="card card-stats card-round">
+                                                <div className="card-body">
+                                                    <div className="row">
+                                                        <div className="col-5">
+                                                            <div className="icon-big text-center">
+                                                                <i className="fas fa-grin-beam text-primary"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-7 col-stats">
+                                                            <div className="numbers">
+                                                                <div className="numbers">
+                                                                    <p className="card-category">Confiabilidade</p>
+                                                                    <h4 className="card-title">1515515</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6 col-12"></div>
+                                        <div className="col-md-6 col-12">
+                                            <div className="card full-height">
+                                                <div className="card-header">
+                                                    <div className="card-title">Comentários</div>
+                                                </div>
+                                                <div className="card-body">
+                                                    <div className="d-flex">
+                                                        <div className="avatar">
+                                                            <span className="avatar-title rounded-circle border border-white bg-info">P</span>
+                                                        </div>
+                                                        <div className="flex-1 ml-3 pt-1">
+                                                            <h6 className="text-uppercase fw-bold mb-1">Nome do Cara</h6>
+                                                            <span className="text-muted">Comentário do cara</span>
+                                                        </div>
+                                                        <div className="float-right pt-1">
+                                                            <small className="text-muted">horário humanizado</small>
+                                                        </div>
+                                                    </div>
+                                                    <div className="separator-dashed"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
