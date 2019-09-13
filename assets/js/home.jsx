@@ -10,6 +10,7 @@ import DetailDonation from './detail_donation';
 import NewDemand from './new_demand';
 import DetailDemand from './detail_demand';
 import Profile from './profile';
+import ProfileEdit from './edit_profile';
 
 class Home extends React.Component{
 
@@ -32,6 +33,7 @@ class Home extends React.Component{
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/new-demand/" component={NewDemand} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/demand/:slug/" component={DetailDemand} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/accounts/profile/:username/" component={Profile} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/accounts/profile/edit/:username/" component={ProfileEdit} />
                     </div>
                 </div>
             </BrowserRouter>

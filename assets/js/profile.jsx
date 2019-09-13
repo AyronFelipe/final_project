@@ -64,8 +64,17 @@ export default class Profile extends React.Component {
                         <div className="col-md-10 col-12 mx-auto">
                             <div className="card card-profile">
                                 <div className="card-header" >
-                                    <div className="profile-picture">
-                                        <img src={ this.state.user.photo } alt="..." className="avatar-img rounded-circle" style={{ width: '160px', maxWidth: '160px' }} />
+                                    <div className="card-head-row">
+                                        <div className="profile-picture">
+                                            <img src={ this.state.user.photo } alt="..." className="avatar-img rounded-circle" style={{ width: '160px', maxWidth: '160px' }} />
+                                        </div>
+                                        <div className="card-tools" style={{ zIndex: '10000' }}>
+                                            <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
+                                                <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
+                                                    <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Usuário
+                                                </button>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="card-body">
@@ -93,10 +102,8 @@ export default class Profile extends React.Component {
                                                         </div>
                                                         <div className="col-7 col-stats">
                                                             <div className="numbers">
-                                                                <p className="numbers">
-                                                                    <p className="card-category">Doações Cadastradas</p>
-                                                                    <h4 className="card-title">{ this.state.user.donations_count }</h4>
-                                                                </p>
+                                                                <p className="card-category">Doações Cadastradas</p>
+                                                                <h4 className="card-title">{ this.state.user.donations_count }</h4>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -114,10 +121,8 @@ export default class Profile extends React.Component {
                                                         </div>
                                                         <div className="col-7 col-stats">
                                                             <div className="numbers">
-                                                                <p className="numbers">
-                                                                    <p className="card-category">Doações Finalizadas</p>
-                                                                    <h4 className="card-title">{ this.state.user.donations_accepted }</h4>
-                                                                </p>
+                                                                <p className="card-category">Doações Finalizadas</p>
+                                                                <h4 className="card-title">{ this.state.user.donations_accepted }</h4>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -135,10 +140,8 @@ export default class Profile extends React.Component {
                                                         </div>
                                                         <div className="col-7 col-stats">
                                                             <div className="numbers">
-                                                                <div className="numbers">
-                                                                    <p className="card-category">Confiabilidade</p>
-                                                                    <h4 className="card-title">1515515</h4>
-                                                                </div>
+                                                                <p className="card-category">Confiabilidade</p>
+                                                                <h4 className="card-title">1515515</h4>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -149,7 +152,7 @@ export default class Profile extends React.Component {
                                         <div className="col-md-6 col-12">
                                             <div className="card full-height">
                                                 <div className="card-header">
-                                                    <div className="card-title">Comentários</div>
+                                                    <h1>Comentários</h1>
                                                 </div>
                                                 <div className="card-body">
                                                     <div className="d-flex">

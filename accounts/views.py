@@ -79,3 +79,10 @@ def profile(request, username):
     template_name = 'accounts/profile.html'
     context = {}
     return render(request, template_name, context)
+
+
+def profile_edit(request, username):
+
+    template_name = 'accounts/profile_edit.html'
+    context = {}
+    return render(request, template_name, context)
