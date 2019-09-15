@@ -30,15 +30,16 @@ class App extends React.Component{
     render(){
         if (isAuthenticated()) {
             window.location.href = "/donations/";
+        } else {
+            return(
+                <div className="wrapper horizontal-layout-3 bg-primary">
+                    <Route exact path="/" component={Initial} />
+                    <Route exact path="/accounts/login/" component={Login} />
+                    <Route exact path="/accounts/new-person/" component={NewPerson} />
+                    <Route exact path="/accounts/new-institution/" component={NewInstitution} />
+                </div>
+            );
         }
-        return(
-            <div className="wrapper horizontal-layout-3 bg-primary">
-                <Route exact path="/" component={Initial} />
-                <Route exact path="/accounts/login/" component={Login} />
-                <Route exact path="/accounts/new-person/" component={NewPerson} />
-                <Route exact path="/accounts/new-institution/" component={NewInstitution} />
-            </div>
-        )
     }
 }
 

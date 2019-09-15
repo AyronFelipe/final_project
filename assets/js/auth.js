@@ -5,7 +5,7 @@ module.exports = {
     },
 
     isAuthenticated: function(){
-        if (localStorage.token != ''){
+        if (localStorage.token != undefined){
             return true;
         }
         return false;
