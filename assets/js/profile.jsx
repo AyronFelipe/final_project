@@ -62,6 +62,13 @@ export default class Profile extends React.Component {
                 <div className="page-inner">
                     <div className="row">
                         <div className="col-md-10 col-12 mx-auto">
+                            <div className="d-lg-none d-xl-none mb-3 d-flex flex-row-reverse">
+                                <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
+                                    <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
+                                        <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Informações
+                                    </button>
+                                </Link>
+                            </div>
                             <div className="card card-profile">
                                 <div className="card-header" >
                                     <div className="card-head-row">
@@ -69,11 +76,13 @@ export default class Profile extends React.Component {
                                             <img src={ this.state.user.photo } alt="..." className="avatar-img rounded-circle" style={{ width: '160px', maxWidth: '160px' }} />
                                         </div>
                                         <div className="card-tools" style={{ zIndex: '10000' }}>
-                                            <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
-                                                <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
-                                                    <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Usuário
-                                                </button>
-                                            </Link>
+                                            <div className="d-none d-lg-block d-xl-block">
+                                                <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
+                                                    <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
+                                                        <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Informações
+                                                    </button>
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
