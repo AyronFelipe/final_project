@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
-from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, login, logged_user, forget_password
+from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, login, logged_user, forget_password, edit_user
 from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet, DestroySolicitationViewSet, SolicitationsOfDonationViewSet, AcceptSolicitation, RejectSolicitation, CancelDonationSolicitation, NotAppearDonationSolicitation, FinalizeDonationSolicitation
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -30,6 +30,7 @@ urlpatterns = [
     path('api/donation/cancels/<int:pk>/', CancelDonationSolicitation.as_view(), name='cancel_solicitation'),
     path('api/donation/not-appear/<int:pk>/', NotAppearDonationSolicitation.as_view(), name='cancel_solicitation'),
     path('api/donation/finalize/<int:pk>/', FinalizeDonationSolicitation.as_view(), name='finalize_solicitation'),
+    path('api/person/<pk>/edit/', edit_user, name='edit_user'),
 ]
 
 if settings.DEBUG:

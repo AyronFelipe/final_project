@@ -13,6 +13,8 @@ export default class Profile extends React.Component {
         this.state = {
             user: [],
             isLoading: true,
+            logged: [],
+            show_info: false,
         }
     }
 
@@ -22,14 +24,33 @@ export default class Profile extends React.Component {
         axios.get(`/api/users/${pk[1]}`, config)
         .then((res) => {
             this.setState({ user: res.data, isLoading: false });
+            this.showInfo();
         })
         .catch((error) => {
             console.log(error.response);
         });
     }
 
+    getLoggedUser = () => {
+        axios.get('/api/logged-user/', config)
+        .then((res) => {
+            this.setState({ logged: res.data });
+            this.showInfo();
+        })
+        .catch((error) => {
+            console.log(error.response);
+        });
+    }
+
+    showInfo = () => {
+        if (this.state.user.pk == this.state.logged.pk) {
+            this.setState({ show_info: true });
+        }
+    }
+
     componentDidMount(){
         this.getUser();
+        this.getLoggedUser();
     }
 
     render(){
@@ -62,28 +83,38 @@ export default class Profile extends React.Component {
                 <div className="page-inner">
                     <div className="row">
                         <div className="col-md-10 col-12 mx-auto">
-                            <div className="d-lg-none d-xl-none mb-3 d-flex flex-row-reverse">
-                                <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
-                                    <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
-                                        <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Informações
-                                    </button>
-                                </Link>
-                            </div>
+                            {
+                                this.state.show_info ?
+                                <div className="d-lg-none d-xl-none mb-3 d-flex flex-row-reverse">
+                                    <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
+                                        <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
+                                            <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Informações
+                                        </button>
+                                    </Link>
+                                </div>
+                                :
+                                null
+                            }
                             <div className="card card-profile">
                                 <div className="card-header" >
                                     <div className="card-head-row">
                                         <div className="profile-picture">
                                             <img src={ this.state.user.photo } alt="..." className="avatar-img rounded-circle" style={{ width: '160px', maxWidth: '160px' }} />
                                         </div>
-                                        <div className="card-tools" style={{ zIndex: '10000' }}>
-                                            <div className="d-none d-lg-block d-xl-block">
-                                                <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
-                                                    <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
-                                                        <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Informações
-                                                    </button>
-                                                </Link>
+                                        {
+                                            this.state.show_info ?
+                                            <div className="card-tools" style={{ zIndex: '10000' }}>
+                                                <div className="d-none d-lg-block d-xl-block">
+                                                    <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
+                                                        <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
+                                                            <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Informações
+                                                        </button>
+                                                    </Link>
+                                                </div>
                                             </div>
-                                        </div>
+                                            :
+                                            null
+                                        }
                                     </div>
                                 </div>
                                 <div className="card-body">

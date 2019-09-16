@@ -41,7 +41,7 @@ def login(request):
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key}, status=status.HTTP_200_OK)
             else:
-                data["message"] = "O usuário ainda não foi ativo, por favor verifique seu email para poder ativa-lo."
+                data["message"] = "O usuário ainda não foi ativo, por favor verifique seu email para poder ativá-lo."
         else:
             data["message"] = "Um dos campos foi preenchido incorretamente."
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
@@ -195,3 +195,23 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
                 send_mail_template(subject, "emails/activate_email.html", context, [instance.get('email')])
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["PUT"])
+def edit_user(request, pk):
+
+    data = {}
+    if request.user.pk != pk:
+        data['message'] = 'Tentando hackear os endpoints né espertão!'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        user = User.objects.get(pk=pk)
+        user.person.first_name = request.POST.get('first_name')
+        user.person.last_name = request.POST.get('last_name')
+        user.person.birthday = request.POST.get('birthday')
+        user.cell_phone = request.POST.get('cell_phone')
+        user.phone = request.POST.get('phone')
+        user.save()
+        data['message'] = 'Informações alteradas com sucesso'
+        return Response(data, status=status.HTTP_200_OK)
+
