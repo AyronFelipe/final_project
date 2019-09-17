@@ -12,7 +12,7 @@ module.exports = {
     },
 
     logout: function(){
-        localStorage.token = '';
+        localStorage.removeItem('token');
     }
 
 }

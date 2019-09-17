@@ -201,17 +201,81 @@ class CreateInstitutionViewSet(generics.CreateAPIView):
 def edit_user(request, pk):
 
     data = {}
-    if request.user.pk != pk:
+    if request.user.pk != int(pk):
         data['message'] = 'Tentando hackear os endpoints né espertão!'
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     else:
         user = User.objects.get(pk=pk)
-        user.person.first_name = request.POST.get('first_name')
-        user.person.last_name = request.POST.get('last_name')
+        if request.POST.get('first_name') == '':
+            data['message'] = 'Primeiro nome não pode ficar em branco'
+            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            user.person.first_name = request.POST.get('first_name')
+
+        if request.POST.get('last_name') == '':
+            data['message'] = 'Sobrenome não pode ficar em branco'
+            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            user.person.last_name = request.POST.get('last_name')
         user.person.birthday = request.POST.get('birthday')
         user.cell_phone = request.POST.get('cell_phone')
         user.phone = request.POST.get('phone')
+        user.person.save()
         user.save()
-        data['message'] = 'Informações alteradas com sucesso'
+        data['message'] = 'Todas as informações alteradas por você foram salvas.'
         return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(["PUT"])
+def edit_user_address(request, pk):
+
+    data = {}
+    if request.user.pk != int(pk):
+        data['message'] = 'Tentando hackear os endpoints né espertão!'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        user = User.objects.get(pk=pk)
+        user.neighborhood = request.POST.get('neighborhood')
+        user.street = request.POST.get('street')
+        user.number = request.POST.get('number')
+        user.city = request.POST.get('city')
+        user.uf = request.POST.get('uf')
+        if request.POST.get('cep') == '':
+            data['message'] = 'CEP não pode ficar em branco'
+            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            user.cep = request.POST.get('cep')
+        user.save()
+        data['message'] = 'Todas as informações alteradas por você foram salvas.'
+        return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(["PUT"])
+def edit_user_password(request, pk):
+
+    data = {}
+    if request.user.pk != int(pk):
+        data['message'] = 'Tentando hackear os endpoints né espertão!'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+    else:
+        user = User.objects.get(pk=pk)
+        if request.POST.get('old_password') == '' or request.POST.get('old_password2') == '' or request.POST.get('new_password') == '':
+            data['message'] = 'Nenhum dos campos pode ficar em branco.'
+            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            old_password = request.POST.get('old_password')
+            if user.check_password(old_password):
+                old_password2 = request.POST.get('old_password2')
+                if old_password2 != old_password:
+                    data['message'] = 'Senha antiga informada não está correta.'
+                    return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+                else:
+                    new_password = request.POST.get('new_password')
+                    user.set_password(new_password)
+                    user.save()
+                    data['message'] = 'Todas as informações alteradas por você foram salvas.'
+                    return Response(data, status=status.HTTP_200_OK)
+            else:
+                data['message'] = 'Senha antiga informada não está correta.'
+                return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
