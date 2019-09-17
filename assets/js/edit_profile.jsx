@@ -276,40 +276,68 @@ export default class EditProfile extends React.Component {
                                                 </div>
                                                 <div className="card-body">
                                                     <form id="form-general" onSubmit={this.generalSubmit}>
-                                                        <div className="row">
-                                                            <div className="col-sm-12 col-md-6">
-                                                                <div className="form-group">
-                                                                    <label htmlFor=""> <span className="required-label">*</span> Primeiro Nome</label>
-                                                                    <input type="text" className="form-control" name="first_name" id="first_name" maxLength={40} defaultValue={this.state.user.child.first_name} onChange={this.changeHandler} required />
+                                                        {
+                                                            this.state.user.child.type == 'person' ?
+                                                            <React.Fragment>
+                                                                <div className="row">
+                                                                    <div className="col-sm-12 col-md-6">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor=""> <span className="required-label">*</span> Primeiro Nome</label>
+                                                                            <input type="text" className="form-control" name="first_name" id="first_name" maxLength={40} defaultValue={this.state.user.child.first_name} onChange={this.changeHandler} required />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-sm-12 col-md-6">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor="last_name"> <span className="required-label">*</span> Sobrenome</label>
+                                                                            <input type="text" className="form-control" name="last_name" id="last_name" maxLength={40} defaultValue={this.state.user.child.last_name} onChange={this.changeHandler} required />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="col-sm-12 col-md-6">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="last_name"> <span className="required-label">*</span> Sobrenome</label>
-                                                                    <input type="text" className="form-control" name="last_name" id="last_name" maxLength={40} defaultValue={this.state.user.child.last_name} onChange={this.changeHandler} required />
+                                                                <div className="row">
+                                                                    <div className="col-sm-12 col-md-4">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor="birthday">Data de Nascimento</label>
+                                                                            <input type="date" name="birthday" id="birthday" className="form-control" defaultValue={this.state.user.child.birthday} onChange={this.changeHandler} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-sm-12 col-md-4">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor="phone">Telefone</label>
+                                                                            <input type="text" name="phone" id="phone" className="form-control" defaultValue={this.state.user.phone} onChange={this.changeHandlerMask} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-sm-12 col-md-4">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor="cell_phone">Celular</label>
+                                                                            <input type="text" name="cell_phone" id="cell_phone" className="form-control" defaultValue={this.state.user.cell_phone} onChange={this.changeHandlerMask} />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-sm-12 col-md-4">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="birthday">Data de Nascimento</label>
-                                                                    <input type="date" name="birthday" id="birthday" className="form-control" defaultValue={this.state.user.child.birthday} onChange={this.changeHandler} />
+                                                            </React.Fragment>
+                                                            :
+                                                            <React.Fragment>
+                                                                <div className="row">
+                                                                    <div className="col-sm-12 col-md-4">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor="phone"><span className="required-label">*</span> Nome</label>
+                                                                            <input type="text" name="name" id="name" className="form-control" defaultValue={this.state.user.child.name} onChange={this.changeHandler} required />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-sm-12 col-md-4">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor="phone">Telefone</label>
+                                                                            <input type="text" name="phone" id="phone" className="form-control" defaultValue={this.state.user.phone} onChange={this.changeHandlerMask} />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="col-sm-12 col-md-4">
+                                                                        <div className="form-group">
+                                                                            <label htmlFor="cell_phone">Celular</label>
+                                                                            <input type="text" name="cell_phone" id="cell_phone" className="form-control" defaultValue={this.state.user.cell_phone} onChange={this.changeHandlerMask} />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div className="col-sm-12 col-md-4">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="phone">Telefone</label>
-                                                                    <input type="text" name="phone" id="phone" className="form-control" defaultValue={this.state.user.phone} onChange={this.changeHandlerMask} />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-sm-12 col-md-4">
-                                                                <div className="form-group">
-                                                                    <label htmlFor="cell_phone">Celular</label>
-                                                                    <input type="text" name="cell_phone" id="cell_phone" className="form-control" defaultValue={this.state.user.cell_phone} onChange={this.changeHandlerMask} />
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                            </React.Fragment>
+                                                        }
                                                         <div className="d-flex flex-row-reverse">
                                                             <button className="btn btn-primary mr-3" type="submit"><i className="fas fa-save mr-1"></i> Salvar alterações</button>
                                                         </div>

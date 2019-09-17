@@ -130,6 +130,8 @@ class InstitutionSerializer(serializers.ModelSerializer):
 
 class LoggedPersonSerializer(serializers.ModelSerializer):
 
+    type = serializers.SerializerMethodField()
+
     class Meta:
         model = Person
         fields = [
@@ -137,10 +139,17 @@ class LoggedPersonSerializer(serializers.ModelSerializer):
             'last_name',
             'cpf',
             'birthday',
+            'type'
         ]
+
+    def get_type(self, obj):
+
+        return 'person'
 
 
 class LoggedInstitutionSerializer(serializers.ModelSerializer):
+
+    type = serializers.SerializerMethodField()
 
     class Meta:
         model = Institution
@@ -148,4 +157,9 @@ class LoggedInstitutionSerializer(serializers.ModelSerializer):
             'name',
             'cnpj',
             'objectives',
+            'type'
         ]
+
+    def get_type(self, obj):
+
+        return 'institution'

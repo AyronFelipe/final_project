@@ -206,23 +206,34 @@ def edit_user(request, pk):
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
     else:
         user = User.objects.get(pk=pk)
-        if request.POST.get('first_name') == '':
-            data['message'] = 'Primeiro nome não pode ficar em branco'
-            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
-        else:
-            user.person.first_name = request.POST.get('first_name')
+        if hasattr(user, 'person'):
+            if request.POST.get('first_name') == '':
+                data['message'] = 'Primeiro nome não pode ficar em branco'
+                return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                user.person.first_name = request.POST.get('first_name')
 
-        if request.POST.get('last_name') == '':
-            data['message'] = 'Sobrenome não pode ficar em branco'
-            return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+            if request.POST.get('last_name') == '':
+                data['message'] = 'Sobrenome não pode ficar em branco'
+                return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                user.person.last_name = request.POST.get('last_name')
+            user.person.birthday = request.POST.get('birthday')
+            user.cell_phone = request.POST.get('cell_phone')
+            user.phone = request.POST.get('phone')
+            user.person.save()
+            user.save()
+            data['message'] = 'Todas as informações alteradas por você foram salvas.'
         else:
-            user.person.last_name = request.POST.get('last_name')
-        user.person.birthday = request.POST.get('birthday')
-        user.cell_phone = request.POST.get('cell_phone')
-        user.phone = request.POST.get('phone')
-        user.person.save()
-        user.save()
-        data['message'] = 'Todas as informações alteradas por você foram salvas.'
+            if request.POST.get('name') == '':
+                data['message'] = 'Nome não pode ficar em branco'
+                return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                user.institution.name = request.POST.get('name')
+                user.cell_phone = request.POST.get('cell_phone')
+                user.phone = request.POST.get('phone')
+                user.institution.save()
+                user.save()
         return Response(data, status=status.HTTP_200_OK)
 
 

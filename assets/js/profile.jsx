@@ -103,7 +103,7 @@ export default class Profile extends React.Component {
                                         </div>
                                         {
                                             this.state.show_info ?
-                                            <div className="card-tools" style={{ zIndex: '10000' }}>
+                                            <div className="card-tools" style={{ zIndex: '1000' }}>
                                                 <div className="d-none d-lg-block d-xl-block">
                                                     <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
                                                         <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
@@ -124,9 +124,20 @@ export default class Profile extends React.Component {
                                                 <div className="loader loader-lg"></div>
                                             :
                                                 <React.Fragment>
-                                                    <div className="name">{ this.state.user.child.first_name } { this.state.user.child.last_name }</div>
-                                                    <div className="job">{ this.state.user.email }</div>
-                                                    <div className="desc">{ this.state.user.cell_phone }</div>
+                                                    {
+                                                        this.state.user.child.type == 'person' ?
+                                                        <React.Fragment>
+                                                            <div className="name">{ this.state.user.child.first_name } { this.state.user.child.last_name }</div>
+                                                            <div className="job">{ this.state.user.email }</div>
+                                                            <div className="desc">{ this.state.user.cell_phone }</div>
+                                                        </React.Fragment>
+                                                        :
+                                                        <React.Fragment>
+                                                            <div className="name">{ this.state.user.child.name }</div>
+                                                            <div className="job">{ this.state.user.email }</div>
+                                                            <div className="desc">{ this.state.user.cell_phone }</div>
+                                                        </React.Fragment>
+                                                    }
                                                 </React.Fragment>
                                         }
                                     </div>
