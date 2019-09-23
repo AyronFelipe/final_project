@@ -270,11 +270,15 @@ export default class NewDonation extends React.Component {
                                                     <div className="alert alert-info">
                                                         <strong>Atenção!</strong> O local de coleta das doações é definido automaticamente como o local cadastrado no momento do cadastro de usuário.
                                                         Porém, se você desejar pode informar um lugar diferente para a coleta é só selecionar a opção abaixo.
-                                                        <div className="form-check">
-                                                            <label className="form-check-label">
-                                                                <input className="form-check-input" type="checkbox" onClick={this.handleClick} />
-                                                                <span className="form-check-sign">Desejo informar um local de coleta diferente</span>
-                                                            </label>
+                                                        <div className="row">
+                                                            <div className="col-12">
+                                                                <div className="form-check">
+                                                                    <label className="form-check-label">
+                                                                        <input className="form-check-input" type="checkbox" onClick={this.handleClick} />
+                                                                        <span className="form-check-sign">Informar um local diferente</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

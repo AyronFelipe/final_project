@@ -241,7 +241,7 @@ export default class NewDemand extends React.Component {
                                                         <div className="form-check">
                                                             <label className="form-check-label">
                                                                 <input className="form-check-input" type="checkbox" onClick={this.handleClick} />
-                                                                <span className="form-check-sign">Desejo informar um local de entrega diferente</span>
+                                                                <span className="form-check-sign">Informar um local diferente</span>
                                                             </label>
                                                         </div>
                                                     </div>
