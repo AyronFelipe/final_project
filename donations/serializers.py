@@ -63,8 +63,8 @@ class DonationSerializer(serializers.ModelSerializer):
                 return '/static/images/default-placeholder.png'
 
     def get_donator_pk(self, obj):
-
-        return obj.donator.pk
+        if hasattr(obj, 'main_photo'):
+            return obj.donator.pk
 
 
 class SolicitationSerializer(serializers.ModelSerializer):

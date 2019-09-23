@@ -49,7 +49,6 @@ export default class EditProfile extends React.Component {
         .then((res) => {
             this.setState({ 
                 user: res.data,
-                isLoading: false,
                 first_name: res.data.child.first_name,
                 last_name: res.data.child.last_name,
                 birthday: res.data.child.birthday,
@@ -63,7 +62,6 @@ export default class EditProfile extends React.Component {
                 number: res.data.number,
                 name: res.data.child.name,
             });
-            this.showInfo();
         })
         .catch((error) => {
             //console.log(error);
@@ -73,7 +71,7 @@ export default class EditProfile extends React.Component {
     getLoggedUser = () => {
         axios.get('/api/logged-user/', config)
         .then((res) => {
-            this.setState({ logged: res.data });
+            this.setState({ logged: res.data, });
             this.showInfo();
         })
         .catch((error) => {
@@ -83,7 +81,9 @@ export default class EditProfile extends React.Component {
 
     showInfo = () => {
         if (this.state.user.pk == this.state.logged.pk) {
-            this.setState({ show_info: true });
+            this.setState({ show_info: true, isLoading: false });
+        } else {
+            this.setState({ isLoading: false });
         }
     }
 

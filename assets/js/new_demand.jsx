@@ -236,8 +236,8 @@ export default class NewDemand extends React.Component {
                                             <div className="col-12">
                                                 <div className="form-group">
                                                     <div className="alert alert-info">
-                                                        <strong>Atenção!</strong> O local de entrega dos pedidos é definido automaticamente como o local cadastrado no momento do cadastro de usuário.
-                                                        Porém, se você desejar pode cadastrar um lugar diferente para a entrega é só selecionar a opção abaixo.
+                                                        <strong>Atenção!</strong> O local de entrega dos pedidos é definido automaticamente como o local informado no momento do cadastro de usuário.
+                                                        Porém, se você desejar pode Informar um local diferente para a entrega é só selecionar a opção abaixo.
                                                         <div className="form-check">
                                                             <label className="form-check-label">
                                                                 <input className="form-check-input" type="checkbox" onClick={this.handleClick} />

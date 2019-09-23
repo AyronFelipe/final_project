@@ -268,8 +268,8 @@ export default class NewDonation extends React.Component {
                                             <div className="col-12">
                                                 <div className="form-group">
                                                     <div className="alert alert-info">
-                                                        <strong>Atenção!</strong> O local de coleta das doações é definido automaticamente como o local cadastrado no momento do cadastro de usuário.
-                                                        Porém, se você desejar pode informar um lugar diferente para a coleta é só selecionar a opção abaixo.
+                                                        <strong>Atenção!</strong> O local de coleta das doações é definido automaticamente como o local informado no momento do cadastro de usuário.
+                                                        Porém, se você desejar pode informar um local diferente para a coleta é só selecionar a opção abaixo.
                                                         <div className="row">
                                                             <div className="col-12">
                                                                 <div className="form-check">
