@@ -11,6 +11,8 @@ import NewDemand from './new_demand';
 import DetailDemand from './detail_demand';
 import Profile from './profile';
 import ProfileEdit from './edit_profile';
+import MyDonations from './my_donations';
+import EditDonation from './edit_donation';
 
 class Home extends React.Component{
 
@@ -30,10 +32,12 @@ class Home extends React.Component{
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/" component={DonationsMain} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/new-donation/" component={NewDonation} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/donation/:slug/" component={DetailDonation} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/donation/edit/:slug/" component={EditDonation} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/new-demand/" component={NewDemand} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/demand/:slug/" component={DetailDemand} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/accounts/profile/:username/" component={Profile} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/accounts/profile/edit/:username/" component={ProfileEdit} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/my-donations/" component={MyDonations} />
                     </div>
                 </div>
             </BrowserRouter>

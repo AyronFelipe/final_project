@@ -22,6 +22,13 @@ def donation_detail(request, slug):
     return render(request, template_name, context)
 
 
+def donation_edit(request, slug):
+
+    template_name = "donations/donation_edit.html"
+    context = {}
+    return render(request, template_name, context)
+
+
 def my_solicitations(request):
 
     template_name = "donations/my_solicitations.html"

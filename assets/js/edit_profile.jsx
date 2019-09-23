@@ -33,6 +33,7 @@ export default class EditProfile extends React.Component {
             old_password: '',
             old_password2: '',
             new_password: '',
+            name: '',
         };
         this.cep = React.createRef();
         this.street = React.createRef();
@@ -60,6 +61,7 @@ export default class EditProfile extends React.Component {
                 city: res.data.city,
                 uf: res.data.uf,
                 number: res.data.number,
+                name: res.data.child.name,
             });
             this.showInfo();
         })
@@ -105,11 +107,17 @@ export default class EditProfile extends React.Component {
         e.preventDefault();
 
         let form = new FormData()
-        form.append('first_name', this.state.first_name);
-        form.append('last_name', this.state.last_name);
-        form.append('birthday', this.state.birthday);
-        form.append('phone', this.state.phone);
-        form.append('cell_phone', this.state.cell_phone);
+        if (this.state.user.child.type == 'person') {
+            form.append('first_name', this.state.first_name);
+            form.append('last_name', this.state.last_name);
+            form.append('birthday', this.state.birthday);
+            form.append('phone', this.state.phone);
+            form.append('cell_phone', this.state.cell_phone);
+        } else {
+            form.append('phone', this.state.phone);
+            form.append('cell_phone', this.state.cell_phone);
+            form.append('name', this.state.name);
+        }
 
         axios.put(`/api/person/${this.state.user.pk}/edit/`, form, config)
         .then((res) => {
