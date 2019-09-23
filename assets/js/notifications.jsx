@@ -50,7 +50,7 @@ export default class Notifications extends React.Component{
                         </div>
                     </li>
                     <li>
-                        <a className="see-all" href="javascript:void(0);">See all notifications<i className="fa fa-angle-right"></i> </a>
+                        <a className="see-all" href="#">See all notifications<i className="fa fa-angle-right"></i> </a>
                     </li>
                 </ul>
             </React.Fragment>
