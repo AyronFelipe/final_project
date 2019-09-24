@@ -50,7 +50,7 @@ export default class EditDonation extends React.Component {
 
         axios.get(`/api/donations/${slug.split('-')[2].split('.')[1]}/`, config)
         .then((res) => {
-            this.setState({ donation: res.data, tags: res.data.tags, isLoading: false, });
+            this.setState({ donation: res.data, tags: res.data.tags, photos: res.data.photos, isLoading: false, });
         })
         .catch((error) => {
             console.log(error.response);
@@ -130,6 +130,13 @@ export default class EditDonation extends React.Component {
                         });
                     }
                 })
+        }
+    }
+
+    chageManyPhotos = () => {
+        this.setState({ photos: [] });
+        for (let i = 0; i < $('#dropzone-alimentai')[0].files.length; i++) {
+            this.setState({ photos: [...this.state.photos, $('#dropzone-alimentai')[0].files[i]] })
         }
     }
 
@@ -292,7 +299,7 @@ export default class EditDonation extends React.Component {
                                         <div className="row">
                                             <div className="col-12 well">
                                                 <div className="form-group">
-                                                    <Dropzone onChange={this.chageManyPhotos} />
+                                                    <Dropzone onChange={this.chageManyPhotos} photos={this.state.photos} />
                                                 </div>
                                             </div>
                                         </div>
