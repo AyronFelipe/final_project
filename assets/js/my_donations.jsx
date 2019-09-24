@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Preloader from './preloader';
-import { unformatDate } from './utils';
+import { unformatDate2 } from './utils';
 
 
 const config = {
@@ -82,7 +82,7 @@ export default class MyDonations extends React.Component {
                                                     </td>
                                                     <td>{ donation.solicitations_count }</td>
                                                     <td>{ donation.status }</td>
-                                                    <td>{unformatDate(`${donation.validity}`)} até às { donation.validity_hour }</td>
+                                                    <td>{unformatDate2(`${donation.validity}`)} até às { donation.validity_hour }</td>
                                                     <td>
                                                         <p className="demo mt-3">
                                                             <Link to={`/donations/donation/${donation.slug}/` } style={{ textDecoration: 'none' }}>

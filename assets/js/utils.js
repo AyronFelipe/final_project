@@ -11,7 +11,11 @@ module.exports = {
         }
     },
     formatDate: function(date){
-        return `${date.split('/')[2]}-${date.split('/')[1]}-${date.split('/')[0]}`
+        if (date != '') {
+            return `${date.split('/')[2]}-${date.split('/')[1]}-${date.split('/')[0]}`
+        } else {
+            return '';
+        }
     },
     truncate: function(str, max = 40) {
         const array = str.trim().split(' ');
