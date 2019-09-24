@@ -25,6 +25,7 @@ export default class NewTag extends React.Component{
 
     handleDelete = (i) => {
         this.setState({ tagsLocal: this.state.tagsLocal.filter((tag, index) => index !== i) });
+        console.log(this.state.tagsLocal);
     }
 
     handleAddition = (tag) => {
@@ -61,6 +62,18 @@ export default class NewTag extends React.Component{
 
     componentDidMount = () => {
         this.getSuggestions();
+        let lol = [];
+        if (this.props.tags != undefined) {
+            this.props.tags.map((tag) => {
+                lol.push(
+                    {
+                        id: `${tag.pk}`,
+                        text: tag.name
+                    }
+                )
+            })
+            this.setState({ tagsLocal: lol });
+        }
     }
 
     render(){

@@ -58,6 +58,7 @@ export default class EditDonation extends React.Component {
     }
 
     render(){
+        console.log(this.state.tags);
         return(
             <div className="content">
                 <div className="panel-header bg-primary">
@@ -123,7 +124,12 @@ export default class EditDonation extends React.Component {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="tags">Tags da Doação</label>
-                                                <NewTag name="tags" id="tags" onChange={this.handleChangeTags} tags={this.state.donation.tags} />
+                                                {
+                                                    this.state.tags.length > 0?
+                                                    <NewTag name="tags" id="tags" onChange={this.handleChangeTags} tags={this.state.tags} />
+                                                    :
+                                                    <div className="loader loader-lg"></div>
+                                                }
                                             </div>
                                         </div>
                                     </div>
