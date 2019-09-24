@@ -51,6 +51,13 @@ export default class NewDonation extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    handleDeleteTags = (i) => {
+        let filtered = this.state.tags.filter(function(_, item) {
+            return item !== i
+        })
+        this.setState({ tags: filtered });
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -116,8 +123,6 @@ export default class NewDonation extends React.Component {
             format: 'HH:mm',
             locale: 'pt-br',
         });
-
-        $('.bootstrap-tagsinput').addClass('form-control');
     }
 
     loadMask = (e) => {
@@ -232,7 +237,7 @@ export default class NewDonation extends React.Component {
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="tags">Tags da Doação</label>
-                                                    <NewTag name="tags" id="tags" onChange={this.handleChangeTags} />
+                                                    <NewTag name="tags" id="tags" onChange={this.handleChangeTags} onDelete={this.handleDeleteTags} />
                                                 </div>
                                             </div>
                                         </div>

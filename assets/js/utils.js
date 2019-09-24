@@ -21,5 +21,8 @@ module.exports = {
     },
     unformatDate: function(date){
         return `${date.split('-')[1]}/${date.split('-')[2]}/${date.split('-')[0]}`;
+    },
+    unformatDate2: function(date){
+        return `${date.split('-')[2]}/${date.split('-')[1]}/${date.split('-')[0]}`;
     }
 }
