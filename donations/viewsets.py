@@ -14,6 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
 from core.utils import pusher_client
 from datetime import datetime
+from rest_framework.decorators import api_view
 
 User = get_user_model()
 
@@ -166,7 +167,9 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 context['donation'] = donation
                 context['solicitation'] = solicitation
                 send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
-                return Response(serializer.data, status=status.HTTP_201_CREATED,)
+                data = {}
+                data['message'] = 'Solicitação feita com sucesso!'
+                return Response(data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -417,3 +420,53 @@ class FinalizeDonationSolicitation(APIView):
 
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["PUT"])
+def edit_donation(request, pk):
+
+    data = {}
+    donation = Donation.objects.get(pk=pk)
+    if request.user.pk != donation.donator.pk:
+        data['message'] = 'Tentando hackear os endpoints, né!'
+    else:
+        with transaction.atomic():
+            name = request.POST.get('name', None)
+            description = request.POST.get('description', None)
+            if name:
+                donation.name = name
+            if description:
+                donation.description = description
+            import pdb; pdb.set_trace()
+            for tag in request.POST.getlist('tags'):
+                current_tag, created = Tag.objects.get_or_create(name=tag)
+                DonationTags.objects.get_or_create(donation=donation, tag=current_tag)
+            validity = request.POST.get('validity', None)
+            if validity:
+                donation.validity = validity
+            validity_hour = request.POST.get('validity_hour', None)
+            if validity_hour:
+                donation.validity_hour = validity_hour
+            cep = request.POST.get('cep', None)
+            if cep:
+                donation.cep = cep
+            street = request.POST.get('street', None)
+            if street:
+                donation.street = street
+            neighborhood = request.POST.get('neighborhood', None)
+            if neighborhood:
+                donation.neighborhood = neighborhood
+            city = request.POST.get('city', None)
+            if city:
+                donation.city = city
+            uf = request.POST.get('uf', None)
+            if uf:
+                donation.uf = uf
+            number = request.POST.get('number', None)
+            if number:
+                donation.number = number
+            donation.save()
+            data['message'] = 'Informações alteradas com sucesso!'
+            return Response(data, status=status.HTTP_201_CREATED)
+    return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+

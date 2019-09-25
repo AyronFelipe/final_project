@@ -25,7 +25,7 @@ export default class NewTag extends React.Component{
 
     handleDelete = (i) => {
         this.setState({ tagsLocal: this.state.tagsLocal.filter((tag, index) => index !== i) });
-        console.log(this.state.tagsLocal);
+        this.props.onDelete(i);
     }
 
     handleAddition = (tag) => {

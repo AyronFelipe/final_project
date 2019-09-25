@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Carousel from './carousel';
-import { unformatDate } from './utils';
+import { unformatDate2 } from './utils';
+import 'bootstrap'
 
 
 const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY";
@@ -67,7 +68,7 @@ export default class DetailDonation extends React.Component{
         axios.post('/api/new-solicitation/', form, config)
         .then((res) => {
             $('#modal-solicitation').modal('hide');
-            swal("Solicitação feita com sucesso!", {
+            swal(res.data.message, {
                 icon: "success",
                 buttons: {
                     confirm: {
@@ -160,7 +161,7 @@ export default class DetailDonation extends React.Component{
                                                             <div className="loader loader-lg"></div>
                                                         :
                                                         <p>
-                                                            {unformatDate(this.state.donation.validity)} até às {this.state.donation.validity_hour}
+                                                            {unformatDate2(this.state.donation.validity)} até às {this.state.donation.validity_hour}
                                                         </p>
                                                     }
                                                 </div>
@@ -278,7 +279,7 @@ export default class DetailDonation extends React.Component{
                             <div className="modal fade" id="modal-solicitation">
                                 <div className="modal-dialog">
                                     <div className="modal-content">
-                                        <form onSubmit={this.handleSubmit}>
+                                        <form onSubmit={this.handleSubmit} method="POST">
                                             <div className="modal-header">
                                                 <h5 className="modal-title">Solicitar esta doação</h5>
                                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">

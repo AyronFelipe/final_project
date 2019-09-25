@@ -44,7 +44,7 @@ export default function Dropzone(props) {
             props.onChange();
         }
     });
-    
+
     const thumbs = files.map(file => (
         <div style={thumb} key={file.name}>
             <div style={thumbInner}>
@@ -53,7 +53,6 @@ export default function Dropzone(props) {
         </div>
     ));
 
-    
     useEffect(() => () => {
         files.forEach(file => URL.revokeObjectURL(file.preview));
     }, [files]);
