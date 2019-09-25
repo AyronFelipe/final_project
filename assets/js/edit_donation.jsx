@@ -57,6 +57,7 @@ export default class EditDonation extends React.Component {
                 tags: res.data.tags, 
                 photos: res.data.photos, 
             });
+            this.getLoggedUser();
         })
         .catch((error) => {
             console.log(error.response);
@@ -72,11 +73,6 @@ export default class EditDonation extends React.Component {
             return item !== i
         })
         this.setState({ tags: filtered });
-    }
-
-    componentDidMount = () => {
-        this.getDonation();
-        this.getLoggedUser();
     }
 
     changeHandler = (e) => {
@@ -173,7 +169,7 @@ export default class EditDonation extends React.Component {
 
         axios.put(`/api/donation/${this.state.donation.pk}/edit/`, form, config)
         .then((response) => {
-            swal(response.data.message, {
+            swal(response.data.message, response.data.detail, {
                 icon: "success",
                 buttons: {
                     confirm: {
@@ -207,6 +203,10 @@ export default class EditDonation extends React.Component {
         } else {
             this.setState({ isLoading: false });
         }
+    }
+
+    componentDidMount = () => {
+        this.getDonation();
     }
 
     render(){
@@ -266,7 +266,7 @@ export default class EditDonation extends React.Component {
                                                                 <div className="input-file input-file-image">
                                                                     <img className="img-upload-preview img-circle ml-5" width="100" height="100" src={this.state.donation.main_photo} alt="preview"></img>
                                                                     <input type="file" className="form-control form-control-file" id="photo" name="main_photo" accept="image/*" onInput={this.changePhoto} onChange={this.handleFile}></input>
-                                                                    <label htmlFor="photo" className="btn btn-info btn-round btn-lg ml--5"><i className="fa fa-file-image"></i> Clique aqui para mudar a foto principal da sua doação</label>
+                                                                    <label htmlFor="photo" className="btn btn-info btn-round btn-lg ml--5"><i className="fa fa-file-image mr-1"></i> Mudar foto principal</label>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -437,7 +437,6 @@ def edit_donation(request, pk):
                 donation.name = name
             if description:
                 donation.description = description
-            import pdb; pdb.set_trace()
             for tag in request.POST.getlist('tags'):
                 current_tag, created = Tag.objects.get_or_create(name=tag)
                 DonationTags.objects.get_or_create(donation=donation, tag=current_tag)
@@ -465,8 +464,15 @@ def edit_donation(request, pk):
             number = request.POST.get('number', None)
             if number:
                 donation.number = number
+            combined_time_donation = datetime.combine(datetime.strptime(donation.validity, '%Y-%m-%d'), donation.validity_hour)
+            if combined_time_donation > datetime.today():
+                donation.status = Donation.ACTIVE
+                data['message'] = 'Informações alteradas com sucesso!'
+                data['detail'] = 'Notamos que você alterou a data de validade, portanto sua doação passa para o status de Ativa novamente e estará disponível para outros usuários solicitarem.'
+            else:
+                data['message'] = 'Informações alteradas com sucesso!'
+                data['detail'] = 'Obrigado por usar o Alimentaí'
             donation.save()
-            data['message'] = 'Informações alteradas com sucesso!'
             return Response(data, status=status.HTTP_201_CREATED)
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 

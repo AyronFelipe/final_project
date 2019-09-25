@@ -85,7 +85,7 @@ export default class Profile extends React.Component {
                         <div className="col-md-10 col-12 mx-auto">
                             {
                                 this.state.show_info ?
-                                <div className="d-lg-none d-xl-none mb-3 d-flex flex-row-reverse">
+                                <div className="d-lg-none d-xl-none mb-4 d-flex flex-row-reverse">
                                     <Link to={`/accounts/profile/edit/${this.state.user.username}/`}>
                                         <button className="btn btn-info btn-border btn-round btn-lg mr-2 mt-2">
                                             <span className="btn-label"><i className="fas fa-pen"></i></span>Editar Informações
