@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Carousel from './carousel';
 import { unformatDate2 } from './utils';
-import 'bootstrap'
 
 
 const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY";
