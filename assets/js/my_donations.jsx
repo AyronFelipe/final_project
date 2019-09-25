@@ -47,7 +47,7 @@ export default class MyDonations extends React.Component {
         } else {
             return(
                 <div className="row justify-content-center">
-                    <div className="col-sm-10 col-12">
+                    <div className="col-md-10 col-12">
                         <div className="card">
                             <div className="card-header">
                                 <div className="card-head-row">
