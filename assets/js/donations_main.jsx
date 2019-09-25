@@ -44,7 +44,8 @@ export default class DonationsMain extends React.Component{
                     <div className="page-inner py-5">
                         <div className="d-flex align-items-left align-items-md-center flex-column flex-md-row">
                             <div>
-                                <h2 className="text-white pb-2 fw-bold">Bem-vindo, {this.state.isLoading ? <Preloader /> : <React.Fragment>{ this.state.user.child.first_name }</React.Fragment>}</h2>
+                                <h2 className="text-white pb-2 fw-bold">
+                                    Bem-vindo, { this.state.isLoading ? <Preloader /> : <React.Fragment>{ this.state.user.child.type == 'person' ? <React.Fragment>{this.state.user.child.first_name}</React.Fragment> : <React.Fragment>{this.state.user.child.name}</React.Fragment> }</React.Fragment> }</h2>
                             </div>
                             <div className="ml-md-auto py-2 py-md-0">
                                 <Link to={this.state.link}>

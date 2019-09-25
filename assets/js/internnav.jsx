@@ -78,7 +78,7 @@ export default class InternNav extends React.Component {
                                                             <img src={this.state.user.photo} alt="image profile" className="avatar-img rounded" />
                                                         </div>
                                                         <div className="u-text">
-                                                            {this.state.user.child != undefined ? <h4>{this.state.user.child.first_name}</h4> : <Preloader /> }
+                                                            {this.state.user.child != undefined ? <h4>{ this.state.user.child.type == 'person' ? <React.Fragment>{ this.state.user.child.first_name }</React.Fragment> : <React.Fragment>{ this.state.user.child.name }</React.Fragment> }</h4> : <Preloader /> }
                                                             <p className="text-muted">{this.state.user.email}</p>
                                                             <Link to={`/accounts/profile/${this.state.user.username}/`}><button className="btn btn-xs btn-secondary btn-sm">Ver Perfil</button></Link>
                                                         </div>

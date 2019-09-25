@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Carousel from './carousel';
-import { unformatDate } from './utils';
+import { unformatDate2 } from './utils';
 
 
 const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY";
@@ -160,7 +160,7 @@ export default class DetailDonation extends React.Component{
                                                             <div className="loader loader-lg"></div>
                                                         :
                                                         <p>
-                                                            {unformatDate(this.state.donation.validity)} até às {this.state.donation.validity_hour}
+                                                            {unformatDate2(this.state.donation.validity)} até às {this.state.donation.validity_hour}
                                                         </p>
                                                     }
                                                 </div>
