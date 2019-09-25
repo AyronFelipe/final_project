@@ -167,7 +167,9 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 context['donation'] = donation
                 context['solicitation'] = solicitation
                 send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
-                return Response(serializer.data, status=status.HTTP_201_CREATED,)
+                data = {}
+                data['message'] = 'Solicitação feita com sucesso!'
+                return Response(data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
