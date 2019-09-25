@@ -123,7 +123,10 @@ class SolicitationSerializer(serializers.ModelSerializer):
 
         if hasattr(obj, 'donation'):
             if hasattr(obj.donation, 'donator'):
-                return obj.donation.donator.photo.url
+                if obj.donation.donator.photo:
+                    return obj.donation.donator.photo.url
+                else:
+                    return '/static/images/default-user-image.png'
 
     def get_owner_pk(self, obj):
 
@@ -133,4 +136,7 @@ class SolicitationSerializer(serializers.ModelSerializer):
     def get_owner_photo(self, obj):
 
         if hasattr(obj, 'owner'):
-            return obj.owner.photo.url
+            if obj.owner.photo:
+                return obj.owner.photo.url
+            else:
+                return '/static/images/default-user-image.png'
