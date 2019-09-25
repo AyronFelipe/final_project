@@ -66,7 +66,7 @@ export default class DetailDonation extends React.Component{
 
         axios.post('/api/new-solicitation/', form, config)
         .then((res) => {
-            $('#modal-solicitation').modal('hide');
+            $('.fechar').click();
             swal(res.data.message, {
                 icon: "success",
                 buttons: {
@@ -300,7 +300,7 @@ export default class DetailDonation extends React.Component{
                                                 </div>
                                             </div>
                                             <div className="modal-footer">
-                                                <button type="button" className="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                <button type="button" className="fechar btn btn-danger" data-dismiss="modal">Cancelar</button>
                                                 <button type="submit" className="btn btn-info">Salvar solicitação</button>
                                             </div>
                                         </form>

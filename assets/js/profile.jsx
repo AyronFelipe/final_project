@@ -142,7 +142,7 @@ export default class Profile extends React.Component {
                                         }
                                     </div>
                                     <div className="row">
-                                        <div className="col-sm-12 col-md-4">
+                                        <div className="col-md-12 col-lg-4">
                                             <div className="card card-stats card-round">
                                                 <div className="card-body">
                                                     <div className="row">
@@ -161,7 +161,7 @@ export default class Profile extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-sm-12 col-md-4">
+                                        <div className="col-md-12 col-lg-4">
                                             <div className="card card-stats card-round">
                                                 <div className="card-body">
                                                     <div className="row">
@@ -180,7 +180,7 @@ export default class Profile extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-sm-12 col-md-4">
+                                        <div className="col-md-12 col-lg-4">
                                             <div className="card card-stats card-round">
                                                 <div className="card-body">
                                                     <div className="row">
@@ -199,8 +199,8 @@ export default class Profile extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-6 col-12"></div>
-                                        <div className="col-md-6 col-12">
+                                        <div className="col-lg-6 col-12"></div>
+                                        <div className="col-lg-6 col-12">
                                             <div className="card full-height">
                                                 <div className="card-header">
                                                     <h1>Comentários</h1>

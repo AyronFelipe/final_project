@@ -62,6 +62,7 @@ export default class EditProfile extends React.Component {
                 number: res.data.number,
                 name: res.data.child.name,
             });
+            this.getLoggedUser();
         })
         .catch((error) => {
             //console.log(error);
@@ -89,7 +90,6 @@ export default class EditProfile extends React.Component {
 
     componentDidMount(){
         this.getUser();
-        this.getLoggedUser();
     }
 
     changeHandler = (e) => {
