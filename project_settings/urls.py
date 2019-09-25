@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .routers import router
 from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, login, logged_user, forget_password, edit_user, edit_user_address, edit_user_password
-from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet, DestroySolicitationViewSet, SolicitationsOfDonationViewSet, AcceptSolicitation, RejectSolicitation, \
+from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet, SolicitationsOfDonationViewSet, AcceptSolicitation, RejectSolicitation, \
 CancelDonationSolicitation, NotAppearDonationSolicitation, FinalizeDonationSolicitation, edit_donation
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -24,7 +24,6 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token, name='get_auth_token'),
     path('api/logged-user/', logged_user, name='logged_user'),
     path('api/new-solicitation/', CreateSolicitationViewSet.as_view(), name='new_solicitation'),
-    path('api/delete/solicitation/', DestroySolicitationViewSet.as_view(), name='destroy_solicitation'),
     path('api/donation/<int:id>/solicitations/', SolicitationsOfDonationViewSet.as_view({'get': 'list'}), name='solicitations_of_donation'),
     path('api/donation/accepts/<int:pk>/', AcceptSolicitation.as_view(), name='accept_solicitation'),
     path('api/donation/rejects/<int:pk>/', RejectSolicitation.as_view(), name='reject_solicitation'),

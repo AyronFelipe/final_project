@@ -31,6 +31,34 @@ export default class MySolicitations extends React.Component {
         this.getSolicitations();
     }
 
+    deleteSolicitation = (pk, e) => {
+        e.preventDefault();
+        axios.delete(`/api/my-solicitations/${pk}`)
+        .then((res) => {
+            $('.fechar').click();
+            this.setState({ solicitations: res.data.solicitations })
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            });
+        })
+        .catch((error) => {
+            $('.fechar').click();
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            });
+        });
+    }
+
     renderMySolicitations = () => {
         if (this.state.solicitations.length == 0) {
             return(
@@ -45,7 +73,7 @@ export default class MySolicitations extends React.Component {
         } else {
             return(
                 <div className="row justify-content-center">
-                    <div className="col-md-10 col-12">
+                    <div className="col-lg-10 col-12">
                         <div className="card">
                             <div className="card-header">
                                 <div className="card-head-row">
@@ -66,10 +94,47 @@ export default class MySolicitations extends React.Component {
                                         <tbody>
                                             {this.state.solicitations.map((solicitation) => 
                                                 <tr key={solicitation.pk}>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td>{ solicitation.slug }</td>
+                                                    <td>
+                                                        <Link to={`/donations/donation/${solicitation.donation.slug}/`} style={{ textDecoration: 'none' }}>
+                                                            <span>{ solicitation.donation.slug }</span>
+                                                        </Link>
+                                                    </td>
+                                                    <td>
+                                                        <span>{ solicitation.comment }</span>
+                                                    </td>
+                                                    <td>
+                                                        <p className="demo mt-3">
+                                                            <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-delete-solicitation-${solicitation.pk}`}><i className="fas fa-trash-alt mr-1"></i> Apagar</button>
+                                                        </p>
+                                                        <div className="modal fade" id={`modal-delete-solicitation-${solicitation.pk}`}>
+                                                            <div className="modal-dialog">
+                                                                <div className="modal-content">
+                                                                    <form onSubmit={this.handleSubmit} method="POST">
+                                                                        <div className="modal-header">
+                                                                            <h5 className="modal-title">Solicitar esta doação</h5>
+                                                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div className="modal-body">
+                                                                            <div className="row">
+                                                                                <div className="col-12">
+                                                                                    <div className="alert alert-danger" role="alert">
+                                                                                        Ao clicar em "Apagar", você estará deletando os registros dessa solicitação de nossos servidores e esta ação é irreversível.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="modal-footer">
+                                                                            <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                            <button type="submit" className="btn btn-danger" onClick={(e) => this.deleteSolicitation(solicitation.pk, e)}>Apagar</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             )}
                                         </tbody>

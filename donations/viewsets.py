@@ -203,21 +203,22 @@ class MySolicitationsViewSet(viewsets.ViewSet):
         serializer = SolicitationSerializer(solicitation)
         return Response(serializer.data)
 
+    def destroy(self, request, pk=None):
 
-class DestroySolicitationViewSet(APIView):
-    '''
-    Delete de uma solicitação
-    '''
-    permission_classes = (permissions.IsAuthenticated,)
-    
-    def post(self, request):
-        solicitation = Solicitation.objects.get(id=request.POST.get('pk'))
+        data = {}
+        solicitation = Solicitation.objects.get(id=10)
         if solicitation:
             solicitation.delete()
-            data = {}
-            data['is_valid'] = True
+            queryset = Solicitation.objects.filter(owner=request.user)
+            for obj in queryset:
+                obj.update_status()
+                list_solicitations.append(obj)
+            serializer = SolicitationSerializer(list_solicitations, many=True)
+            data['message'] = 'Solicitação deletada com sucesso!'
+            data['solicitations'] = serializer.data
             return Response(data, status=status.HTTP_200_OK,)
-        return Response(status=status.HTTP_400_BAD_REQUEST,)
+        data['message'] = 'Solicitação não encontrada'
+        return Response(data, status=status.HTTP_400_BAD_REQUEST,)
 
 
 class SolicitationsOfDonationViewSet(viewsets.ViewSet):
