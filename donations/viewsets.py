@@ -148,12 +148,16 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
         if serializer.is_valid():
             solicitation = Solicitation()
             with transaction.atomic():
+                data = {}
                 solicitation.owner = request.user
                 solicitation.donation = Donation.objects.get(id=request.POST.get('donation'))
                 if request.POST.get('comment') == '':
-                    solicitation.comment = 'O solicitante não deixou nenhum comentário'
+                    solicitation.comment = 'Nenhum comentário'
                 else:
                     solicitation.comment = request.POST.get('comment')
+                if solicitation.donation.status != Donation.ACTIVE:
+                    data['message'] = 'Esta doação não pode ser solicitada.'
+                    return Response(data, status=status.HTTP_403_FORBIDDEN)
                 solicitation.save()
                 donation = Donation.objects.get(id=request.POST.get('donation'))
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
@@ -167,7 +171,6 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 context['donation'] = donation
                 context['solicitation'] = solicitation
                 send_mail_template(subject, "emails/notification_solicitation_email.html", context, [donation.donator.email])
-                data = {}
                 data['message'] = 'Solicitação feita com sucesso!'
                 return Response(data, status=status.HTTP_201_CREATED,)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -190,41 +193,57 @@ class MySolicitationsViewSet(viewsets.ViewSet):
 
     def list(self, request):
         list_solicitations = []
-        queryset = Solicitation.objects.filter(owner=request.user)
-        for obj in queryset:
-            obj.update_status()
-            list_solicitations.append(obj)
-        serializer = SolicitationSerializer(list_solicitations, many=True)
-        return Response(serializer.data)
-
-    def retrieve(self, request, pk=None):
-        queryset = Solicitation.objects.filter(owner=request.user)
-        solicitation = get_object_or_404(queryset, pk=pk)
-        serializer = SolicitationSerializer(solicitation)
-        return Response(serializer.data)
-
-    def destroy(self, request, pk=None):
-
-        data = {}
-        solicitation = Solicitation.objects.get(id=10)
-        if solicitation:
-            solicitation.delete()
+        if request.user.is_authenticated:
             queryset = Solicitation.objects.filter(owner=request.user)
             for obj in queryset:
                 obj.update_status()
                 list_solicitations.append(obj)
             serializer = SolicitationSerializer(list_solicitations, many=True)
-            data['message'] = 'Solicitação deletada com sucesso!'
-            data['solicitations'] = serializer.data
-            return Response(data, status=status.HTTP_200_OK,)
-        data['message'] = 'Solicitação não encontrada'
-        return Response(data, status=status.HTTP_400_BAD_REQUEST,)
+            return Response(serializer.data)
+        data = {}
+        data['message'] = 'Usuário não autenticado'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
+
+    def retrieve(self, request, pk=None):
+        if request.user.is_authenticated:
+            queryset = Solicitation.objects.filter(owner=request.user)
+            solicitation = get_object_or_404(queryset, pk=pk)
+            serializer = SolicitationSerializer(solicitation)
+            return Response(serializer.data)
+        data = {}
+        data['message'] = 'Usuário não autenticado'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
+
+    def destroy(self, request, pk=None):
+
+        data = {}
+        with transaction.atomic():
+            if request.user.is_authenticated:
+                solicitation = Solicitation.objects.filter(id=pk)
+                if solicitation:
+                    if solicitation.last().owner != request.user:
+                        data['message'] = 'Tentando apagar as solicitações dos outros, né!'
+                        return Response(data, status=status.HTTP_400_BAD_REQUEST,)
+                    solicitation.last().delete()
+                    queryset = Solicitation.objects.filter(owner=request.user)
+                    list_solicitations = []
+                    for obj in queryset:
+                        obj.update_status()
+                        list_solicitations.append(obj)
+                    serializer = SolicitationSerializer(list_solicitations, many=True)
+                    data['message'] = 'Solicitação deletada com sucesso!'
+                    data['solicitations'] = serializer.data
+                    return Response(data, status=status.HTTP_200_OK,)
+                data['message'] = 'Solicitação não encontrada'
+                return Response(data, status=status.HTTP_400_BAD_REQUEST,)
+            data['message'] = 'Usuário não autenticado'
+            return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
 
 
 class SolicitationsOfDonationViewSet(viewsets.ViewSet):
     '''
     Criando um endpoint no qual se passa o ID de uma doação e todas as solicitações da supra dita doação são retornadas.
-    Fazendo isso porque o serializers não funciona. ¬¬
+    Fazendo isso porque o serializers não funcionam. ¬¬
     '''
 
     def list(self, request, id=None):

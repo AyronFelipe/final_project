@@ -33,10 +33,10 @@ export default class MySolicitations extends React.Component {
 
     deleteSolicitation = (pk, e) => {
         e.preventDefault();
-        axios.delete(`/api/my-solicitations/${pk}`)
+        axios.delete(`/api/my-solicitations/${pk}`, config)
         .then((res) => {
             $('.fechar').click();
-            this.setState({ solicitations: res.data.solicitations })
+            this.setState({ solicitations: res.data.solicitations });
             swal(res.data.message, {
                 icon: "success",
                 buttons: {

@@ -79,7 +79,15 @@ export default class DetailDonation extends React.Component{
             });
         })
         .catch((error) => {
-            console.log(error);
+            $('.fechar').click();
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            })
         })
     }
 
@@ -137,7 +145,15 @@ export default class DetailDonation extends React.Component{
                                                             this.state.donation.donator_pk == this.state.user.pk ?
                                                                 null
                                                             :
-                                                                <button type="button" className="btn btn-info ml-auto" data-toggle="modal" data-target="#modal-solicitation">Solicitar Doação</button>
+                                                                <React.Fragment>
+                                                                    {
+                                                                        this.state.donation.status == 'Ativa' ?
+                                                                            <button type="button" className="btn btn-info ml-auto" data-toggle="modal" data-target="#modal-solicitation">Solicitar Doação</button>
+                                                                        :
+                                                                            <button type="button" className="btn btn-danger ml-auto">Doação não pode ser solicitada</button>
+    
+                                                                    }
+                                                                </React.Fragment>
                                                         }
                                                     </React.Fragment>
                                                     :
@@ -217,9 +233,15 @@ export default class DetailDonation extends React.Component{
                                                         this.state.donation.donator_pk == this.state.user.pk ?
                                                             null
                                                             :
-                                                            <div className="text-right mt-3 mb-3">
-                                                                <button type="button" className="btn btn-info btn-block" data-toggle="modal" data-target="#modal-solicitation">Solicitar doação</button>
-                                                            </div>
+                                                            this.state.donation.status == "Ativa" ?
+                                                                <div className="text-right mt-3 mb-3">
+                                                                    <button type="button" className="btn btn-info btn-block" data-toggle="modal" data-target="#modal-solicitation">Solicitar doação</button>
+                                                                </div>
+                                                            :
+                                                                <div className="text-right mt-3 mb-3">
+                                                                    <button type="button" className="btn btn-danger btn-block">Doação não pode ser solicitada</button>
+                                                                </div>
+
                                                     }
                                                 </React.Fragment>
                                                 :
