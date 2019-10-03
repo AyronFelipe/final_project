@@ -33,6 +33,34 @@ export default class MyDonations extends React.Component {
         this.getDonations();
     }
 
+    deleteDonation = (pk, e) => {
+        e.preventDefault();
+        axios.delete(`/api/my-donations/${pk}/`, config)
+        .then((res) => {
+            $('.fechar').click();
+            this.setState({ donations: res.data.donations });
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            });
+        })
+        .catch((error) => {
+            $('.fechar').click();
+            swal(error.reponse.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            });
+        })
+    }
+
     renderMyDonations = () => {
         if (this.state.donations.length == 0) {
             return(
@@ -88,14 +116,41 @@ export default class MyDonations extends React.Component {
                                                             <Link to={`/donations/donation/${donation.slug}/` } style={{ textDecoration: 'none' }}>
                                                                 <button className="btn btn-default ml-2 my-1 btn-block"><i className="fas fa-info-circle"></i> Detalhe</button>
                                                             </Link>
-                                                            <Link to={`` } style={{ textDecoration: 'none' }}>
+                                                            <Link to={``} style={{ textDecoration: 'none' }}>
                                                                 <button className="btn btn-primary ml-2 my-1 btn-block"><i className="fas fa-handshake mr-1"></i> Solicitações</button>
                                                             </Link>
-                                                            <button className="btn btn-danger ml-2 my-1 btn-block"><i className="fas fa-trash-alt mr-1"></i> Apagar</button>
+                                                            <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-delete-donation-${donation.pk}`}><i className="fas fa-trash-alt mr-1"></i> Apagar</button>
                                                             <Link to={`/donations/donation/edit/${donation.slug}/`} style={{ textDecoration: 'none' }}>
                                                                 <button className="btn btn-info ml-2 my-1 btn-block"><i className="fas fa-pen mr-1"></i>Editar</button>
                                                             </Link>
                                                         </p>
+                                                        <div className="modal fade" id={`modal-delete-donation-${donation.pk}`}>
+                                                            <div className="modal-dialog">
+                                                                <div className="modal-content">
+                                                                    <form onSubmit={this.handleSubmit} method="POST">
+                                                                        <div className="modal-header">
+                                                                            <h5 className="modal-title">Deletar esta doação</h5>
+                                                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div className="modal-body">
+                                                                            <div className="row">
+                                                                                <div className="col-12">
+                                                                                    <div className="alert alert-danger" role="alert">
+                                                                                        Ao clicar em "Apagar", você estará deletando os registros dessa doação de nossos servidores e esta ação é irreversível.
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="modal-footer">
+                                                                            <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                            <button type="submit" className="btn btn-danger" onClick={(e) => this.deleteDonation(donation.pk, e)}>Apagar</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ) }

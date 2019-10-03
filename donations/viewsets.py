@@ -128,10 +128,24 @@ class MyDonationsViewSet(viewsets.ViewSet):
         return Response(serializer.data)
     
     def destroy(self, request, pk=None):
-        donation = Donation.objects.get(pk=pk)
-        donation.delete()
-        serializer = DonationSerializer(donation)
-        return Response(serializer.data)
+        data = {}
+        if request.user.is_authenticated:
+            donation = Donation.objects.filter(pk=pk)
+            if donation:
+                donation.last().delete()
+                list_donations = []
+                queryset = Donation.objects.filter(donator=request.user)
+                for obj in queryset:
+                    obj.update_status()
+                    list_donations.append(obj)
+                serializer = DonationSerializer(list_donations, many=True)
+                data['message'] = 'Doação deletada com sucesso!'
+                data['donations'] = serializer.data
+                return Response(data, status=status.HTTP_200_OK)
+            data['message'] = 'Doação não encontrada!'
+            return Response(data, status=status.HTTP_404_NOT_FOUND)
+        data['message'] = 'Usuário não autenticado!'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class CreateSolicitationViewSet(generics.CreateAPIView):

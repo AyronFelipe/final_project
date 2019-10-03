@@ -84,6 +84,11 @@ export default class MySolicitations extends React.Component {
         })
     }
 
+    changePage = (path) => {
+        $('.fechar').click();
+        this.props.history.push(path);
+    }
+
     renderMySolicitations = () => {
         if (this.state.solicitations.length == 0) {
             return(
@@ -150,7 +155,7 @@ export default class MySolicitations extends React.Component {
                                                                 <div className="modal-content">
                                                                     <form onSubmit={this.handleSubmit} method="POST">
                                                                         <div className="modal-header">
-                                                                            <h5 className="modal-title">Solicitar esta doação</h5>
+                                                                            <h5 className="modal-title">Deletar esta solicitação</h5>
                                                                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                                                 <span aria-hidden="true">&times;</span>
                                                                             </button>
@@ -197,9 +202,7 @@ export default class MySolicitations extends React.Component {
                                                                                     <span><strong>Doação: </strong>{ solicitation.donation.slug }</span><br/>
                                                                                     <span><strong>Validade: </strong>{ unformatDate2(solicitation.donation.validity) } até às { solicitation.donation.validity_hour }</span><br/>
                                                                                     <span><strong>Status: </strong>{ solicitation.donation.status }</span><br/><br/>
-                                                                                    <Link to={`/donations/donation/${solicitation.donation.slug}/`}>
-                                                                                        <button type="button" className="btn btn-info">Ver doação</button>
-                                                                                    </Link>
+                                                                                    <button type="button" className="btn btn-info" onClick={() => this.changePage(`/donations/donation/${solicitation.donation.slug}/`)}>Ver doação</button>
                                                                                 </p>
                                                                                 <div className="separator-dashed"></div>
                                                                                 <h3>Dono da Doação</h3>
@@ -210,9 +213,7 @@ export default class MySolicitations extends React.Component {
                                                                                         <p className="demo-3">
                                                                                             <span><strong>Nome: </strong>{ this.state.owner.child.first_name } { this.state.owner.child.last_name } { this.state.owner.child.name }</span><br/>
                                                                                             <span><strong>Email: </strong>{ this.state.owner.email }</span><br/><br/>
-                                                                                            <Link to={`/accounts/profile/${this.state.owner.username}/`}>
-                                                                                                <button type="button" className="btn btn-info">Ver perfil</button>
-                                                                                            </Link>
+                                                                                            <button type="button" className="btn btn-info" onClick={() => this.changePage(`/accounts/profile/${this.state.owner.username}/`)}>Ver perfil</button>
                                                                                         </p>
                                                                                 }
                                                                             </div>
