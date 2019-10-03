@@ -252,7 +252,8 @@ export default class EditProfile extends React.Component {
                                     </li>
                                     <li className="nav-item">
                                         <Link to={`/accounts/profile/${this.state.user.username}/`}>
-                                            <span className="text-white">Perfil de { this.state.user.child != undefined ? this.state.user.child.first_name : <div className="loader loader-lg"></div> }</span>
+                                            <span className="text-white">
+                                                Perfil de { this.state.user.child != undefined ? <React.Fragment>{ this.state.user.child.first_name || this.state.user.child.name}</React.Fragment> : <div className="loader loader-lg"></div> }</span>
                                         </Link>
                                     </li>
                                     <li className="separator">
@@ -454,7 +455,7 @@ export default class EditProfile extends React.Component {
                                                             :
                                                                 <React.Fragment>
                                                                     <div className="name">
-                                                                        { this.state.user.child.first_name } { this.state.user.child.last_name }
+                                                                        { <React.Fragment>{ this.state.user.child.first_name } { this.state.user.child.last_name } {this.state.user.child.name}</React.Fragment> }
                                                                     </div>
                                                                     <div className="job">{ this.state.user.email }</div>
                                                                     <div className="desc">{ this.state.user.cell_phone }</div>

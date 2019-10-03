@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Preloader from './preloader';
+import { unformatDate2 } from './utils';
 
 let config = {
     headers: { 'Authorization': `Token ${localStorage.token}` }
@@ -14,6 +15,8 @@ export default class MySolicitations extends React.Component {
         this.state = {
             solicitations: [],
             isLoading: true,
+            owner: [],
+            isLoadingOwner: true,
         }
     }
 
@@ -59,6 +62,28 @@ export default class MySolicitations extends React.Component {
         });
     }
 
+    showDetail = (pk, e) => {
+        $(`.show_modal_${pk}`).click();
+        this.state.solicitations.map((solicitation) => {
+            if (solicitation.pk == pk) {
+                axios.get(`/api/users/${solicitation.donation.donator_pk}`, config)
+                .then((res) => {
+                    this.setState({ owner: res.data, isLoadingOwner: false });
+                })
+                .catch((error) => {
+                    swal(error.reponse.data.detail, {
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-danger'
+                            }
+                        },
+                    });
+                })
+            }
+        })
+    }
+
     renderMySolicitations = () => {
         if (this.state.solicitations.length == 0) {
             return(
@@ -87,7 +112,9 @@ export default class MySolicitations extends React.Component {
                                             <tr>
                                                 <th>Solicitação</th>
                                                 <th>Doação</th>
+                                                <th>Status</th>
                                                 <th>Comentário</th>
+                                                <th>Validade</th>
                                                 <th>Ações</th>
                                             </tr>
                                         </thead>
@@ -97,14 +124,25 @@ export default class MySolicitations extends React.Component {
                                                     <td>{ solicitation.slug }</td>
                                                     <td>
                                                         <Link to={`/donations/donation/${solicitation.donation.slug}/`} style={{ textDecoration: 'none' }}>
-                                                            <span>{ solicitation.donation.slug }</span>
+                                                            <span>{ solicitation.donation.slug } - { solicitation.donation.status }</span>
                                                         </Link>
                                                     </td>
+                                                    <td>{ solicitation.status }</td>
                                                     <td>
                                                         <span>{ solicitation.comment }</span>
                                                     </td>
                                                     <td>
+                                                        {
+                                                            solicitation.validity == null ?
+                                                                <span className="text-muted">O dono da doação ainda não informou a validade</span>
+                                                            :
+                                                                <span>{unformatDate2(`${donation.validity}`)} até às { donation.validity_hour }</span>
+                                                        }
+                                                    </td>
+                                                    <td>
                                                         <p className="demo mt-3">
+                                                            <button className="btn btn-default ml-2 my-1 btn-block" onClick={(e) => this.showDetail(solicitation.pk)}><i className="fas fa-info-circle mr-1"></i> Detalhe</button>
+                                                            <button data-toggle="modal" data-target={`#modal-detail-solicitation-${solicitation.pk}`} className={`show_modal_${solicitation.pk}`} hidden></button>
                                                             <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-delete-solicitation-${solicitation.pk}`}><i className="fas fa-trash-alt mr-1"></i> Apagar</button>
                                                         </p>
                                                         <div className="modal fade" id={`modal-delete-solicitation-${solicitation.pk}`}>
@@ -131,6 +169,58 @@ export default class MySolicitations extends React.Component {
                                                                             <button type="submit" className="btn btn-danger" onClick={(e) => this.deleteSolicitation(solicitation.pk, e)}>Apagar</button>
                                                                         </div>
                                                                     </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="modal fade" id={`modal-detail-solicitation-${solicitation.pk}`}>
+                                                            <div className="modal-dialog">
+                                                                <div className="modal-content">
+                                                                    <div className="modal-header">
+                                                                        <h5 className="modal-title">Detalhes da solicitação { solicitation.slug }</h5>
+                                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="modal-body">
+                                                                        <div className="row">
+                                                                            <div className="col-12">
+                                                                                <h3>Solicitação</h3>
+                                                                                <p className="demo-3">
+                                                                                    <span><strong>Slug: </strong>{ solicitation.slug }</span><br/>
+                                                                                    <span><strong>Comentário: </strong>{ solicitation.comment }</span><br/>
+                                                                                    <span><strong>Status: </strong>{ solicitation.status }</span><br/>
+                                                                                    <span><strong>Validade: </strong>{ solicitation.validity }</span>
+                                                                                </p>
+                                                                                <div className="separator-dashed"></div>
+                                                                                <h3>Doação</h3>
+                                                                                <p className="demo-3">
+                                                                                    <span><strong>Doação: </strong>{ solicitation.donation.slug }</span><br/>
+                                                                                    <span><strong>Validade: </strong>{ unformatDate2(solicitation.donation.validity) } até às { solicitation.donation.validity_hour }</span><br/>
+                                                                                    <span><strong>Status: </strong>{ solicitation.donation.status }</span><br/><br/>
+                                                                                    <Link to={`/donations/donation/${solicitation.donation.slug}/`}>
+                                                                                        <button type="button" className="btn btn-info">Ver doação</button>
+                                                                                    </Link>
+                                                                                </p>
+                                                                                <div className="separator-dashed"></div>
+                                                                                <h3>Dono da Doação</h3>
+                                                                                {
+                                                                                    this.state.isLoadingOwner?
+                                                                                        <Preloader />
+                                                                                    :
+                                                                                        <p className="demo-3">
+                                                                                            <span><strong>Nome: </strong>{ this.state.owner.child.first_name } { this.state.owner.child.last_name } { this.state.owner.child.name }</span><br/>
+                                                                                            <span><strong>Email: </strong>{ this.state.owner.email }</span><br/><br/>
+                                                                                            <Link to={`/accounts/profile/${this.state.owner.username}/`}>
+                                                                                                <button type="button" className="btn btn-info">Ver perfil</button>
+                                                                                            </Link>
+                                                                                        </p>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="modal-footer">
+                                                                        <button type="button" className="fechar btn btn-primary" data-dismiss="modal">Fechar</button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
