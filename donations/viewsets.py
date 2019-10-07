@@ -261,13 +261,18 @@ class SolicitationsOfDonationViewSet(viewsets.ViewSet):
     '''
 
     def list(self, request, id=None):
-        list_solicitations = []
-        queryset = Solicitation.objects.filter(donation__id=id)
-        for obj in queryset:
-            obj.update_status()
-            list_solicitations.append(obj)
-        serializer = SolicitationSerializer(list_solicitations, many=True)
-        return Response(serializer.data)
+        data = {}
+        if request.user.is_authenticated:
+            list_solicitations = []
+            queryset = Solicitation.objects.filter(donation__id=id)
+            for obj in queryset:
+                obj.update_status()
+                list_solicitations.append(obj)
+            serializer = SolicitationSerializer(list_solicitations, many=True)
+            data['solicitations'] = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
+        data['message'] = 'Usuário não autenticado'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
 
 
 class AcceptSolicitation(APIView):
@@ -364,6 +369,8 @@ class RejectSolicitation(APIView):
 
 class CancelDonationSolicitation(APIView):
 
+    permission_classes = (permissions.IsAuthenticated,)
+
     def post(self, request, pk=None):
         solicitation = Solicitation.objects.get(pk=pk)
         with transaction.atomic():
@@ -390,6 +397,8 @@ class CancelDonationSolicitation(APIView):
 
 
 class NotAppearDonationSolicitation(APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, pk=None):
         solicitation = Solicitation.objects.get(pk=pk)
@@ -422,6 +431,8 @@ class NotAppearDonationSolicitation(APIView):
 
 
 class FinalizeDonationSolicitation(APIView):
+
+    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, pk=None):
         solicitation = Solicitation.objects.get(pk=pk)
@@ -461,52 +472,55 @@ def edit_donation(request, pk):
 
     data = {}
     donation = Donation.objects.get(pk=pk)
-    if request.user.pk != donation.donator.pk:
-        data['message'] = 'Tentando hackear os endpoints, né!'
-    else:
-        with transaction.atomic():
-            name = request.POST.get('name', None)
-            description = request.POST.get('description', None)
-            if name:
-                donation.name = name
-            if description:
-                donation.description = description
-            for tag in request.POST.getlist('tags'):
-                current_tag, created = Tag.objects.get_or_create(name=tag)
-                DonationTags.objects.get_or_create(donation=donation, tag=current_tag)
-            validity = request.POST.get('validity', None)
-            if validity:
-                donation.validity = validity
-            validity_hour = request.POST.get('validity_hour', None)
-            if validity_hour:
-                donation.validity_hour = validity_hour
-            cep = request.POST.get('cep', None)
-            if cep:
-                donation.cep = cep
-            street = request.POST.get('street', None)
-            if street:
-                donation.street = street
-            neighborhood = request.POST.get('neighborhood', None)
-            if neighborhood:
-                donation.neighborhood = neighborhood
-            city = request.POST.get('city', None)
-            if city:
-                donation.city = city
-            uf = request.POST.get('uf', None)
-            if uf:
-                donation.uf = uf
-            number = request.POST.get('number', None)
-            if number:
-                donation.number = number
-            combined_time_donation = datetime.combine(datetime.strptime(donation.validity, '%Y-%m-%d'), donation.validity_hour)
-            if combined_time_donation > datetime.today():
-                donation.status = Donation.ACTIVE
-                data['message'] = 'Informações alteradas com sucesso!'
-                data['detail'] = 'Notamos que você alterou a data de validade, portanto sua doação passa para o status de Ativa novamente e estará disponível para outros usuários solicitarem.'
-            else:
-                data['message'] = 'Informações alteradas com sucesso!'
-                data['detail'] = 'Obrigado por usar o Alimentaí'
-            donation.save()
-            return Response(data, status=status.HTTP_201_CREATED)
+    if request.user.is_authenticated:
+        if request.user.pk != donation.donator.pk:
+            data['message'] = 'Tentando hackear os endpoints, né!'
+        else:
+            with transaction.atomic():
+                name = request.POST.get('name', None)
+                description = request.POST.get('description', None)
+                if name:
+                    donation.name = name
+                if description:
+                    donation.description = description
+                for tag in request.POST.getlist('tags'):
+                    current_tag, created = Tag.objects.get_or_create(name=tag)
+                    DonationTags.objects.get_or_create(donation=donation, tag=current_tag)
+                validity = request.POST.get('validity', None)
+                if validity:
+                    donation.validity = validity
+                validity_hour = request.POST.get('validity_hour', None)
+                if validity_hour:
+                    donation.validity_hour = validity_hour
+                cep = request.POST.get('cep', None)
+                if cep:
+                    donation.cep = cep
+                street = request.POST.get('street', None)
+                if street:
+                    donation.street = street
+                neighborhood = request.POST.get('neighborhood', None)
+                if neighborhood:
+                    donation.neighborhood = neighborhood
+                city = request.POST.get('city', None)
+                if city:
+                    donation.city = city
+                uf = request.POST.get('uf', None)
+                if uf:
+                    donation.uf = uf
+                number = request.POST.get('number', None)
+                if number:
+                    donation.number = number
+                combined_time_donation = datetime.combine(datetime.strptime(donation.validity, '%Y-%m-%d'), donation.validity_hour)
+                if combined_time_donation > datetime.today():
+                    donation.status = Donation.ACTIVE
+                    data['message'] = 'Informações alteradas com sucesso!'
+                    data['detail'] = 'Notamos que você alterou a data de validade, portanto sua doação passa para o status de Ativa novamente e estará disponível para outros usuários solicitarem.'
+                else:
+                    data['message'] = 'Informações alteradas com sucesso!'
+                    data['detail'] = 'Obrigado por usar o Alimentaí'
+                donation.save()
+                return Response(data, status=status.HTTP_201_CREATED)
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+    data['message'] = 'Usuário não autenticado!'
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
