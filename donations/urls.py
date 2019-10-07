@@ -9,6 +9,6 @@ urlpatterns = [
     path('donation/edit/<slug>/', views.donation_edit, name='donation_edit'),
     path('my-solicitations/', views.my_solicitations, name='my_solicitations'),
     path('my-donations/', views.my_donations, name='my_donations'),
-    path('<slug>/solicitations/', views.solicitations_donation, name='solicitations_donation')
+    path('donation/<slug>/solicitations/', views.solicitations_donation, name='solicitations_donation')
 ]
 

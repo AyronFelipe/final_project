@@ -14,6 +14,7 @@ import ProfileEdit from './edit_profile';
 import MyDonations from './my_donations';
 import EditDonation from './edit_donation';
 import MySolicitations from './my_solicitations';
+import SolicitationsOfDonations from './solicitations_of_donations';
 
 class Home extends React.Component{
 
@@ -40,6 +41,7 @@ class Home extends React.Component{
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/accounts/profile/edit/:username/" component={ProfileEdit} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/my-donations/" component={MyDonations} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/my-solicitations/" component={MySolicitations} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/donation/:slug/solicitations" component={SolicitationsOfDonations} />
                     </div>
                 </div>
             </BrowserRouter>
