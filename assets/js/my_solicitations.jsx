@@ -103,7 +103,7 @@ export default class MySolicitations extends React.Component {
         } else {
             return(
                 <div className="row justify-content-center">
-                    <div className="col-lg-10 col-12">
+                    <div className="col-12">
                         <div className="card">
                             <div className="card-header">
                                 <div className="card-head-row">

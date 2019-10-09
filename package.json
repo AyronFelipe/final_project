@@ -34,7 +34,6 @@
     "inputmask": "^3.3.11",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
-    "pusher-js": "^4.4.0",
     "qs": "^6.9.0",
     "react": "^16.9.0",
     "react-dnd": "^8.0.3",
@@ -52,6 +51,7 @@
     "webpack-dev-server": "^3.8.1"
   },
   "dependencies": {
-    "cloudinary-react": "^1.1.4"
+    "cloudinary-react": "^1.1.4",
+    "pusher-js": "^5.0.2"
   }
 }

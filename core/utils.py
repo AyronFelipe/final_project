@@ -47,9 +47,13 @@ def img_path(instance, filename):
     )
 
 pusher_client = pusher.Pusher(
-                    app_id=config('PUSHER_APP_ID'),
-                    key=config('PUSHER_APP_KEY'),
-                    secret=config('PUSHER_APP_SECRET'),
-                    cluster=config('PUSHER_CLUSTER'),
-                    ssl=config('PUSHER_SSL', cast=bool),
-                )
+    app_id=config('PUSHER_APP_ID'),
+    key=config('PUSHER_APP_KEY'),
+    secret=config('PUSHER_APP_SECRET'),
+    cluster=config('PUSHER_CLUSTER'),
+    ssl=config('PUSHER_SSL', cast=bool),
+)
+
+def send_push_notification(notification):
+
+    pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'type': notification.type, 'pk': notification.notified.pk })

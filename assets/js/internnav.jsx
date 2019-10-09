@@ -4,6 +4,9 @@ import axios from 'axios';
 import Preloader from './preloader';
 import Notifications from './notifications';
 import { Link } from 'react-router-dom';
+import Pusher from 'pusher-js';
+import '../template/js/plugin/bootstrap-notify/bootstrap-notify.min.js'
+
 
 export default class InternNav extends React.Component {
 
@@ -24,16 +27,52 @@ export default class InternNav extends React.Component {
         axios.get('/api/logged-user/', config)
         .then((res) => {
             this.setState({ user: res.data, isLoading: false });
+            this.initPusher(res.data.pk)
         })
         .catch((error) => {
             console.log(error.response);
         })
     }
 
-    componentDidMount = () => {
-        this.getLoggedUser();
+    initPusher = (pk) => {
+        var pusher = new Pusher('1ab67094ad1ec71707db', {
+            cluster: 'us2',
+            forceTLS: true
+        });
+          
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(data) {
+            if (pk == data.pk) {
+                $.notify({
+                    icon: 'flaticon-alarm-1',
+                    title: 'Nova notificação',
+                    message: data.message,
+                    url: data.type,
+                    target: '_blank',
+                },{
+                    type: 'info',
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right",
+                    },
+                    animate: {
+                        enter: 'animated fadeInDown',
+                        exit: 'animated fadeOutUp',
+                    }
+                });
+            }
+        });
     }
 
+    componentDidMount = () => {
+        this.getLoggedUser();
+
+        //Pusher.logToConsole = true;
+    }
+    
     render(){
         return(
             <React.Fragment>
