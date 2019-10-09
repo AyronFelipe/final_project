@@ -12,7 +12,7 @@ from core.utils import send_mail_template
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
-from core.utils import pusher_client
+from core.utils import send_push_notification
 from datetime import datetime
 from rest_framework.decorators import api_view
 
@@ -176,7 +176,7 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                 donation = Donation.objects.get(id=request.POST.get('donation'))
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
                 notification = Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner, type=Notification.MY_DONATIONS)
-                pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+                send_push_notification(notification)
                 subject = "Sua doação foi solicitada"
                 context = {}
                 context['user'] = donation.donator
@@ -320,7 +320,6 @@ class AcceptSolicitation(APIView):
 
             message = 'A sua solicitação ' + solicitation.slug + ' foi aceita pelo usuário ' + donation.donator.get_name() + '.'
             notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
-            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
             subject = "Sua solicitação foi aceita"
             context = {}
             context['user'] = solicitation.owner
