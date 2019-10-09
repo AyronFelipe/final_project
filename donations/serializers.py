@@ -72,6 +72,7 @@ class SolicitationSerializer(serializers.ModelSerializer):
     owner = serializers.SerializerMethodField()
     owner_pk = serializers.SerializerMethodField()
     owner_photo = serializers.SerializerMethodField()
+    owner_username = serializers.SerializerMethodField()
     donation = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
     donator_donation_photo = serializers.SerializerMethodField()
@@ -90,6 +91,7 @@ class SolicitationSerializer(serializers.ModelSerializer):
             'donator_donation_photo',
             'owner_pk',
             'owner_photo',
+            'owner_username',
             'created_at',
             'comment',
         ]
@@ -132,3 +134,8 @@ class SolicitationSerializer(serializers.ModelSerializer):
                 return obj.owner.photo.url
             else:
                 return '/static/images/default-user-image.png'
+
+    def get_owner_username(self, obj):
+
+        if hasattr(obj, 'owner'):
+            return obj.owner.username

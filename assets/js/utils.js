@@ -28,5 +28,9 @@ module.exports = {
     },
     unformatDate2: function(date){
         return `${date.split('-')[2]}/${date.split('-')[1]}/${date.split('-')[0]}`;
-    }
+    },
+    date: function (date) {
+        let formated = new Date(`${date}`).toISOString().split('T')[0]
+        return `${formated.split('-')[2]}/${formated.split('-')[1]}/${formated.split('-')[0]}`
+    },
 }
