@@ -41,12 +41,15 @@ class NotificationViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def update(self, request, pk=None):
-        
-        notification = Notification.objects.get(pk=pk)
-        notification.unread = False
-        notification.save()
-        serializer = NotificationSerializer(notification)
-        return Response(serializer.data)
+
+        data = {}
+        if request.user.is_authenticated:
+            notification = Notification.objects.get(pk=pk)
+            notification.unread = False
+            notification.save()
+            serializer = NotificationSerializer(notification)
+            return Response(serializer.data)
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class UnitMeasurementViewset(viewsets.ViewSet):

@@ -1,56 +1,103 @@
 import React from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Preloader from './preloader';
+
+
+const config = {
+    headers: { 'Authorization': `Token ${localStorage.token}` }
+};
 
 export default class Notifications extends React.Component{
+
+    constructor(props) {
+        super(props);
+        this.state = { 
+            notifications: [],
+            isLoading: true,
+            unread: 0,
+        }
+    }
+
+    getNotifications = () => {
+        axios.get(`/api/notifications/`, config)
+        .then((res) => {
+            this.setState({ notifications: res.data, isLoading: false });
+            this.countUnreads();
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
+    componentDidMount(){
+        this.getNotifications();
+    }
+
+    countUnreads = () => {
+        let contador = 0;
+        this.state.notifications.map((notification) => {
+            if (notification.unread) {
+                contador++;
+            }
+        });
+        this.setState({ unread: contador });
+    }
+
+    renderNotifications = () => {
+        if (this.state.isLoading) {
+            return (
+                <Preloader />
+            );
+        } else {
+            return(
+                this.state.notifications.map((notification) =>{
+                    return(
+                        <Link to={`${notification.type}`} key={notification.pk}>
+                            <div className="notif-img">
+                                <img src={notification.sender} alt="Img Profile" height={'40px'} width={'40px'} />
+                            </div>
+                            <div className="notif-content">
+                                <span className="block">{ notification.message }</span>
+                                <span className="time">{ notification.naturaltime }</span>
+                            </div>
+                        </Link>
+                    );
+                })
+            )
+        }
+    }
+
+    handleClick = () => {
+        this.state.notifications.map((notification) => {
+            axios.put(`/api/notifications/${notification.pk}`, config)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        })
+    }
 
     render(){
         return(
             <React.Fragment>
-                <a className="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a className="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={this.handleClick}>
                     <i className="fa fa-bell"></i>
-                    <span className="notification">4</span>
+                    <span className="notification">{ this.state.unread > 10 ? <span>9+</span> : this.state.unread }</span>
                 </a>
-                <ul className="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                <ul className="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown" style={{ width: '480px' }}>
                     <li>
-                        <div className="dropdown-title">You have 4 new notification</div>
+                        <div className="dropdown-title">Você possui {this.state.unread} novas notificações</div>
                     </li>
+
                     <li>
                         <div className="notif-scroll scrollbar-outer">
                             <div className="notif-center">
-                                <a href="#">
-                                    <div className="notif-icon notif-primary"> <i className="fa fa-user-plus"></i> </div>
-                                    <div className="notif-content">
-                                        <span className="block">New user registered</span>
-                                        <span className="time">5 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div className="notif-icon notif-success"> <i className="fa fa-comment"></i> </div>
-                                    <div className="notif-content">
-                                        <span className="block">Rahmad commented on Admin</span>
-                                        <span className="time">12 minutes ago</span>
-                                    </div>
-                                </a>
-                                <a href="#">
-                                    <div className="notif-img">
-                                        <img src="https://via.placeholder.com/50x50" alt="Img Profile" />
-                                    </div>
-                                        <div className="notif-content">
-                                            <span className="block">Reza send messages to you</span>
-                                            <span className="time">12 minutes ago</span>
-                                        </div>
-                                </a>
-                                <a href="#">
-                                    <div className="notif-icon notif-danger"> <i className="fa fa-heart"></i> </div>
-                                    <div className="notif-content">
-                                        <span className="block">Farrah liked Admin</span>
-                                        <span className="time">17 minutes ago</span>
-                                    </div>
-                                </a>
+                                { this.renderNotifications() }
                             </div>
                         </div>
-                    </li>
-                    <li>
-                        <a className="see-all" href="#">See all notifications<i className="fa fa-angle-right"></i> </a>
                     </li>
                 </ul>
             </React.Fragment>

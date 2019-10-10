@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Photo, Tag, Notification, UnitMeasurement, Comment
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
 class PhotoSerializer(serializers.ModelSerializer):
@@ -32,6 +33,7 @@ class TagSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
 
     sender = serializers.SerializerMethodField()
+    naturaltime = serializers.SerializerMethodField()
 
     class Meta:
         model = Notification
@@ -42,12 +44,21 @@ class NotificationSerializer(serializers.ModelSerializer):
             'created_at',
             'type',
             'unread',
+            'naturaltime',
         ]
 
     def get_sender(self, obj):
 
         if hasattr(obj, 'sender'):
-            return obj.sender.photo.url
+            if obj.sender.photo:
+                return obj.sender.photo.url
+            else:
+                return '/static/images/default-user-image.png'
+    
+    def get_naturaltime(self, obj):
+
+        return naturaltime(obj.created_at)
+
 
 
 class UnitMeasurementSerializer(serializers.ModelSerializer):
