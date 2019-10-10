@@ -96,10 +96,8 @@ export default class SolicitationsOfDonations extends React.Component {
                             </td>
                             <td>
                                 <p className="demo mt-3">
-                                    <button className="btn btn-default ml-2 my-1 btn-block"><i className="fas fa-info-circle"></i> Detalhe</button>
-                                    <button className="btn btn-primary ml-2 my-1 btn-block"><i className="fas fa-handshake mr-1"></i> Solicitações</button>
-                                    <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-delete-donation-${donation.pk}`}><i className="fas fa-trash-alt mr-1"></i> Apagar</button>
-                                    <button className="btn btn-info ml-2 my-1 btn-block"><i className="fas fa-pen mr-1"></i>Editar</button>
+                                    <button className="btn btn-primary btn-block"><i className="fas fa-check mr-1"></i> Aceitar</button>
+                                    <button className="btn btn-danger btn-block"><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
                                 </p>
                             </td>
                         </tr>
