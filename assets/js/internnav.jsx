@@ -8,11 +8,16 @@ import Pusher from 'pusher-js';
 import '../template/js/plugin/bootstrap-notify/bootstrap-notify.min.js'
 
 
+let config = {
+    headers: { 'Authorization': `Token ${localStorage.token}` }
+};
+
 export default class InternNav extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = { user: [], isLoading: true };
+        this.state = { user: [], isLoading: true, notifications: [] };
+        this.child = React.createRef();
     }
 
     log_out = () => {
@@ -21,12 +26,10 @@ export default class InternNav extends React.Component {
     }
 
     getLoggedUser = () => {
-        let config = {
-            headers: { 'Authorization': `Token ${localStorage.token}` }
-        };
         axios.get('/api/logged-user/', config)
         .then((res) => {
             this.setState({ user: res.data, isLoading: false });
+            this.getNotifications();
             this.initPusher(res.data.pk)
         })
         .catch((error) => {
@@ -41,7 +44,7 @@ export default class InternNav extends React.Component {
         });
           
         var channel = pusher.subscribe('my-channel');
-        channel.bind('my-event', function(data) {
+       channel.bind('my-event', (data) => {
             if (pk == data.pk) {
                 $.notify({
                     icon: 'flaticon-alarm-1',
@@ -63,8 +66,20 @@ export default class InternNav extends React.Component {
                         exit: 'animated fadeOutUp',
                     }
                 });
+                this.getNotifications();
             }
         });
+    }
+
+    getNotifications = () => {
+        axios.get(`/api/notifications/`, config)
+        .then((res) => {
+            this.setState({ notifications: res.data });
+            this.child.current.countUnreads();
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     componentDidMount = () => {
@@ -96,7 +111,12 @@ export default class InternNav extends React.Component {
                     <div className="container-fluid">
                         <ul className="navbar-nav topbar-nav ml-md-auto align-items-center">
                             <li className="nav-item dropdown hidden-caret">
-                                <Notifications />
+                                {
+                                    this.state.isLoading ?
+                                    <Preloader />
+                                    :
+                                    <Notifications notifications={this.state.notifications} ref={this.child} />
+                                }
                             </li>
                             <li className="nav-item dropdown hidden-caret">
                                 {

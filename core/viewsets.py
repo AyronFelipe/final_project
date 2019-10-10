@@ -3,6 +3,8 @@ from .models import Tag, Notification, UnitMeasurement, Comment
 from .serializers import TagSerializer, NotificationSerializer, UnitMeasurementSerializer, CommentSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework import status
+from django.db import transaction
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -34,7 +36,7 @@ class NotificationViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        
+
         queryset = Notification.objects.filter(notified=request.user)
         notification = get_object_or_404(queryset, pk=pk)
         serializer = NotificationSerializer(notification)
@@ -44,12 +46,17 @@ class NotificationViewSet(viewsets.ViewSet):
 
         data = {}
         if request.user.is_authenticated:
-            notification = Notification.objects.get(pk=pk)
-            notification.unread = False
-            notification.save()
-            serializer = NotificationSerializer(notification)
-            return Response(serializer.data)
-        return Response(data, status=status.HTTP_200_OK)
+            try:
+                notification = Notification.objects.get(pk=pk)
+            except:
+                data['message'] = 'Notificação não encontrada!'
+                return Response(data, status=status.HTTP_404_NOT_FOUND)
+            if notification.unread:
+                notification.unread = False
+                notification.save()
+            return Response(status=status.HTTP_200_OK)
+        data['message'] = 'Usuário não autenticado!'
+        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UnitMeasurementViewset(viewsets.ViewSet):

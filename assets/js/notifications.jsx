@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Preloader from './preloader';
+import '../template/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js';
 
 
 const config = {
@@ -13,77 +14,77 @@ export default class Notifications extends React.Component{
     constructor(props) {
         super(props);
         this.state = { 
-            notifications: [],
-            isLoading: true,
             unread: 0,
         }
     }
 
-    getNotifications = () => {
-        axios.get(`/api/notifications/`, config)
-        .then((res) => {
-            this.setState({ notifications: res.data, isLoading: false });
-            this.countUnreads();
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    }
-
     componentDidMount(){
-        this.getNotifications();
+        this.countUnreads();
+        var notifScrollbar = $('.notif-scroll');
+        if (notifScrollbar.length > 0) { notifScrollbar.scrollbar()}
     }
 
     countUnreads = () => {
         let contador = 0;
-        this.state.notifications.map((notification) => {
-            if (notification.unread) {
-                contador++;
-            }
-        });
-        this.setState({ unread: contador });
-    }
-
-    renderNotifications = () => {
-        if (this.state.isLoading) {
-            return (
-                <Preloader />
-            );
-        } else {
-            return(
-                this.state.notifications.map((notification) =>{
-                    return(
-                        <Link to={`${notification.type}`} key={notification.pk}>
-                            <div className="notif-img">
-                                <img src={notification.sender} alt="Img Profile" height={'40px'} width={'40px'} />
-                            </div>
-                            <div className="notif-content">
-                                <span className="block">{ notification.message }</span>
-                                <span className="time">{ notification.naturaltime }</span>
-                            </div>
-                        </Link>
-                    );
-                })
-            )
+        if (this.props.notifications != undefined) {
+            this.props.notifications.map((notification) => {
+                if (notification.unread) {
+                    contador++;
+                }
+            });
+            this.setState({ unread: contador });
         }
     }
 
     handleClick = () => {
-        this.state.notifications.map((notification) => {
-            axios.put(`/api/notifications/${notification.pk}`, config)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        let form = new FormData();
+        this.props.notifications.map((notification) => {
+            if (notification.unread) {
+                form.append('notification', notification.pk);
+                axios.put(`/api/notifications/${notification.pk}/`, form, config)
+                .then((res) => {
+                    this.setState({ unread: 0 });
+                })
+                .catch((error) => {
+                    swal(error.response.data.message, {
+                        icon: "error",
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-danger'
+                            }
+                        },
+                    })
+                })
+            }
         })
+    }
+
+    renderNotifications = () => {
+        if (this.props.notifications != undefined) {
+            return(
+                this.props.notifications.map((notification) => 
+                    <Link to={`${notification.type}`} key={notification.pk}>
+                        <div className="notif-img">
+                            <img src={notification.sender} alt="Img Profile" />
+                        </div>
+                        <div className="notif-content">
+                            <span className="block">{ notification.message }</span>
+                            <span className="time">{ notification.naturaltime }</span>
+                        </div>
+                    </Link>
+                )
+            )
+        } else {
+            return(
+                <Preloader />
+            )
+        }
     }
 
     render(){
         return(
             <React.Fragment>
-                <a className="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={this.handleClick}>
+                <a className="nav-link dropdown-toggle" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onClick={this.handleClick}>
                     <i className="fa fa-bell"></i>
                     <span className="notification">{ this.state.unread > 10 ? <span>9+</span> : this.state.unread }</span>
                 </a>
@@ -91,7 +92,6 @@ export default class Notifications extends React.Component{
                     <li>
                         <div className="dropdown-title">Você possui {this.state.unread} novas notificações</div>
                     </li>
-
                     <li>
                         <div className="notif-scroll scrollbar-outer">
                             <div className="notif-center">
@@ -99,6 +99,7 @@ export default class Notifications extends React.Component{
                             </div>
                         </div>
                     </li>
+                    <li></li>
                 </ul>
             </React.Fragment>
         );
