@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Preloader from './preloader';
 import { date } from './utils';
+import '../template/js/plugin/datepicker/bootstrap-datetimepicker.min.js';
+import { formatDate } from './utils';
 
 
 const config = {
@@ -22,6 +24,8 @@ export default class SolicitationsOfDonations extends React.Component {
             isLoadingSolicitations: true,
             reason_rejection: '',
             solicitation: '',
+            validity: '',
+            validity_hour: '',
         }
     }
 
@@ -77,6 +81,19 @@ export default class SolicitationsOfDonations extends React.Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
+    handleFocus = (e, pk) => {
+        let today = new Date();
+        $(`#validity-${pk}`).datetimepicker({
+            format: 'DD/MM/YYYY',
+            minDate: today,
+            locale: 'pt-br',
+        });
+        $(`#validity_hour-${pk}`).datetimepicker({
+            format: 'HH:mm',
+            locale: 'pt-br',
+        });
+    }
+
     renderSolicitations = () => {
         if (this.state.isLoadingSolicitations) {
             return(
@@ -111,12 +128,12 @@ export default class SolicitationsOfDonations extends React.Component {
                                         <span className="row justify-content-center">-</span>
                                         :
                                         <React.Fragment>
-                                            <button className="btn btn-primary ml-2 my-1 btn-block" onClick={(e) => this.acceptSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
+                                            <button className="btn btn-primary ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-accept-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
                                             <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
                                         </React.Fragment>
                                     }
                                 </p>
-                                <div className="modal fade"id={`modal-reject-solicitation-${solicitation.pk}`}>
+                                <div className="modal fade" id={`modal-reject-solicitation-${solicitation.pk}`}>
                                     <div className="modal-dialog">
                                         <div className="modal-content">
                                             <form onSubmit={this.handleRejectSubmit} method="POST">
@@ -149,6 +166,56 @@ export default class SolicitationsOfDonations extends React.Component {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="modal fade" id={`modal-accept-solicitation-${solicitation.pk}`}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <form onSubmit={this.handleAcceptSubmit} method="POST">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title">Aceitar esta solicitação</h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="alert alert-info" role="alert">
+                                                                Ao clicar em "Aceitar" esta doação passará para o staus "Em Espera", o que significa que você está esperando o solicitante ir buscar a doação no local informado.
+                                                            </div>
+                                                            <input type="hidden" name="solicitation" value={solicitation.pk} />
+                                                            <div className="form-group">
+                                                                <label htmlFor=""><span className="required-label">*</span> Validade:</label>
+                                                                <div className="input-group">
+                                                                    <input type="text" name="validity" id={`validity-${solicitation.pk}`} className="form-control" required onBlur={this.changeHandler} onFocus={(e) => this.handleFocus(e, solicitation.pk)} />
+                                                                    <div className="input-group-append">
+                                                                        <span className="input-group-text">
+                                                                            <i className="fa fa-calendar-check"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor=""><span className="required-label">*</span> Validade hora:</label>
+                                                                <div className="input-group">
+                                                                    <input type="text" name="validity_hour" id={`validity_hour-${solicitation.pk}`} className="form-control" required onBlur={this.changeHandler} onFocus={(e) => this.handleFocus(e, solicitation.pk)} />
+                                                                    <div className="input-group-append">
+                                                                        <span className="input-group-text">
+                                                                            <i className="fa fa-clock"></i>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="modal-footer">
+                                                    <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" className="btn btn-primary">Aceitar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     ) }
@@ -157,8 +224,35 @@ export default class SolicitationsOfDonations extends React.Component {
         }
     }
 
-    acceptSolicitation = (e, solicitation) => {
-        axios.post(``)
+    handleAcceptSubmit = (e) => {
+        e.preventDefault();
+        const form = new FormData();
+        form.append('solicitation', this.state.solicitation);
+        form.append('validity', formatDate(this.state.validity));
+        form.append('validity_hour', this.state.validity_hour);
+        axios.post(`/api/donation/accepts/`, form, config)
+        .then((res) => {
+            $('.fechar').click();
+            swal(res.data.message, {
+                icon: 'success',
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                }
+            })
+            this.setState({ solicitations: res.data.solicitations });
+        })
+        .catch((error) => {
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                }
+            })
+        })
     }
 
     handleRejectSubmit = (e) => {
@@ -240,6 +334,13 @@ export default class SolicitationsOfDonations extends React.Component {
                                 <div className="page-inner">
                                     <div className="row justify-content-center">
                                         <div className="col-12">
+                                            <div className="card">
+                                                <div className="card-header">
+                                                    <div className="card-title">Detalhes da sua doação</div>
+                                                </div>
+                                                <div className="card-body">
+                                                </div>
+                                            </div>
                                             <div className="card">
                                                 <div className="card-header">
                                                     <div className="card-title">Solicitações da doação {this.state.donation.name}</div>

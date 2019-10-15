@@ -283,42 +283,53 @@ class AcceptSolicitation(APIView):
     '''
     permission_classes = (permissions.IsAuthenticated,)
     
-    def post(self, request, pk=None):
+    def post(self, request):
 
         data = {}
+        solicitation_pk = request.POST.get('solicitation')
         validity = request.POST.get('validity')
         validity_hour = request.POST.get('validity_hour')
         with transaction.atomic():
-            if validity == '' or validity_hour == '':
+            if validity == '' or validity_hour == '' or solicitation_pk == '':
                 data['message'] = "Nenhum dos campos podem ficar em branco."
                 return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
 
-            solicitation = Solicitation.objects.get(pk=pk)
+            # Doação fica em espera
+            try:
+                solicitation = Solicitation.objects.get(pk=solicitation_pk)
+            except:
+                data['message'] = 'Solicitação não encontrada.'
+                return Response(data, status=status.HTTP_404_NOT_FOUND)
             donation = Donation.objects.get(pk=solicitation.donation.pk)
             donation.status = Donation.ON_HOLD
             donation.save()
 
+            # Solicitação fica com status de aceita
             solicitation.is_accepted = True
             solicitation.status = Solicitation.ACCEPTED
             solicitation.validity = validity
             solicitation.validity_hour = validity_hour
             solicitation.save()
 
+            # Verificação se a validade da doação é maior ou menor que a validade da solicitação
             combined_time_donation = datetime.combine(donation.validity, donation.validity_hour)
             combined_time_solicitation = datetime.combine(datetime.strptime(solicitation.validity, '%Y-%m-%d'), datetime.strptime(solicitation.validity_hour, '%H:%M').time())
-            
             if combined_time_solicitation > combined_time_donation:
-                data['message_error_validity_hour'] = "A validade da solicitação tem que ser menor ou igual ao validade da doação."
+                data['message'] = "A validade da solicitação tem que ser menor ou igual ao validade da doação."
                 return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
 
-            serializer = SolicitationSerializer(solicitation)
+            # As outras solicitações da doação ficam em espera
             for obj in donation.solicitations.all():
                 if obj.pk != solicitation.pk:
                     obj.status = Solicitation.ON_HOLD
                     obj.save()
 
+            # Notificação
             message = 'A sua solicitação ' + solicitation.slug + ' foi aceita pelo usuário ' + donation.donator.get_name() + '.'
             notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
+            send_push_notification(notification)
+
+            #Email
             subject = "Sua solicitação foi aceita"
             context = {}
             context['user'] = solicitation.owner
