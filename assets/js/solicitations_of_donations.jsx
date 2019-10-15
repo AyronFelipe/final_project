@@ -20,7 +20,13 @@ export default class SolicitationsOfDonations extends React.Component {
             show_info: false,
             solicitations: [],
             isLoadingSolicitations: true,
+            reason_rejection: '',
+            solicitation: '',
         }
+    }
+
+    setSolicitation = (e, solicitation) => {
+        this.setState({ solicitation: solicitation })
     }
 
     getLoggedUser = () => {
@@ -67,6 +73,10 @@ export default class SolicitationsOfDonations extends React.Component {
         })
     }
 
+    changeHandler = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
     renderSolicitations = () => {
         if (this.state.isLoadingSolicitations) {
             return(
@@ -96,15 +106,89 @@ export default class SolicitationsOfDonations extends React.Component {
                             </td>
                             <td>
                                 <p className="demo mt-3">
-                                    <button className="btn btn-primary btn-block"><i className="fas fa-check mr-1"></i> Aceitar</button>
-                                    <button className="btn btn-danger btn-block"><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
+                                    {
+                                        solicitation.status == 'Rejeitada' ?
+                                        <span className="row justify-content-center">-</span>
+                                        :
+                                        <React.Fragment>
+                                            <button className="btn btn-primary ml-2 my-1 btn-block" onClick={(e) => this.acceptSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
+                                            <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
+                                        </React.Fragment>
+                                    }
                                 </p>
+                                <div className="modal fade"id={`modal-reject-solicitation-${solicitation.pk}`}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <form onSubmit={this.handleRejectSubmit} method="POST">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title">Rejeitar esta solicitação</h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="alert alert-danger" role="alert">
+                                                                Ao clicar em "Rejeitar", esta solicitação passará para o estado de rejeitada.
+                                                            </div>
+                                                            <input type="hidden" name="solicitation" value={solicitation.pk} />
+                                                            <div className="form-group">
+                                                                <label htmlFor=""><span className="required-label">*</span> Motivo da rejeição:</label>
+                                                                <textarea name="reason_rejection" cols="30" rows="10" className="form-control" onChange={this.changeHandler} required></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div className="modal-footer">
+                                                    <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" className="btn btn-danger">Rejeitar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     ) }
                 </tbody>
             );
         }
+    }
+
+    acceptSolicitation = (e, solicitation) => {
+        axios.post(``)
+    }
+
+    handleRejectSubmit = (e) => {
+        e.preventDefault();
+        const form = new FormData();
+        form.append('reason_rejection', this.state.reason_rejection);
+        form.append('solicitation', this.state.solicitation);
+        axios.post(`/api/donation/rejects/`, form, config)
+        .then((res) => {
+            $('.fechar').click();
+            this.setState({ solicitations: res.data.solicitations });
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            })
+        })
+        .catch((error) => {
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            })
+        })
     }
 
     componentDidMount(){
@@ -155,7 +239,7 @@ export default class SolicitationsOfDonations extends React.Component {
                                 this.state.show_info ?
                                 <div className="page-inner">
                                     <div className="row justify-content-center">
-                                        <div className="col-md-10 col-12">
+                                        <div className="col-12">
                                             <div className="card">
                                                 <div className="card-header">
                                                     <div className="card-title">Solicitações da doação {this.state.donation.name}</div>

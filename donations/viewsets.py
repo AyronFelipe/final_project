@@ -173,10 +173,12 @@ class CreateSolicitationViewSet(generics.CreateAPIView):
                     data['message'] = 'Esta doação não pode ser solicitada.'
                     return Response(data, status=status.HTTP_403_FORBIDDEN)
                 solicitation.save()
+
                 donation = Donation.objects.get(id=request.POST.get('donation'))
                 message = 'A sua doação ' + donation.slug + ' foi solicitada pelo usuário ' + solicitation.owner.get_name() + '.'
                 notification = Notification.objects.create(message=message, notified=donation.donator, sender=solicitation.owner, type=Notification.MY_DONATIONS)
                 send_push_notification(notification)
+
                 subject = "Sua doação foi solicitada"
                 context = {}
                 context['user'] = donation.donator
@@ -288,10 +290,7 @@ class AcceptSolicitation(APIView):
         validity_hour = request.POST.get('validity_hour')
         with transaction.atomic():
             if validity == '' or validity_hour == '':
-                if validity == '':
-                    data['message_error_validity'] = "Este campo não pode ficar em branco"
-                if validity_hour == '':
-                    data['message_error_validity_hour'] = "Este campo não pode ficar em branco"
+                data['message'] = "Nenhum dos campos podem ficar em branco."
                 return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
 
             solicitation = Solicitation.objects.get(pk=pk)
@@ -338,22 +337,45 @@ class RejectSolicitation(APIView):
     '''
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, pk=None):
-        reason_rejection = request.POST.get('reason_rejection')
+    def post(self, request):
+        data = {}
         with transaction.atomic():
+            solicitation_pk = request.POST.get('solicitation', None)
+            if not solicitation_pk:
+                data['message'] = "Solicitação não encontrada."
+                return Response(data, status=status.HTTP_404_NOT_FOUND,)
+
+            reason_rejection = request.POST.get('reason_rejection')
             if reason_rejection == '':
-                data = {}
-                data['message_error'] = "Este campo não pode ficar em branco."
-                return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
-            solicitation = Solicitation.objects.get(pk=pk)
+                data['message'] = "O motivo de rejeição não pode ficar em branco."
+                return Response(data, status=status.HTTP_400_BAD_REQUEST,)
+
+            solicitation = Solicitation.objects.get(pk=solicitation_pk)
             solicitation.status = Solicitation.REJECTED
             solicitation.reason_rejection = reason_rejection
             solicitation.save()
-            serializer = SolicitationSerializer(solicitation)
+
+            #Validação da doação
             donation = Donation.objects.get(pk=solicitation.donation.pk)
+            if donation.status == Donation.INVALID:
+                data['message'] = 'Esta solicitação não pode ser movimentada, a doação está vencida.'
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+            list_solicitations = []
+            queryset = Solicitation.objects.filter(donation__id=donation.pk)
+            for obj in queryset:
+                obj.update_status()
+                list_solicitations.append(obj)
+            serializer = SolicitationSerializer(list_solicitations, many=True)
+            data['solicitations'] = serializer.data
+            data['message'] = 'Solicitação rejeitada com sucesso.'
+
+            #Notificação
             message = 'A sua solicitação ' + solicitation.slug + ' foi rejeitada pelo usuário ' + donation.donator.get_name() + '.'
             notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
-            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+            send_push_notification(notification)
+
+            #E-mail
             subject = "Sua solicitação foi rejeitada"
             context = {}
             context['user'] = solicitation.owner
@@ -362,7 +384,9 @@ class RejectSolicitation(APIView):
             context['donation'] = donation
             context['solicitation'] = solicitation
             send_mail_template(subject, "emails/notification_rejection_solicitation_email.html", context, [solicitation.owner.email])
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(data, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
