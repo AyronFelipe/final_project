@@ -294,13 +294,23 @@ class AcceptSolicitation(APIView):
                 data['message'] = "Nenhum dos campos podem ficar em branco."
                 return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
 
-            # Doação fica em espera
             try:
                 solicitation = Solicitation.objects.get(pk=solicitation_pk)
             except:
                 data['message'] = 'Solicitação não encontrada.'
                 return Response(data, status=status.HTTP_404_NOT_FOUND)
+
+            #Doação
             donation = Donation.objects.get(pk=solicitation.donation.pk)
+
+            # Verificação se a validade da doação é maior ou menor que a validade da solicitação
+            combined_time_donation = datetime.combine(donation.validity, donation.validity_hour)
+            combined_time_solicitation = datetime.combine(datetime.strptime(validity, '%Y-%m-%d'), datetime.strptime(validity_hour, '%H:%M').time())
+            if combined_time_solicitation > combined_time_donation:
+                data['message'] = "A validade da solicitação tem que ser menor ou igual ao validade da doação."
+                return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
+
+            #Doação fica com status de espera
             donation.status = Donation.ON_HOLD
             donation.save()
 
@@ -311,16 +321,9 @@ class AcceptSolicitation(APIView):
             solicitation.validity_hour = validity_hour
             solicitation.save()
 
-            # Verificação se a validade da doação é maior ou menor que a validade da solicitação
-            combined_time_donation = datetime.combine(donation.validity, donation.validity_hour)
-            combined_time_solicitation = datetime.combine(datetime.strptime(solicitation.validity, '%Y-%m-%d'), datetime.strptime(solicitation.validity_hour, '%H:%M').time())
-            if combined_time_solicitation > combined_time_donation:
-                data['message'] = "A validade da solicitação tem que ser menor ou igual ao validade da doação."
-                return Response(data, status=status.HTTP_401_UNAUTHORIZED,)
-
             # As outras solicitações da doação ficam em espera
             for obj in donation.solicitations.all():
-                if obj.pk != solicitation.pk:
+                if obj.pk != solicitation.pk and obj.status != Solicitation.REJECTED :
                     obj.status = Solicitation.ON_HOLD
                     obj.save()
 
@@ -338,7 +341,18 @@ class AcceptSolicitation(APIView):
             context['donation'] = donation
             context['solicitation'] = solicitation
             send_mail_template(subject, "emails/notification_accept_solicitation_email.html", context, [solicitation.owner.email])
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            #Feedback usuário
+            list_solicitations = []
+            queryset = Solicitation.objects.filter(donation__id=donation.pk)
+            for obj in queryset:
+                obj.update_status()
+                list_solicitations.append(obj)
+            serializer = SolicitationSerializer(list_solicitations, many=True)
+            data['solicitations'] = serializer.data
+            data['message'] = 'Solicitação aceita com sucesso!'
+            return Response(data, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

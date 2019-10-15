@@ -4,7 +4,7 @@ import axios from 'axios';
 import Preloader from './preloader';
 import { date } from './utils';
 import '../template/js/plugin/datepicker/bootstrap-datetimepicker.min.js';
-import { formatDate } from './utils';
+import { formatDate, unformatDate2 } from './utils';
 
 
 const config = {
@@ -124,12 +124,23 @@ export default class SolicitationsOfDonations extends React.Component {
                             <td>
                                 <p className="demo mt-3">
                                     {
-                                        solicitation.status == 'Rejeitada' ?
+                                        solicitation.status == 'Rejeitada' || solicitation.status == 'Em Espera' ?
                                         <span className="row justify-content-center">-</span>
                                         :
                                         <React.Fragment>
-                                            <button className="btn btn-primary ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-accept-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
-                                            <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
+                                            {
+                                                solicitation.status == 'Aceita' ?
+                                                <React.Fragment>
+                                                    <button className="btn btn-primary btn-block ml-2 my-1 btn-block">Finalizar</button>
+                                                    <button className="btn btn-default btn-block ml-2 my-1 btn-block">Não apareceu</button>
+                                                    <button className="btn btn-danger btn-block ml-2 my-1 btn-block">Cancelar</button>
+                                                </React.Fragment>
+                                                :
+                                                <React.Fragment>
+                                                    <button className="btn btn-primary ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-accept-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
+                                                    <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
+                                                </React.Fragment>
+                                            }
                                         </React.Fragment>
                                     }
                                 </p>
@@ -285,6 +296,12 @@ export default class SolicitationsOfDonations extends React.Component {
         })
     }
 
+    handleFinalizeSubmit = () => {}
+
+    handleCancelSubmit = () => {}
+
+    handleNotAppearSubmit = () => {}
+
     componentDidMount(){
         this.getDonation();
     }
@@ -336,9 +353,18 @@ export default class SolicitationsOfDonations extends React.Component {
                                         <div className="col-12">
                                             <div className="card">
                                                 <div className="card-header">
-                                                    <div className="card-title">Detalhes da sua doação</div>
+                                                    <div className="card-head-row">
+                                                        <div className="card-title">Detalhes da sua doação</div>
+                                                        <div className="card-tools">
+                                                            <Link to={`/donations/donation/${this.state.donation.slug}/`} className="btn btn-info btn-border btn-round btn-sm mr-2"><i className="fas fa-info-circle"></i> Detalhes</Link>
+                                                            <Link to={`/donations/donation/edit/${this.state.donation.slug}/`} className="btn btn-info btn-border btn-round btn-sm"><i className="fas fa-pen mr-1"></i> Editar</Link>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div className="card-body">
+                                                    <p><strong>Nome: </strong>{ this.state.donation.name }</p>
+                                                    <p><strong>Status: </strong>{ this.state.donation.status }</p>
+                                                    <p><strong>Validade: </strong> {unformatDate2(this.state.donation.validity)} até às { this.state.donation.validity_hour }</p>
                                                 </div>
                                             </div>
                                             <div className="card">

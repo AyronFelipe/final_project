@@ -253,7 +253,7 @@ export default class EditDonation extends React.Component {
                             this.state.show_info ?
                             <div className="page-inner">
                                 <div className="row justify-content-center">
-                                    <div className="col-sm-10 col-12">
+                                    <div className="col-12">
                                         <div className="card">
                                             <div className="card-header">
                                                 <div className="card-title">Alterar Informações</div>
