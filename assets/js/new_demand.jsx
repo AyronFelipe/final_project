@@ -166,7 +166,7 @@ export default class NewDemand extends React.Component {
                                         <i className="flaticon-right-arrow"></i>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to="/donations/new-donation">
+                                        <Link to="/donations/new-donation/">
                                             <span className="text-white">Cadastro de Pedidos</span>
                                         </Link>
                                     </li>
@@ -177,7 +177,7 @@ export default class NewDemand extends React.Component {
                 </div>
                 <div className="page-inner">
                     <div className="row justify-content-center">
-                        <div className="col-sm-10 col-12">
+                        <div className="col-12">
                             <form id="form-demand" onSubmit={this.handleSubmit}>
                                 <div className="card mt-5 animated fadeIn">
                                     <div className="card-header">

@@ -5,6 +5,11 @@ import Donations from './donations';
 import Demands from './demands';
 import { Link } from 'react-router-dom';
 
+const config = {
+    headers: { 'Authorization': `Token ${localStorage.token}` }
+};
+
+
 export default class DonationsMain extends React.Component{
 
     constructor(props){
@@ -21,9 +26,6 @@ export default class DonationsMain extends React.Component{
     }
 
     getLoggedUser = () => {
-        let config = {
-            headers: { 'Authorization': `Token ${localStorage.token}` }
-        };
         axios.get('/api/logged-user/', config)
         .then((res) => {
             this.setState({ user: res.data, isLoading: false });
@@ -33,8 +35,29 @@ export default class DonationsMain extends React.Component{
         });
     }
 
+    getCommentsEmpty = () => {
+        axios.get('/api/comments-empty/', config)
+        .then((res) => {
+            swal(res.data.message, {
+                icon: 'warning',
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-warning'
+                    }
+                }
+            })
+            .then(() => {
+                window.location.href = '/comments/';
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
     componentDidMount = () => {
         this.getLoggedUser();
+        this.getCommentsEmpty();
     }
 
     render(){

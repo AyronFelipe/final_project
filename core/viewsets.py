@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from django.db import transaction
 from .utils import send_push_notification
+from rest_framework.decorators import api_view
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -134,3 +135,18 @@ class CommentViewset(viewsets.ViewSet):
         data['message'] = 'Usuário não autenticado'
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
+@api_view(["GET"])
+def get_notifications_empty(request):
+
+    data  = {}
+    from donations.models import Donation
+    if request.user.is_authenticated:
+        for donation in request.user.donated_donations.all():
+            if donation.status == Donation.COMPLETED and not hasattr(donation, 'comment'):
+                data['message'] = 'Você possui comentários a fazer'
+                return Response(data, status=status.HTTP_200_OK)
+        for donation in request.user.received_donations.all():
+            if donation.status == Donation.COMPLETED and not hasattr(donation, 'comment'):
+                data['message'] = 'Você possui comentários a fazer'
+                return Response(data, status=status.HTTP_200_OK)
+    return Response(data, status=status.HTTP_401_UNAUTHORIZED)
