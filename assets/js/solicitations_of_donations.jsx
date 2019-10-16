@@ -133,7 +133,7 @@ export default class SolicitationsOfDonations extends React.Component {
                                                 <React.Fragment>
                                                     <button className="btn btn-primary btn-block ml-2 my-1 btn-block">Finalizar</button>
                                                     <button className="btn btn-default btn-block ml-2 my-1 btn-block">Não apareceu</button>
-                                                    <button className="btn btn-danger btn-block ml-2 my-1 btn-block">Cancelar</button>
+                                                    <button className="btn btn-danger btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-cancel-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Cancelar</button>
                                                 </React.Fragment>
                                                 :
                                                 <React.Fragment>
@@ -278,10 +278,17 @@ export default class SolicitationsOfDonations extends React.Component {
                                                     </button>
                                                 </div>
                                                 <div className="modal-body">
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="alert alert-danger">
+                                                                Ao clicar em "Cancelar" esta solicitação passará para o estado de Criada e as Solicitações que estão Em espera vão passar para o estado de Criada. 
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div className="modal-footer">
-                                                    <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" className="btn btn-primary">Aceitar</button>
+                                                    <button type="button" className="fechar btn btn-default" data-dismiss="modal">Fechar</button>
+                                                    <button type="submit" className="btn btn-danger">Cancelar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -356,11 +363,88 @@ export default class SolicitationsOfDonations extends React.Component {
         })
     }
 
-    handleFinalizeSubmit = () => {}
+    handleFinalizeSubmit = () => {
+        e.preventDefault();
+        axios.post(`/api/donation/finalize/`, form, config)
+        .then((res) => {
+            $('.fechar').click();
+            this.setState({ solicitations: res.data.solicitations });
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            })
+        })
+        .catch((error) => {
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            })
+        })
+    }
 
-    handleCancelSubmit = () => {}
+    handleCancelSubmit = (e) => {
+        e.preventDefault();
+        const form = new FormData();
+        form.append('solicitation', this.state.solicitation)
+        axios.post(`/api/donation/cancel/`, form, config)
+        .then((res) => {
+            $('.fechar').click();
+            this.setState({ solicitations: res.data.solicitations });
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            })
+        })
+        .catch((error) => {
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            })
+        })
+    }
 
-    handleNotAppearSubmit = () => {}
+    handleNotAppearSubmit = () => {
+        e.preventDefault();
+        axios.post(`/api/donation/not-appear/`, form, config)
+        .then((res) => {
+            $('.fechar').click();
+            this.setState({ solicitations: res.data.solicitations });
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            })
+        })
+        .catch((error) => {
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            })
+        })
+    }
 
     componentDidMount(){
         this.getDonation();

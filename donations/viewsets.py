@@ -419,19 +419,36 @@ class CancelDonationSolicitation(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, pk=None):
-        solicitation = Solicitation.objects.get(pk=pk)
+    def post(self, request):
+        data = {}
+        solicitation_pk = request.POST.get('solicitation')
+        try:
+            solicitation = Solicitation.objects.get(pk=solicitation_pk)
+        except:
+            data['message'] = 'Solicitação não encontrada.'
         with transaction.atomic():
             solicitation.status = Solicitation.CREATED
             solicitation.save()
-            serializer = SolicitationSerializer(solicitation)
+
             donation = Donation.objects.get(pk=solicitation.donation.pk)
             for obj in donation.solicitations.all():
-                obj.status = Solicitation.CREATED
-                obj.save()
+                if obj.status != Solicitation.REJECTED:
+                    obj.status = Solicitation.CREATED
+                    obj.save()
+
             message = 'A sua solicitação ' + solicitation.slug + ' foi cancelada pelo usuário ' + donation.donator.get_name() + '.'
             notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
-            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+            send_push_notification(notification)
+
+            list_solicitations = []
+            queryset = Solicitation.objects.filter(donation__id=donation.pk)
+            for obj in queryset:
+                obj.update_status()
+                list_solicitations.append(obj)
+            serializer = SolicitationSerializer(list_solicitations, many=True)
+            data['solicitations'] = serializer.data
+            data['message'] = 'Solicitação rejeitada com sucesso.'
+
             subject = "Sua solicitação foi rejeitada"
             context = {}
             context['user'] = solicitation.owner
@@ -440,7 +457,8 @@ class CancelDonationSolicitation(APIView):
             context['donation'] = donation
             context['solicitation'] = solicitation
             send_mail_template(subject, "emails/notification_cancelation_solicitation_email.html", context, [solicitation.owner.email])
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
