@@ -404,9 +404,10 @@ export default class SolicitationsOfDonations extends React.Component {
                         className: 'btn btn-success'
                     }
                 },
+            }).then(() => {
+                this.showComment();
             })
             this.getDonation();
-            this.showComment();
         })
         .catch((error) => {
             swal(error.response.data.message, {
@@ -465,9 +466,10 @@ export default class SolicitationsOfDonations extends React.Component {
                         className: 'btn btn-success'
                     }
                 },
+            }).then(() => {
+                this.showComment();
             })
             this.getDonation();
-            this.showComment();
         })
         .catch((error) => {
             swal(error.response.data.message, {
@@ -493,7 +495,7 @@ export default class SolicitationsOfDonations extends React.Component {
         form.append('commenter', this.state.logged.pk);
         form.append('commented', this.state.solicitation.owner_pk);
         form.append('donation', this.state.donation.pk);
-        axios.post(`/api/comment/`, form, config)
+        axios.post(`/api/comments/`, form, config)
         .then((res) => {
             $('.fechar').click();
             swal(res.data.message, {

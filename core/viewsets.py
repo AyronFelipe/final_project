@@ -158,6 +158,7 @@ def get_donations_empty(request):
 
     data  = {}
     from donations.models import Donation
+    from donations.serializers import DonationSerializer
     if request.user.is_authenticated:
         list_donations = []
         for donation in Donation.objects.filter(Q(donator=request.user) | Q(receiver=request.user)):

@@ -139,3 +139,28 @@ class SolicitationSerializer(serializers.ModelSerializer):
 
         if hasattr(obj, 'owner'):
             return obj.owner.username
+
+
+class DonationEmptySerializer(serializers.ModelSerializer):
+
+    solicitation = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Donation
+        fields = [
+            'name',
+            'description',
+            'validity',
+            'validity_hour',
+            'main_photo',
+            'neighborhood',
+            'street',
+            'number',
+            'cep',
+            'uf',
+            'city',
+            'complement',
+            'pk',
+            'slug',
+            'solicitation',
+        ]

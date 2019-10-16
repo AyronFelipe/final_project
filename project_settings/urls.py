@@ -7,7 +7,7 @@ from accounts.viewsets import CreatePersonViewSet, CreateInstitutionViewSet, log
 from donations.viewsets import CreateDonationViewSet, CreateSolicitationViewSet, SolicitationsOfDonationViewSet, AcceptSolicitation, RejectSolicitation, \
 CancelDonationSolicitation, NotAppearDonationSolicitation, FinalizeDonationSolicitation, edit_donation
 from rest_framework.authtoken.views import obtain_auth_token
-from core.viewsets import get_notifications_empty
+from core.viewsets import get_notifications_empty, get_donations_empty
 
 
 urlpatterns = [
@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/person/<pk>/password/edit/', edit_user_password, name='edit_user_password'),
     path('api/donation/<pk>/edit/', edit_donation, name='edit_donation'),
     path('api/comments-empty/', get_notifications_empty, name='get_notifications_empty'),
+    path('api/donations-empty/', get_donations_empty, name='get_donations_empty'),
 ]
 
 if settings.DEBUG:
