@@ -227,6 +227,66 @@ export default class SolicitationsOfDonations extends React.Component {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="modal fade" id={`modal-finalize-solicitation-${solicitation.pk}`}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <form onSubmit={this.handleFinalizeSubmit} method="POST">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title">Finalizar esta solicitação</h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                </div>
+                                                <div className="modal-footer">
+                                                    <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" className="btn btn-primary">Finalizar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="modal fade" id={`modal-not-appear-solicitation-${solicitation.pk}`}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <form onSubmit={this.handleNotAppearSubmit} method="POST">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title">Solicitante não apareceu</h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                </div>
+                                                <div className="modal-footer">
+                                                    <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" className="btn btn-primary">Aceitar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="modal fade" id={`modal-cancel-solicitation-${solicitation.pk}`}>
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                            <form onSubmit={this.handleCancelSubmit} method="POST">
+                                                <div className="modal-header">
+                                                    <h5 className="modal-title">Cancelar esta solicitação</h5>
+                                                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div className="modal-body">
+                                                </div>
+                                                <div className="modal-footer">
+                                                    <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" className="btn btn-primary">Aceitar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     ) }
