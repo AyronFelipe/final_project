@@ -7,6 +7,7 @@ from rest_framework import status
 from django.db import transaction
 from .utils import send_push_notification
 from rest_framework.decorators import api_view
+from django.db.models import Q
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -149,4 +150,24 @@ def get_notifications_empty(request):
             if donation.status == Donation.COMPLETED and not hasattr(donation, 'comment'):
                 data['message'] = 'Você possui comentários a fazer'
                 return Response(data, status=status.HTTP_200_OK)
+    return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+def get_donations_empty(request):
+
+    data  = {}
+    from donations.models import Donation
+    if request.user.is_authenticated:
+        list_donations = []
+        for donation in Donation.objects.filter(Q(donator=request.user) | Q(receiver=request.user)):
+            if donation.status == Donation.COMPLETED and not hasattr(donation, 'comment'):
+                list_donations.append(donation)
+        if len(list_donations) == 0:
+            data['message'] = 'Você não possui comentários pendentes'
+            return Response(data, status=status.HTTP_404_NOT_FOUND)
+        else:
+            serializer = DonationSerializer(list_donations, many=True)
+            data['donations'] = serializer.data
+            return Response(data, status=status.HTTP_200_OK)
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
