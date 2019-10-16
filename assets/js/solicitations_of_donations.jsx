@@ -5,6 +5,7 @@ import Preloader from './preloader';
 import { date } from './utils';
 import '../template/js/plugin/datepicker/bootstrap-datetimepicker.min.js';
 import { formatDate, unformatDate2 } from './utils';
+import BeautyStars from 'beauty-stars';
 
 
 const config = {
@@ -26,6 +27,8 @@ export default class SolicitationsOfDonations extends React.Component {
             solicitation: '',
             validity: '',
             validity_hour: '',
+            value: 0,
+            content: '',
         }
     }
 
@@ -403,6 +406,7 @@ export default class SolicitationsOfDonations extends React.Component {
                 },
             })
             this.getDonation();
+            this.showComment();
         })
         .catch((error) => {
             swal(error.response.data.message, {
@@ -463,6 +467,43 @@ export default class SolicitationsOfDonations extends React.Component {
                 },
             })
             this.getDonation();
+            this.showComment();
+        })
+        .catch((error) => {
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            })
+        })
+    }
+
+    showComment = () => {
+        $('.show').click();
+    }
+    
+    handleSubmitComment = (e) => {
+        e.preventDefault()
+        const form = new FormData();
+        form.append('content', this.state.content);
+        form.append('rate', this.state.value);
+        form.append('commenter', this.state.logged.pk);
+        form.append('commented', this.state.solicitation.owner_pk);
+        form.append('donation', this.state.donation.pk);
+        axios.post(`/api/comment/`, form, config)
+        .then((res) => {
+            $('.fechar').click();
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            })
         })
         .catch((error) => {
             swal(error.response.data.message, {
@@ -562,6 +603,43 @@ export default class SolicitationsOfDonations extends React.Component {
                                                         </table>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button className="show" data-toggle="modal" data-target={`#modal-comment`} hidden></button>
+                                    <div className="modal fade" id={`modal-comment`}>
+                                        <div className="modal-dialog">
+                                            <div className="modal-content">
+                                                <form onSubmit={this.handleSubmitComment} method="POST">
+                                                    <div className="modal-header">
+                                                        <h5 className="modal-title">Realizar Comentário sobre { this.state.solicitation.owner }</h5>
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="modal-body">
+                                                        <div className="row">
+                                                            <div className="col-12">
+                                                                <div className="form-group">
+                                                                    <label htmlFor=""><span className="required-label">*</span> Comentário: </label>
+                                                                    <textarea name="content" id="content" cols="30" rows="10" name="content" className="form-control" required onChange={this.changeHandler}></textarea>
+                                                                </div>
+                                                                <div className="form-group">
+                                                                    <label htmlFor="">Quantas estrelas você dá para { this.state.solicitation.owner } </label>
+                                                                    <BeautyStars
+                                                                        value={this.state.value}
+                                                                        onChange={value => this.setState({ value })}
+                                                                        inactiveColor={'#808080'}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                        <button type="submit" className="btn btn-primary">Comentar</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

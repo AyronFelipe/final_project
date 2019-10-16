@@ -80,4 +80,5 @@ class CommentSerializer(serializers.ModelSerializer):
             'content',
             'commenter',
             'commented',
+            'donation',
         ]

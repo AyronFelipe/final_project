@@ -81,6 +81,7 @@ class Comment(CreationAndUpdateMixin):
     content = models.TextField(_('content'))
     commenter = models.ForeignKey(get_user_model(), related_name='comments_made', null=True, blank=True, on_delete=models.SET_NULL)
     commented = models.ForeignKey(get_user_model(), related_name='comments_received', null=True, blank=True, on_delete=models.CASCADE)
+    donation = models.OneToOneField('donations.Donation', related_name="comment", null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = _("comment")

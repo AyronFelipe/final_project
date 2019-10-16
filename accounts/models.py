@@ -17,6 +17,7 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
     is_active = models.BooleanField(_('active'), default=False,)
     photo = CloudinaryField(_('photo'), null=True, blank=True,)
     is_staff = models.BooleanField(_('is staff?'), default=False,)
+    rate = models.FloatField('rate', null=True, blank=True)
 
     objects = UserManager()
 
