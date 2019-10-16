@@ -63,7 +63,7 @@ export default class Notifications extends React.Component{
         if (this.props.notifications != undefined) {
             return(
                 this.props.notifications.map((notification) => 
-                    <Link to={`${notification.type}`} key={notification.pk}>
+                    <Link to={`/donations/${notification.type}/`} key={notification.pk}>
                         <div className="notif-img">
                             <img src={notification.sender} alt="Img Profile" />
                         </div>

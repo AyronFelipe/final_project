@@ -446,6 +446,9 @@ class CancelDonationSolicitation(APIView):
                 obj.update_status()
                 list_solicitations.append(obj)
             serializer = SolicitationSerializer(list_solicitations, many=True)
+            if donation.status != Donation.INVALID:
+                donation.status = Donation.ACTIVE
+                donation.save()
             data['solicitations'] = serializer.data
             data['message'] = 'Solicitação rejeitada com sucesso.'
 
@@ -466,18 +469,25 @@ class NotAppearDonationSolicitation(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, pk=None):
-        solicitation = Solicitation.objects.get(pk=pk)
+    def post(self, request):
+        data = {}
+        solicitation_pk = request.POST.get('solicitation')
+        try:
+            solicitation = Solicitation.objects.get(pk=solicitation_pk)
+        except:
+            data['message'] = 'Solicitação não encontrada.'
+            return Response(data, status=status.HTTP_404_NOT_FOUND)
         with transaction.atomic():
-            solicitation.status = Solicitation.CREATED
+            solicitation.status = Solicitation.UNCOMPLETED
             solicitation.save()
-            serializer = SolicitationSerializer(solicitation)
+
             donation = Donation.objects.get(pk=solicitation.donation.pk)
-            
-            message = 'A sua solicitação ' + solicitation.slug + ' da doação ' + donation.slug + 'foi deletada, pois você não compareceu no local determinado.'
+
+            message = 'A sua solicitação ' + solicitation.slug + ' da doação ' + donation.slug + ' foi marcada como incompleta, pois você não compareceu no local determinado.'
             notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
-            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
-            subject = "Sua solicitação foi rejeitada"
+            send_push_notification(notification)
+
+            subject = "Sua solicitação está imcompleta"
             context = {}
             context['user'] = solicitation.owner
             context['domain'] = get_current_site(request).domain
@@ -486,13 +496,19 @@ class NotAppearDonationSolicitation(APIView):
             context['solicitation'] = solicitation
             send_mail_template(subject, "emails/notification_not_appear_solicitation_email.html", context, [solicitation.owner.email])
 
+            list_solicitations = []
             for obj in donation.solicitations.all():
-                if obj.pk != solicitation.pk:
+                if obj.pk != solicitation.pk and obj.status != Solicitation.REJECTED and obj.status != Solicitation.UNCOMPLETED:
                     obj.status = Solicitation.CREATED
                     obj.save()
-                else:
-                    obj.delete()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+                list_solicitations.append(obj)
+            serializer = SolicitationSerializer(list_solicitations, many=True)
+            if donation.status != Donation.INVALID:
+                donation.status = Donation.ACTIVE
+                donation.save()
+            data['solicitations'] = serializer.data
+            data['message'] = 'Solicitação atualizada com sucesso.'
+            return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -117,15 +117,15 @@
                                     <table border="0" cellpadding="0" cellspacing="0" width="600" id="templateBody" class="rounded6" style="border-radius: 6px;background-color: #1572e8;">
                                         <tr>
                                             <td align="left" valign="top" class="bodyContent" style="line-height: 150%;font-family: Helvetica;font-size: 14px;color: #ffffff;padding: 20px;">
-                                                <h2 style="font-size: 22px;line-height: 28px;margin: 0 0 12px 0;">Sua doação foi solicitada</h2>
+                                                <h2 style="font-size: 22px;line-height: 28px;margin: 0 0 12px 0;">Sua solicitação foi marcada como não concluída</h2>
                                                 <br>
                                                 <div>
                                                     <p style="padding: 0 0 10px 0;">
                                                         Olá, {{ user }}.
                                                     </p>
                                                     <p style="padding: 0 0 10px 0;">
-                                                        O usuário <a href="{{ protocol }}://{{ domain }}{% url 'accounts:profile' donation.donator.pk %}" target="_blank">{{ donation.donator }}</a> nos informou que você não apareceu para coletar a doação
-                                                        <a href="{{ protocol }}://{{ domain }}{% url 'donations:donation_detail' donation.slug %}" target="_blank">{{ donation }}</a> a sua solitação dessa doação foi apagada.
+                                                        O usuário <a href="{{ protocol }}://{{ domain }}{% url 'accounts:profile' donation.donator.pk %}" target="_blank">{{ donation.donator }}</a> nos informou que você não compareceu para coletar a doação
+                                                        <a href="{{ protocol }}://{{ domain }}{% url 'donations:donation_detail' donation.slug %}" target="_blank">{{ donation }}</a> a sua solitação dessa doação foi dada como incompleta e não pode mais ser movimentada.
                                                         Clique no botão abaixo para ser redirecionado para sua página de gerenciamento de solicitações.
                                                     </p>
                                                 </div>

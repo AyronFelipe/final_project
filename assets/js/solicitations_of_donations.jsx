@@ -124,7 +124,7 @@ export default class SolicitationsOfDonations extends React.Component {
                             <td>
                                 <p className="demo mt-3">
                                     {
-                                        solicitation.status == 'Rejeitada' || solicitation.status == 'Em Espera' ?
+                                        solicitation.status == 'Rejeitada' || solicitation.status == 'Em Espera' || solicitation.status == 'Finalizada - Não doada' ?
                                         <span className="row justify-content-center">-</span>
                                         :
                                         <React.Fragment>
@@ -132,7 +132,7 @@ export default class SolicitationsOfDonations extends React.Component {
                                                 solicitation.status == 'Aceita' ?
                                                 <React.Fragment>
                                                     <button className="btn btn-primary btn-block ml-2 my-1 btn-block">Finalizar</button>
-                                                    <button className="btn btn-default btn-block ml-2 my-1 btn-block">Não apareceu</button>
+                                                    <button className="btn btn-default btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-not-appear-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Não apareceu</button>
                                                     <button className="btn btn-danger btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-cancel-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Cancelar</button>
                                                 </React.Fragment>
                                                 :
@@ -258,10 +258,17 @@ export default class SolicitationsOfDonations extends React.Component {
                                                     </button>
                                                 </div>
                                                 <div className="modal-body">
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="alert alert-default">
+                                                                Ao clicar em "Confirmar" esta solicitação passa para o estado de imcompleta e não poderá mais ser movimentada.
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div className="modal-footer">
                                                     <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" className="btn btn-primary">Aceitar</button>
+                                                    <button type="submit" className="btn btn-primary">Confirmar</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -417,10 +424,13 @@ export default class SolicitationsOfDonations extends React.Component {
                 },
             })
         })
+        this.getDonation();
     }
 
-    handleNotAppearSubmit = () => {
+    handleNotAppearSubmit = (e) => {
         e.preventDefault();
+        const form = new FormData();
+        form.append('solicitation', this.state.solicitation);
         axios.post(`/api/donation/not-appear/`, form, config)
         .then((res) => {
             $('.fechar').click();
@@ -433,6 +443,7 @@ export default class SolicitationsOfDonations extends React.Component {
                     }
                 },
             })
+            this.getDonation();
         })
         .catch((error) => {
             swal(error.response.data.message, {

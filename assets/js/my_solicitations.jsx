@@ -141,7 +141,7 @@ export default class MySolicitations extends React.Component {
                                                             solicitation.validity == null ?
                                                                 <span className="text-muted">O dono da doação ainda não informou a validade</span>
                                                             :
-                                                                <span>{unformatDate2(`${donation.validity}`)} até às { donation.validity_hour }</span>
+                                                                <span>{unformatDate2(`${solicitation.validity}`)} até às { solicitation.validity_hour }</span>
                                                         }
                                                     </td>
                                                     <td>

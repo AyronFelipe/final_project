@@ -50,7 +50,7 @@ export default class InternNav extends React.Component {
                     icon: 'flaticon-alarm-1',
                     title: 'Nova notificação',
                     message: data.message,
-                    url: data.type,
+                    url: `/donations/${data.type}/`,
                     target: '_blank',
                 },{
                     type: 'info',
