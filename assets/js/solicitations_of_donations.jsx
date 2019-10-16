@@ -131,14 +131,21 @@ export default class SolicitationsOfDonations extends React.Component {
                                             {
                                                 solicitation.status == 'Aceita' ?
                                                 <React.Fragment>
-                                                    <button className="btn btn-primary btn-block ml-2 my-1 btn-block">Finalizar</button>
+                                                    <button className="btn btn-primary btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-finalize-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Finalizar</button>
                                                     <button className="btn btn-default btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-not-appear-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Não apareceu</button>
                                                     <button className="btn btn-danger btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-cancel-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Cancelar</button>
                                                 </React.Fragment>
                                                 :
                                                 <React.Fragment>
-                                                    <button className="btn btn-primary ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-accept-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
-                                                    <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
+                                                    {
+                                                        solicitation.status == 'Finalizada - Doada' ?
+                                                        <strong className="row justify-content-center text-success">Solicitação aceita</strong>
+                                                        :
+                                                        <React.Fragment>
+                                                            <button className="btn btn-primary ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-accept-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
+                                                            <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
+                                                        </React.Fragment>
+                                                    }
                                                 </React.Fragment>
                                             }
                                         </React.Fragment>
@@ -238,6 +245,13 @@ export default class SolicitationsOfDonations extends React.Component {
                                                     </button>
                                                 </div>
                                                 <div className="modal-body">
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            <div className="alert alert-primary">
+                                                                Ao clicar em "Finalizar" esta doação passará para o estado de finalizada, e as solicitações não escolhidas serão finalizadas.
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div className="modal-footer">
                                                     <button type="button" className="fechar btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -327,6 +341,7 @@ export default class SolicitationsOfDonations extends React.Component {
                 }
             })
             this.setState({ solicitations: res.data.solicitations });
+            this.getDonation();
         })
         .catch((error) => {
             swal(error.response.data.message, {
@@ -357,6 +372,7 @@ export default class SolicitationsOfDonations extends React.Component {
                     }
                 },
             })
+            this.getDonation();
         })
         .catch((error) => {
             swal(error.response.data.message, {
@@ -370,8 +386,10 @@ export default class SolicitationsOfDonations extends React.Component {
         })
     }
 
-    handleFinalizeSubmit = () => {
+    handleFinalizeSubmit = (e) => {
         e.preventDefault();
+        const form = new FormData();
+        form.append('solicitation', this.state.solicitation);
         axios.post(`/api/donation/finalize/`, form, config)
         .then((res) => {
             $('.fechar').click();
@@ -384,6 +402,7 @@ export default class SolicitationsOfDonations extends React.Component {
                     }
                 },
             })
+            this.getDonation();
         })
         .catch((error) => {
             swal(error.response.data.message, {

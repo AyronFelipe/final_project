@@ -323,7 +323,7 @@ class AcceptSolicitation(APIView):
 
             # As outras solicitações da doação ficam em espera
             for obj in donation.solicitations.all():
-                if obj.pk != solicitation.pk and obj.status != Solicitation.REJECTED :
+                if obj.pk != solicitation.pk and obj.status != Solicitation.REJECTED and obj.status != Solicitation.UNCOMPLETED:
                     obj.status = Solicitation.ON_HOLD
                     obj.save()
 
@@ -516,8 +516,14 @@ class FinalizeDonationSolicitation(APIView):
 
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, pk=None):
-        solicitation = Solicitation.objects.get(pk=pk)
+    def post(self, request):
+        data = {}
+        solicitation_pk = request.POST.get('solicitation')
+        try:
+            solicitation = Solicitation.objects.get(pk=solicitation_pk)
+        except:
+            data['message'] = 'Solicitação não encontrada.'
+            return 
         with transaction.atomic():
             solicitation.status = Solicitation.COMPLETED
             solicitation.save()
@@ -530,7 +536,8 @@ class FinalizeDonationSolicitation(APIView):
 
             message = 'A sua solicitação ' + solicitation.slug + ' da doação ' + donation.slug + 'foi finalizada. Obrigado por usar o AlimentAÍ.'
             notification = Notification.objects.create(message=message, notified=solicitation.owner, sender=donation.donator, type=Notification.MY_SOLICITATIONS)
-            pusher_client.trigger('my-channel', 'my-event', {'message': notification.message, 'notified': notification.notified.pk})
+            send_push_notification(notification)
+            
             subject = "Parabéns - Sua solicitação foi finalizada"
             context = {}
             context['user'] = solicitation.owner
@@ -540,12 +547,18 @@ class FinalizeDonationSolicitation(APIView):
             context['solicitation'] = solicitation
             send_mail_template(subject, "emails/notification_finalize_solicitation_email.html", context, [solicitation.owner.email])
 
+            list_solicitations = []
             for obj in donation.solicitations.all():
                 if obj.pk != solicitation.pk:
-                    obj.status = Solicitation.UNCOMPLETED
-                    obj.save()
+                    if obj.status != Solicitation.REJECTED:
+                        obj.status = Solicitation.UNCOMPLETED
+                        obj.save()
+                list_solicitations.append(obj)
+            serializer = SolicitationSerializer(list_solicitations, many=True)
+            data['solicitations'] = serializer.data
+            data['message'] = 'Solicitação finalizada com sucesso.'
 
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
