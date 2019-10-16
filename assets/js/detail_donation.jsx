@@ -105,7 +105,7 @@ export default class DetailDonation extends React.Component{
                             <div>
                                 <h2 className="text-white pb-2 fw-bold page-title">
                                     Detalhe da Doação 
-                                    {this.state.isLoading ? <div className="loader loader-lg"></div> : <span>{this.state.donation.name}</span> }
+                                    {this.state.isLoading ? <div className="loader loader-lg"></div> : <span className="pl-1">{this.state.donation.name}</span> }
                                 </h2>
                                 <ul className="breadcrumbs text-white">
                                     <li className="nav-home">
