@@ -53,7 +53,8 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
     @cached_property
     def rating(self):
 
-        return self.rate / self.comments_received.all().count()
+        if self.rate:
+            return self.rate / self.comments_received.all().count()
 
 
 class Person(User):
