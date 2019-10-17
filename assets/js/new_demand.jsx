@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { readURL } from './utils';
 import axios from 'axios';
 import NewTag from './new_tag';
+import Inputmask from 'inputmask';
 
+const CEP_LENGTH = 9;
 
 const config = {
     headers: {
