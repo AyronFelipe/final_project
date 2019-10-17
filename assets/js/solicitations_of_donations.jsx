@@ -134,9 +134,9 @@ export default class SolicitationsOfDonations extends React.Component {
                                             {
                                                 solicitation.status == 'Aceita' ?
                                                 <React.Fragment>
-                                                    <button className="btn btn-primary btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-finalize-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Finalizar</button>
-                                                    <button className="btn btn-default btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-not-appear-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Não apareceu</button>
-                                                    <button className="btn btn-danger btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-cancel-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)} >Cancelar</button>
+                                                    <button className="btn btn-primary btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-finalize-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation)} >Finalizar</button>
+                                                    <button className="btn btn-default btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-not-appear-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation)} >Não apareceu</button>
+                                                    <button className="btn btn-danger btn-block ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-cancel-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation)} >Cancelar</button>
                                                 </React.Fragment>
                                                 :
                                                 <React.Fragment>
@@ -145,8 +145,8 @@ export default class SolicitationsOfDonations extends React.Component {
                                                         <strong className="row justify-content-center text-success">Solicitação aceita</strong>
                                                         :
                                                         <React.Fragment>
-                                                            <button className="btn btn-primary ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-accept-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="fas fa-check mr-1"></i> Aceitar</button>
-                                                            <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation.pk)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
+                                                            <button className="btn btn-primary ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-accept-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation)}><i className="fas fa-check mr-1"></i> Aceitar</button>
+                                                            <button className="btn btn-danger ml-2 my-1 btn-block" data-toggle="modal" data-target={`#modal-reject-solicitation-${solicitation.pk}`} onClick={(e) => this.setSolicitation(e, solicitation)}><i className="la flaticon-cross mr-1"></i> Rejeitar</button>
                                                         </React.Fragment>
                                                     }
                                                 </React.Fragment>
@@ -329,7 +329,7 @@ export default class SolicitationsOfDonations extends React.Component {
     handleAcceptSubmit = (e) => {
         e.preventDefault();
         const form = new FormData();
-        form.append('solicitation', this.state.solicitation);
+        form.append('solicitation', this.state.solicitation.pk);
         form.append('validity', formatDate(this.state.validity));
         form.append('validity_hour', this.state.validity_hour);
         axios.post(`/api/donation/accepts/`, form, config)
@@ -361,7 +361,7 @@ export default class SolicitationsOfDonations extends React.Component {
     handleRejectSubmit = (e) => {
         e.preventDefault();
         const form = new FormData();
-        form.append('reason_rejection', this.state.reason_rejection);
+        form.append('reason_rejection', this.state.reason_rejection.pk);
         form.append('solicitation', this.state.solicitation);
         axios.post(`/api/donation/rejects/`, form, config)
         .then((res) => {
@@ -392,7 +392,7 @@ export default class SolicitationsOfDonations extends React.Component {
     handleFinalizeSubmit = (e) => {
         e.preventDefault();
         const form = new FormData();
-        form.append('solicitation', this.state.solicitation);
+        form.append('solicitation', this.state.solicitation.pk);
         axios.post(`/api/donation/finalize/`, form, config)
         .then((res) => {
             $('.fechar').click();
@@ -424,7 +424,7 @@ export default class SolicitationsOfDonations extends React.Component {
     handleCancelSubmit = (e) => {
         e.preventDefault();
         const form = new FormData();
-        form.append('solicitation', this.state.solicitation)
+        form.append('solicitation', this.state.solicitation.pk)
         axios.post(`/api/donation/cancel/`, form, config)
         .then((res) => {
             $('.fechar').click();
@@ -454,7 +454,7 @@ export default class SolicitationsOfDonations extends React.Component {
     handleNotAppearSubmit = (e) => {
         e.preventDefault();
         const form = new FormData();
-        form.append('solicitation', this.state.solicitation);
+        form.append('solicitation', this.state.solicitation.pk);
         axios.post(`/api/donation/not-appear/`, form, config)
         .then((res) => {
             $('.fechar').click();
