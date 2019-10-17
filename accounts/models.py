@@ -49,6 +49,11 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
     def __str__(self):
 
         return self.get_name()
+    
+    @cached_property
+    def rating(self):
+
+        return self.rate / self.comments_received.all().count()
 
 
 class Person(User):

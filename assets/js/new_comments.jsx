@@ -40,12 +40,45 @@ export default class NewComments extends React.Component {
             this.setState({ donations: res.data.donations, isLoading: false })
         })
         .catch((error) => {
-            this.setState({ isLoading: false });
+            this.setState({ isLoading: false, donations: [] });
         })
     }
 
     changeHandler = (e) => {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    handleClickComment = (e, pk) => {
+        e.preventDefault();
+        const form = new FormData();
+        form.append('content', this.state.content);
+        form.append('rate', this.state.value);
+        form.append('commenter', $(`#commenter-${pk}`).val());
+        form.append('commented', $(`#commented-${pk}`).val());
+        form.append('donation', $(`#donation-${pk}`).val());
+        axios.post(`/api/comments/`, form, config)
+        .then((res) => {
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            })
+            this.getDonationsEmpty();
+        })
+        .catch((error) => {
+            console.log(error.response)
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            })
+        })
     }
 
     componentDidMount(){
@@ -97,7 +130,7 @@ export default class NewComments extends React.Component {
                                             <div className="col-12">
                                                 {
                                                     this.state.donations.map((donation) =>
-                                                        <div className="card" key={donation.pk}>
+                                                        <div className="card animated fadeIn" key={donation.pk} id={`donation-card-${donation.pk}`}>
                                                             <div className="card-header">
                                                                 <div className="card-title">{ donation.name } { donation.donator == this.state.logged.pk ? <small className="text-muted">(Minha doação)</small> : null }</div>
                                                             </div>
@@ -115,6 +148,19 @@ export default class NewComments extends React.Component {
                                                                         <label htmlFor=""><span className="required-label">*</span> Diga-nos o que você achou de { donation.donator_name }: </label>
                                                                     }
                                                                     <textarea name="content" id="content" cols="30" rows="10" name="content" className="form-control" required onChange={this.changeHandler}></textarea>
+                                                                    <input type="hidden" value={donation.pk} id={`donation-${donation.pk}`} name="donation" />
+                                                                    {
+                                                                        donation.donator == this.state.logged.pk ?
+                                                                        <React.Fragment>
+                                                                            <input type="hidden" value={donation.donator} id={`commenter-${donation.pk}`} />
+                                                                            <input type="hidden" value={donation.receiver} id={`commented-${donation.pk}`} />
+                                                                        </React.Fragment>
+                                                                        :
+                                                                        <React.Fragment>
+                                                                            <input type="hidden" value={donation.donator} id={`commented-${donation.pk}`} />
+                                                                            <input type="hidden" value={donation.receiver} id={`commenter-${donation.pk}`} />
+                                                                        </React.Fragment>
+                                                                    }
                                                                 </div>
                                                                 <div className="form-group">
                                                                     {
@@ -128,6 +174,11 @@ export default class NewComments extends React.Component {
                                                                         onChange={value => this.setState({ value })}
                                                                         inactiveColor={'#808080'}
                                                                     />
+                                                                </div>
+                                                            </div>
+                                                            <div className="card-footer">
+                                                                <div className="d-flex flex-row-reverse">
+                                                                    <button className="btn btn-primary btn-lg" onClick={(e) => this.handleClickComment(e, donation.pk)}><i className="fas fa-save mr-1"></i> Salvar</button>
                                                                 </div>
                                                             </div>
                                                         </div>

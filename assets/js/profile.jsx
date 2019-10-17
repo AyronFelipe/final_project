@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Preloader from './preloader';
+import BeautyStars from 'beauty-stars';
+
 
 let config = {
     headers: { 'Authorization': `Token ${localStorage.token}` }
@@ -13,8 +16,10 @@ export default class Profile extends React.Component {
         this.state = {
             user: [],
             isLoading: true,
+            isLoadingComments: true,
             logged: [],
             show_info: false,
+            comments: [],
         }
     }
 
@@ -42,6 +47,16 @@ export default class Profile extends React.Component {
         });
     }
 
+    getComments = () => {
+        axios.get('/api/comments/', config)
+        .then((res) => {
+            this.setState({ comments: res.data, isLoadingComments: false });
+        })
+        .catch((error) => {
+            console.log(error.response);
+        })
+    }
+
     showInfo = () => {
         if (this.state.user.pk == this.state.logged.pk) {
             this.setState({ show_info: true });
@@ -51,6 +66,7 @@ export default class Profile extends React.Component {
     componentDidMount(){
         this.getUser();
         this.getLoggedUser();
+        this.getComments();
     }
 
     render(){
@@ -192,39 +208,48 @@ export default class Profile extends React.Component {
                                                         <div className="col-7 col-stats">
                                                             <div className="numbers">
                                                                 <p className="card-category">Confiabilidade</p>
-                                                                <h4 className="card-title">1515515</h4>
+                                                                <h4 className="card-title">
+                                                                    <BeautyStars
+                                                                        value={this.state.user.rating}
+                                                                    />
+                                                                </h4>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-lg-6 col-12"></div>
-                                        <div className="col-lg-6 col-12">
-                                            <div className="card full-height">
-                                                <div className="card-header">
-                                                    <h1>Comentários</h1>
-                                                </div>
-                                                <div className="card-body">
-                                                    <div className="d-flex">
-                                                        <div className="avatar">
-                                                            <span className="avatar-title rounded-circle border border-white bg-info">P</span>
-                                                        </div>
-                                                        <div className="flex-1 ml-3 pt-1">
-                                                            <h6 className="text-uppercase fw-bold mb-1">Nome do Cara</h6>
-                                                            <span className="text-muted">Comentário do cara</span>
-                                                        </div>
-                                                        <div className="float-right pt-1">
-                                                            <small className="text-muted">horário humanizado</small>
-                                                        </div>
-                                                    </div>
-                                                    <div className="separator-dashed"></div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            {
+                                this.state.isLoadingComments ?
+                                <Preloader />
+                                :
+                                <div className="card">
+                                    <div className="card-header">
+                                        <h1>Comentários</h1>
+                                    </div>
+                                    <div className="card-body">
+                                        {
+                                            this.state.comments.map((comment) => 
+                                                <div className="d-flex" key={comment.pk}>
+                                                    <div className="avatar">
+                                                        <img src={comment.photo_commenter} alt="..." className="avatar-img rounded-circle" />
+                                                    </div>
+                                                    <div className="flex-1 ml-3 pt-1">
+                                                        <h6 className="text-uppercase fw-bold mb-1">{ comment.commenter_name }</h6>
+                                                        <span className="text-muted">{ comment.content }</span>
+                                                    </div>
+                                                    <div className="float-right pt-1">
+                                                        <small className="text-muted">{ comment.naturaltime }</small>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

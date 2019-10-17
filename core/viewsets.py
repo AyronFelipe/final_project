@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
 from .models import Tag, Notification, UnitMeasurement, Comment
-from .serializers import TagSerializer, NotificationSerializer, UnitMeasurementSerializer, CommentSerializer
+from .serializers import TagSerializer, NotificationSerializer, UnitMeasurementSerializer, CommentSerializer, CommentShowSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -8,6 +8,7 @@ from django.db import transaction
 from .utils import send_push_notification
 from rest_framework.decorators import api_view
 from django.db.models import Q
+from accounts.models import User
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -85,53 +86,59 @@ class CommentViewset(viewsets.ViewSet):
     def list(self, request):
 
         queryset = Comment.objects.filter(commented=request.user)
-        serializer = CommentSerializer(queryset, many=True)
+        serializer = CommentShowSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
 
         comment = Comment.objects.get(pk=pk)
-        serializer = CommentSerializer(comment)
+        serializer = CommentShowSerializer(comment)
         return Response(serializer.data)
     
     def create(self, request):
 
         data = {}
         if request.user.is_authenticated:
-            content = request.POST.get('content')
-            commenter_pk = request.POST.get('commenter')
-            commented_pk = request.POST.get('commented')
-            donation_pk = request.POST.get('donation')
-            rate = request.POST.get('rate')
-            if content == '' or commenter_pk == '' or commented_pk == '' or donation_pk == '':
-                data['message'] = 'Nenhum dos campos pode ficar em branco.'
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-            comment = Comment()
-            commenter = request.user
-            comment.commenter = commenter
-            comment.content = content
-            try:
-                commented = User.objects.get(pk=commented_pk)
-                comment.commented = commented
-                comment.commented.rate = rate + comment.commented.rate
-            except:
-                data['message'] = 'Usuário comentado não encontrado'
-                return Response(data, status=status.HTTP_404_NOT_FOUND)
-            try:
-                from donations.models import Donation
-                donation = Donation.objects.get(pk=donation_pk)
-                comment.donation = donation
-            except:
-                data['message'] = 'Doação não encontrada'
+            with transaction.atomic():
+                content = request.POST.get('content')
+                commenter_pk = request.POST.get('commenter')
+                commented_pk = request.POST.get('commented')
+                donation_pk = request.POST.get('donation')
+                rate = request.POST.get('rate')
+                if content == '' or commenter_pk == '' or commented_pk == '' or donation_pk == '':
+                    data['message'] = 'Nenhum dos campos pode ficar em branco.'
+                    return Response(data, status=status.HTTP_400_BAD_REQUEST)
+                comment = Comment()
+                commenter = request.user
+                comment.commenter = commenter
+                comment.content = content
+                try:
+                    commented = User.objects.get(pk=commented_pk)
+                    comment.commented = commented
+                    if not comment.commented.rate:
+                        comment.commented.rate = int(rate) + 0
+                    else:
+                        comment.commented.rate = int(rate) + comment.commented.rate
 
-            comment.save()
-            comment.commented.save()
+                except:
+                    data['message'] = 'Usuário comentado não encontrado'
+                    return Response(data, status=status.HTTP_404_NOT_FOUND)
+                try:
+                    from donations.models import Donation
+                    donation = Donation.objects.get(pk=donation_pk)
+                    comment.donation = donation
+                except:
+                    data['message'] = 'Doação não encontrada'
 
-            message = 'O usuário ' + comment.commmenter.get_name() + ' deixou um comentário sobre você a cerca da doação ' + donation.slug + '.'
-            notification = Notification.objects.create(message=message, notified=comment.commented, sender=comment.commenter, type=Notification.MY_SOLICITATIONS)
-            send_push_notification(notification)
+                comment.save()
+                comment.commented.save()
 
-            return Response(data, status=status.HTTP_200_OK)
+                message = 'O usuário ' + comment.commenter.get_name() + ' deixou um comentário sobre você a cerca da doação ' + donation.slug + '.'
+                notification = Notification.objects.create(message=message, notified=comment.commented, sender=comment.commenter, type=Notification.MY_SOLICITATIONS)
+                send_push_notification(notification)
+                data['message'] = 'Comentário feito com sucesso!'
+
+                return Response(data, status=status.HTTP_200_OK)
 
         data['message'] = 'Usuário não autenticado'
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)

@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
     donations_accepted = serializers.SerializerMethodField()
     photo = serializers.SerializerMethodField()
     username = serializers.SerializerMethodField()
+    rating = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -38,6 +39,7 @@ class UserSerializer(serializers.ModelSerializer):
             'donations_count',
             'donations_accepted',
             'username',
+            'rating',
         ]
 
     def get_child(self, obj):
@@ -65,6 +67,10 @@ class UserSerializer(serializers.ModelSerializer):
     def get_username(self, obj):
 
         return obj.username
+
+    def get_rating(self, obj):
+
+        return obj.rating
 
 
 class PersonSerializer(serializers.ModelSerializer):

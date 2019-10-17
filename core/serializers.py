@@ -82,3 +82,38 @@ class CommentSerializer(serializers.ModelSerializer):
             'commented',
             'donation',
         ]
+
+
+class CommentShowSerializer(serializers.ModelSerializer):
+
+    naturaltime = serializers.SerializerMethodField()
+    photo_commenter = serializers.SerializerMethodField()
+    commenter_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Comment
+        fields = [
+            'pk',
+            'content',
+            'commenter',
+            'donation',
+            'naturaltime',
+            'photo_commenter',
+            'commenter_name',
+        ]
+    
+    def get_naturaltime(self, obj):
+
+        return naturaltime(obj.created_at)
+
+    def get_photo_commenter(self, obj):
+
+        if obj.commenter.photo:
+            return obj.commenter.photo.url
+        else:
+            return '/static/images/default-user-image.png'
+
+    def get_commenter_name(self, obj):
+
+        if obj.commenter:
+            return obj.commenter.get_name()
