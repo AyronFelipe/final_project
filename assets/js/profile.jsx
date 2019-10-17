@@ -29,7 +29,8 @@ export default class Profile extends React.Component {
         axios.get(`/api/users/${pk[1]}`, config)
         .then((res) => {
             this.setState({ user: res.data, isLoading: false });
-            this.showInfo();
+            this.getLoggedUser();
+            this.getComments(res.data.pk);
         })
         .catch((error) => {
             console.log(error.response);
@@ -47,12 +48,13 @@ export default class Profile extends React.Component {
         });
     }
 
-    getComments = () => {
-        axios.get('/api/comments/', config)
+    getComments = (pk) => {
+        axios.get(`/api/user/${pk}/comments/`, config)
         .then((res) => {
             this.setState({ comments: res.data, isLoadingComments: false });
         })
         .catch((error) => {
+            this.setState({ comments: [], isLoadingComments: false });
             console.log(error.response);
         })
     }
@@ -65,8 +67,6 @@ export default class Profile extends React.Component {
 
     componentDidMount(){
         this.getUser();
-        this.getLoggedUser();
-        this.getComments();
     }
 
     render(){
@@ -98,7 +98,7 @@ export default class Profile extends React.Component {
                 </div>
                 <div className="page-inner">
                     <div className="row">
-                        <div className="col-md-10 col-12 mx-auto">
+                        <div className="col-12">
                             {
                                 this.state.show_info ?
                                 <div className="d-lg-none d-xl-none mb-4 d-flex flex-row-reverse">
@@ -232,20 +232,32 @@ export default class Profile extends React.Component {
                                     </div>
                                     <div className="card-body">
                                         {
-                                            this.state.comments.map((comment) => 
-                                                <div className="d-flex" key={comment.pk}>
-                                                    <div className="avatar">
-                                                        <img src={comment.photo_commenter} alt="..." className="avatar-img rounded-circle" />
+                                            this.state.comments.length > 0 ?
+                                            <React.Fragment>
+                                            {
+                                                this.state.comments.map((comment) => 
+                                                    <div className="d-flex" key={comment.pk}>
+                                                        <div className="avatar">
+                                                            <img src={comment.photo_commenter} alt="..." className="avatar-img rounded-circle" />
+                                                        </div>
+                                                        <div className="flex-1 ml-3 pt-1">
+                                                            <h6 className="text-uppercase fw-bold mb-1">{ comment.commenter_name }</h6>
+                                                            <span className="text-muted">{ comment.content }</span>
+                                                        </div>
+                                                        <div className="float-right pt-1">
+                                                            <small className="text-muted">{ comment.naturaltime }</small>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex-1 ml-3 pt-1">
-                                                        <h6 className="text-uppercase fw-bold mb-1">{ comment.commenter_name }</h6>
-                                                        <span className="text-muted">{ comment.content }</span>
-                                                    </div>
-                                                    <div className="float-right pt-1">
-                                                        <small className="text-muted">{ comment.naturaltime }</small>
-                                                    </div>
+                                                )
+                                            }
+                                            </React.Fragment>
+                                            :
+                                            <div className="d-flex">
+                                                <div className="flex-1 ml-3 pt-1">
+                                                    <h6 className="text-uppercase fw-bold mb-1">Atenção</h6>
+                                                    <span className="text-muted">Este usuário não possui comentários.</span>
                                                 </div>
-                                            )
+                                            </div>
                                         }
                                     </div>
                                 </div>

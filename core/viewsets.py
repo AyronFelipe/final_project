@@ -33,7 +33,7 @@ class NotificationViewSet(viewsets.ViewSet):
     Listagem, recuperação e atualização de Notificações
     '''
    
-    def list(self, request):
+    def list(self, request, pk=None):
 
         queryset = Notification.objects.filter(notified=request.user)
         serializer = NotificationSerializer(queryset, many=True)
@@ -179,3 +179,11 @@ def get_donations_empty(request):
             data['donations'] = serializer.data
             return Response(data, status=status.HTTP_200_OK)
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(["GET"])
+def get_comments_of_user(request, pk=None):
+
+    queryset = Comment.objects.filter(commented__pk=pk)
+    serializer = CommentShowSerializer(queryset, many=True)
+    return Response(serializer.data)
