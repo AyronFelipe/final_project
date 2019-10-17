@@ -143,24 +143,42 @@ class SolicitationSerializer(serializers.ModelSerializer):
 
 class DonationEmptySerializer(serializers.ModelSerializer):
 
-    solicitation = serializers.SerializerMethodField()
+    donator_name = serializers.SerializerMethodField()
+    donator_username = serializers.SerializerMethodField()
+    receiver_name = serializers.SerializerMethodField()
+    receiver_username = serializers.SerializerMethodField()
 
     class Meta:
         model = Donation
         fields = [
             'name',
-            'description',
             'validity',
             'validity_hour',
             'main_photo',
-            'neighborhood',
-            'street',
-            'number',
-            'cep',
-            'uf',
-            'city',
-            'complement',
             'pk',
             'slug',
-            'solicitation',
+            'donator',
+            'receiver',
+            'donator_name',
+            'receiver_name',
+            'donator_username',
+            'receiver_username',
         ]
+
+    def get_donator_name(self, obj):
+
+        return obj.donator.get_name()
+
+    def get_receiver_name(self, obj):
+
+        if obj.receiver:
+            return obj.receiver.get_name()
+
+    def get_donator_username(self, obj):
+
+        return obj.donator.username
+
+    def get_receiver_username(self, obj):
+
+        if obj.receiver:
+            return obj.receiver.username

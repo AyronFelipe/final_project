@@ -19,7 +19,19 @@ export default class NewComments extends React.Component {
             donations: [],
             isLoading: true,
             content: '',
+            logged: [],
+            value: 0,
         }
+    }
+
+    getLoggedUser = () => {
+        axios.get('/api/logged-user/', config)
+        .then((res) => {
+            this.setState({ logged: res.data, isLoading: false });
+        })
+        .catch((error) => {
+            console.log(error.response);
+        });
     }
 
     getDonationsEmpty = () => {
@@ -38,6 +50,7 @@ export default class NewComments extends React.Component {
 
     componentDidMount(){
         this.getDonationsEmpty();
+        this.getLoggedUser();
     }
 
     render(){
@@ -78,20 +91,38 @@ export default class NewComments extends React.Component {
                                     {
                                         this.state.donations.length > 0 ?
                                         <div className="row justify-content-center">
+                                            <div className="alert alert-info col-10">
+                                                <strong>Atenção!</strong> Sua opinião é muito importante para nós. Através de seu comentário e estrelas você estará ajudando outras pessoas a confiar nesse usuário. Por favor, não seja breve em seu comentário.
+                                            </div>
                                             <div className="col-12">
                                                 {
                                                     this.state.donations.map((donation) =>
                                                         <div className="card" key={donation.pk}>
                                                             <div className="card-header">
-                                                                <div className="card-title">{ donation.name }</div>
+                                                                <div className="card-title">{ donation.name } { donation.donator == this.state.logged.pk ? <small className="text-muted">(Minha doação)</small> : null }</div>
                                                             </div>
                                                             <div className="card-body">
                                                                 <div className="form-group">
-                                                                    <label htmlFor=""><span className="required-label">*</span> Comentário: </label>
+                                                                    <p><strong>Doação: </strong><span className="text-primary">{ donation.name }</span> - <Link to={`/donations/donation/${donation.slug}`}>{ donation.slug }</Link> </p>
+                                                                    <p><strong>Doador: </strong><Link to={`/accounts/profile/${donation.donator_username}/`}>{ donation.donator_name }</Link></p>
+                                                                    <p><strong>Donatário: </strong><Link to={`/accounts/profile/${donation.receiver_username}/`}>{ donation.receiver_name }</Link></p>
+                                                                </div>
+                                                                <div className="form-group">
+                                                                    {
+                                                                        donation.donator == this.state.logged.pk ?
+                                                                        <label htmlFor=""><span className="required-label">*</span> Diga-nos o que você achou de { donation.receiver_name }: </label>
+                                                                        :
+                                                                        <label htmlFor=""><span className="required-label">*</span> Diga-nos o que você achou de { donation.donator_name }: </label>
+                                                                    }
                                                                     <textarea name="content" id="content" cols="30" rows="10" name="content" className="form-control" required onChange={this.changeHandler}></textarea>
                                                                 </div>
                                                                 <div className="form-group">
-                                                                    <label htmlFor="">Quantas estrelas</label>
+                                                                    {
+                                                                        donation.donator == this.state.logged.pk ?
+                                                                        <label htmlFor="">Quantas estrelas você dá para { donation.receiver_name }:</label>
+                                                                        :
+                                                                        <label htmlFor="">Quantas estrelas você dá para { donation.donator_name }:</label>
+                                                                    }
                                                                     <BeautyStars
                                                                         value={this.state.value}
                                                                         onChange={value => this.setState({ value })}

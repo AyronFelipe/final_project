@@ -35,7 +35,7 @@ export default class DonationsMain extends React.Component{
         });
     }
 
-    /*getCommentsEmpty = () => {
+    getCommentsEmpty = () => {
         axios.get('/api/comments-empty/', config)
         .then((res) => {
             swal(res.data.message, {
@@ -53,11 +53,11 @@ export default class DonationsMain extends React.Component{
         .catch((error) => {
             console.log(error);
         })
-    }*/
+    }
 
     componentDidMount = () => {
         this.getLoggedUser();
-        //this.getCommentsEmpty();
+        this.getCommentsEmpty();
     }
 
     render(){

@@ -532,6 +532,7 @@ class FinalizeDonationSolicitation(APIView):
 
             donation.status = Donation.COMPLETED
             donation.is_accepted = True
+            donation.receiver = solicitation.owner
             donation.save()
 
             message = 'A sua solicitação ' + solicitation.slug + ' da doação ' + donation.slug + 'foi finalizada. Obrigado por usar o AlimentAÍ.'

@@ -137,7 +137,7 @@ class CommentViewset(viewsets.ViewSet):
         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
 
 @api_view(["GET"])
-def get_notifications_empty(request):
+def get_comments_empty(request):
 
     data  = {}
     from donations.models import Donation
@@ -158,7 +158,7 @@ def get_donations_empty(request):
 
     data  = {}
     from donations.models import Donation
-    from donations.serializers import DonationSerializer
+    from donations.serializers import DonationEmptySerializer
     if request.user.is_authenticated:
         list_donations = []
         for donation in Donation.objects.filter(Q(donator=request.user) | Q(receiver=request.user)):
@@ -168,7 +168,7 @@ def get_donations_empty(request):
             data['message'] = 'Você não possui comentários pendentes'
             return Response(data, status=status.HTTP_404_NOT_FOUND)
         else:
-            serializer = DonationSerializer(list_donations, many=True)
+            serializer = DonationEmptySerializer(list_donations, many=True)
             data['donations'] = serializer.data
             return Response(data, status=status.HTTP_200_OK)
     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
