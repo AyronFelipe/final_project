@@ -89,6 +89,7 @@ class CommentShowSerializer(serializers.ModelSerializer):
     naturaltime = serializers.SerializerMethodField()
     photo_commenter = serializers.SerializerMethodField()
     commenter_name = serializers.SerializerMethodField()
+    commenter_username = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
@@ -100,6 +101,7 @@ class CommentShowSerializer(serializers.ModelSerializer):
             'naturaltime',
             'photo_commenter',
             'commenter_name',
+            'commenter_username',
         ]
     
     def get_naturaltime(self, obj):
@@ -117,3 +119,8 @@ class CommentShowSerializer(serializers.ModelSerializer):
 
         if obj.commenter:
             return obj.commenter.get_name()
+
+    def get_commenter_username(self, obj):
+
+        if obj.commenter:
+            return obj.commenter.username

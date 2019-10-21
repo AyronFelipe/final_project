@@ -9,6 +9,7 @@ from .managers import UserManager
 from core.utils import img_path
 from cloudinary.models import CloudinaryField
 from django.utils.functional import cached_property
+from unicodedata import normalize
 
 
 class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixin, AddressMixin):
@@ -39,12 +40,11 @@ class User(AbstractBaseUser, PermissionsMixin, CreationAndUpdateMixin, PhoneMixi
     
     @cached_property
     def username(self):
-
         if hasattr(self, 'person'):
-            return "%s-%s" % (self.person.first_name.lower().replace(" ", "."), self.pk)
+            username = "%s-%s" % (self.person.first_name.lower().replace(" ", "."), self.pk)
         else:
-            return "%s-%s" % (self.institution.name.lower().replace(" ", "."), self.pk)
-        return None
+            username = "%s-%s" % (self.institution.name.lower().replace(" ", "."), self.pk)
+        return normalize('NFKD', username).encode('ASCII', 'ignore').decode('ASCII')
 
     def __str__(self):
 

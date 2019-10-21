@@ -37,7 +37,7 @@ urlpatterns = [
     path('api/donation/<pk>/edit/', edit_donation, name='edit_donation'),
     path('api/comments-empty/', get_comments_empty, name='get_comments_empty'),
     path('api/donations-empty/', get_donations_empty, name='get_donations_empty'),
-    path('api/user/<int:pk>/comments', get_comments_of_user, name='get_comments_of_user'),
+    path('api/user/<int:pk>/comments/', get_comments_of_user, name='get_comments_of_user'),
 ]
 
 if settings.DEBUG:
