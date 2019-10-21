@@ -238,10 +238,14 @@ export default class Profile extends React.Component {
                                                 this.state.comments.map((comment) => 
                                                     <div className="d-flex" key={comment.pk}>
                                                         <div className="avatar">
-                                                            <img src={comment.photo_commenter} alt="..." className="avatar-img rounded-circle" />
+                                                            <Link to={`/accounts/profile/${comment.commenter_username}/`} >
+                                                                <img src={comment.photo_commenter} alt="..." className="avatar-img rounded-circle" />
+                                                            </Link>
                                                         </div>
                                                         <div className="flex-1 ml-3 pt-1">
-                                                            <h6 className="text-uppercase fw-bold mb-1">{ comment.commenter_name }</h6>
+                                                            <Link to={`/accounts/profile/${comment.commenter_username}/`}>
+                                                                <h6 className="text-uppercase fw-bold mb-1">{ comment.commenter_name }</h6>
+                                                            </Link>
                                                             <span className="text-muted">{ comment.content }</span>
                                                         </div>
                                                         <div className="float-right pt-1">
