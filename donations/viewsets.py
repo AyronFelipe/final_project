@@ -573,6 +573,9 @@ def edit_donation(request, pk):
             data['message'] = 'Tentando hackear os endpoints, né!'
         else:
             with transaction.atomic():
+                if donation.status == Donation.COMPLETED or donation.status == Donation.ON_HOLD:
+                    data['message'] = 'A doação não pode ser editada.'
+                    return Response(data, status=status.HTTP_403_FORBIDDEN)
                 name = request.POST.get('name', None)
                 description = request.POST.get('description', None)
                 if name:

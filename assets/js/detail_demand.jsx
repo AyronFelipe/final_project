@@ -126,7 +126,7 @@ class DetailDemand extends React.Component {
                                                     { this.state.demand.status == undefined ?
                                                         <div className="loader loader-lg"></div>
                                                         :
-                                                        <p>{this.state.demand.quantity_received} {this.state.demand.unit_measurement}</p>
+                                                        <p>{this.state.demand.quantity_received} {this.state.demand.unit_measurement}s</p>
                                                     }
                                                 </div>
                                                 <div className="col-md-3 info-invoice">
@@ -195,7 +195,7 @@ class DetailDemand extends React.Component {
                                                 </div>
                                                 <div className="col">
                                                     <div className="number">
-                                                    <BeautyStars value={this.state.user.rating}/>
+                                                        <BeautyStars value={this.state.owner.rating}/>
                                                     </div>
                                                     <div className="title">Confiabilidade</div>
                                                 </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Preloader from './preloader';
 import Inputmask from 'inputmask';
+import BeautyStars from 'beauty-stars';
 
 
 let config = {
@@ -474,7 +475,9 @@ export default class EditProfile extends React.Component {
                                                             <div className="title">Doações Finalizadas</div>
                                                         </div>
                                                         <div className="col">
-                                                            <div className="number"></div>
+                                                            <div className="number">
+                                                                <BeautyStars value={this.state.user.rating} />
+                                                            </div>
                                                             <div className="title">Confiabilidade</div>
                                                         </div>
                                                     </div>

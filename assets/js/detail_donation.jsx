@@ -291,7 +291,7 @@ export default class DetailDonation extends React.Component{
                                                 </div>
                                                 <div className="col">
                                                     <div className="number">
-                                                        <BeautyStars value={4.5} />
+                                                        <BeautyStars value={this.state.owner.rating} />
                                                     </div>
                                                     <div className="title">Confiabilidade</div>
                                                 </div>
