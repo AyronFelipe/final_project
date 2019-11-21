@@ -91,9 +91,9 @@ export default class InternNav extends React.Component {
     render(){
         return(
             <React.Fragment>
-                <div className="logo-header" data-background-color="blue2">
+                <div className="logo-header" data-background-color="blue">
                     <a href="index.html" className="logo">
-                        <img src="https://via.placeholder.com/108x35" alt="navbar brand" className="navbar-brand" />
+                        <img src="/static/images/logo.jpg" alt="navbar brand" className="navbar-brand" height='35px' width='108px' />
                     </a>
                     <button className="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon">
