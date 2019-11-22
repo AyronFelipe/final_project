@@ -30,8 +30,8 @@ class DemandSerializer(serializers.ModelSerializer):
         ]
 
     def get_owner_pk(self, obj):
-
-        return obj.owner.pk
+        if hasattr(obj, 'owner'):
+            return obj.owner.pk
 
     def get_main_photo(self, obj):
         if hasattr(obj, 'main_photo'):

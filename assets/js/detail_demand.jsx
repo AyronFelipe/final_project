@@ -104,12 +104,7 @@ class DetailDemand extends React.Component {
                                                             <div className="loader loader-lg"></div>
                                                         :
                                                             <p>
-                                                                { 
-                                                                    this.state.demand.quantity > 0 ?
-                                                                        <span>{ this.state.demand.quantity } { this.state.demand.unit_measurement }s</span>
-                                                                    :
-                                                                        <span>{ this.state.demand.quantity } { this.state.demand.unit_measurement }</span>
-                                                                }
+                                                                <span>{ this.state.demand.quantity } { this.state.demand.unit_measurement }</span>
                                                             </p>
                                                     }
                                                 </div>
@@ -126,7 +121,9 @@ class DetailDemand extends React.Component {
                                                     { this.state.demand.status == undefined ?
                                                         <div className="loader loader-lg"></div>
                                                         :
-                                                        <p>{this.state.demand.quantity_received} {this.state.demand.unit_measurement}s</p>
+                                                        <p>
+                                                            <span>{ this.state.demand.quantity_received } { this.state.demand.unit_measurement }</span>
+                                                        </p>
                                                     }
                                                 </div>
                                                 <div className="col-md-3 info-invoice">

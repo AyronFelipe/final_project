@@ -1,5 +1,6 @@
 from rest_framework import generics, viewsets, permissions
 from .models import *
+from core.models import Tag
 from .serializers import DemandSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -65,9 +66,9 @@ class DemandViewSet(viewsets.ViewSet):
                         demand.uf = request.user.uf
                         demand.city = request.user.city
                         demand.complement = request.user.complement
+                    demand.save()
                     for tag in request.POST.getlist('tags'):
                         current_tag, created = Tag.objects.get_or_create(name=tag)
                         DemandTags.objects.create(demand=demand, tag=current_tag)
-                    demand.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED,)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

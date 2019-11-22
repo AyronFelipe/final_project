@@ -31,6 +31,7 @@ export default class NewDemand extends React.Component {
             uf: '',
             number: '',
             aparecer: false,
+            tags: [],
         };
         this.cep = React.createRef();
         this.street = React.createRef();
@@ -150,6 +151,17 @@ export default class NewDemand extends React.Component {
 
     }
 
+    handleChangeTags = (tag) => {
+        this.setState(({ tags: [...this.state.tags, tag.text] }));
+    }
+
+    handleDeleteTags = (i) => {
+        let filtered = this.state.tags.filter(function(_, item) {
+            return item !== i
+        })
+        this.setState({ tags: filtered });
+    }
+
     render() {
         return (
             <div className="content">
@@ -207,7 +219,7 @@ export default class NewDemand extends React.Component {
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="tags">Tags da Doação</label>
-                                                    <NewTag name="tags" id="tags" onChange={this.handleChangeTags} />
+                                                    <NewTag name="tags" id="tags" onChange={this.handleChangeTags} onDelete={this.handleDeleteTags} />
                                                 </div>
                                             </div>
                                             <div className="col-12 col-sm-6">
