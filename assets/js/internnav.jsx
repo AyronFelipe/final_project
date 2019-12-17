@@ -152,10 +152,14 @@ export default class InternNav extends React.Component {
                                                     <Link to={`/donations/my-solicitations/`} style={{ textDecoration: 'none' }}>
                                                         <span className="dropdown-item">Minhas solicitações</span>
                                                     </Link>
+                                                    {/*
+                                                        <div className="dropdown-divider"></div>
+                                                        <a className="dropdown-item" href="#">Meus gifts</a>
+                                                    */}
                                                     <div className="dropdown-divider"></div>
-                                                    <a className="dropdown-item" href="#">Meus gifts</a>
-                                                    <div className="dropdown-divider"></div>
-                                                    <a className="dropdown-item" href="#">Meus pedidos</a>
+                                                    <Link to={`/demands/my-demands/`} style={{ textDecoration: 'none' }}>
+                                                        <span className="dropdown-item">Meus pedidos</span>
+                                                    </Link>
                                                     <div className="dropdown-divider"></div>
                                                     <a className="dropdown-item" onClick={this.log_out}>Sair</a>
                                                 </li>

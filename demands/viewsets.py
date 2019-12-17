@@ -91,7 +91,6 @@ class GiftViewSet(viewsets.ViewSet):
     def create(self, request):
 
         data = {}
-        import pdb; pdb.set_trace()
 
         try:
             demand = Demand.objects.get(pk=request.POST.get('demand'))
@@ -114,3 +113,14 @@ class GiftViewSet(viewsets.ViewSet):
 
         data['message'] = 'Quantidade doada com sucesso!'
         return Response(data, status=status.HTTP_200_OK)
+
+
+class MyDemandsViewSet(viewsets.ViewSet):
+    '''
+    Listagem dos Meus Pedidos
+    '''
+
+    def list(self, request):
+        queryset = Demand.objects.filter(owner=request.user)
+        serializer = DemandSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

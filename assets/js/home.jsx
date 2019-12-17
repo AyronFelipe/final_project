@@ -16,6 +16,7 @@ import EditDonation from './edit_donation';
 import MySolicitations from './my_solicitations';
 import SolicitationsOfDonations from './solicitations_of_donations';
 import NewComments from './new_comments';
+import MyDemands from './my_demands';
 
 class Home extends React.Component{
 
@@ -44,6 +45,7 @@ class Home extends React.Component{
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/my-donations/" component={MyDonations} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/my-solicitations/" component={MySolicitations} />
                         <PrivateRoute exact authenticated={this.state.authenticated} path="/donations/donation/:slug/solicitations" component={SolicitationsOfDonations} />
+                        <PrivateRoute exact authenticated={this.state.authenticated} path="/demands/my-demands/" component={MyDemands} />
                     </div>
                 </div>
             </BrowserRouter>

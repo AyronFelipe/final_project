@@ -12,3 +12,10 @@ def demand_detail(request, slug):
     template_name = "demands/demand_detail.html"
     context = {}
     return render(request, template_name, context)
+
+
+def my_demands(request):
+
+    template_name = "demands/my_demands.html"
+    context = {}
+    return render(request, template_name, context)

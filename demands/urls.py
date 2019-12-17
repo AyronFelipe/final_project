@@ -5,5 +5,6 @@ app_name = 'demands'
 urlpatterns = [
     path('new-demand/', views.new_demand, name='new_demand'),
     path('demand/<slug>/', views.demand_detail, name='demand_detail'),
+    path('my-demands/', views.my_demands, name='my_demands'),
 ]
 
