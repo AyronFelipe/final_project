@@ -12,12 +12,15 @@ class DemandViewSet(viewsets.ViewSet):
     def list(self, request):
 
         queryset = Demand.objects.all()
+        for demand in queryset:
+            demand.update_status()
         serializer = DemandSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
 
         demand = Demand.objects.get(pk=pk)
+        demand.update_status()
         serializer = DemandSerializer(demand)
         return Response(serializer.data)
 
@@ -122,5 +125,7 @@ class MyDemandsViewSet(viewsets.ViewSet):
 
     def list(self, request):
         queryset = Demand.objects.filter(owner=request.user)
+        for demand in queryset:
+            demand.update_status()
         serializer = DemandSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -65,6 +65,7 @@ export default class MyDemands extends React.Component {
                                             <tr>
                                                 <th>Nome</th>
                                                 <th>Quantidade</th>
+                                                <th>Quantidade recebida</th>
                                                 <th>Status</th>
                                                 <th>Ações</th>
                                             </tr>
@@ -74,6 +75,7 @@ export default class MyDemands extends React.Component {
                                                 <tr key={demand.pk}>
                                                     <td>{demand.name}</td>
                                                     <td>{ demand.quantity } { demand.unit_measurement }s</td>
+                                                    <td>{ demand.quantity_received } { demand.unit_measurement }s</td>
                                                     <td>{ demand.status }</td>
                                                     <td>
                                                         <p className="demo mt-3">

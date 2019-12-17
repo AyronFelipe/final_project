@@ -7,6 +7,7 @@ from core.utils import img_path
 from core.models import UnitMeasurement
 from datetime import datetime
 from cloudinary.models import CloudinaryField
+from django.utils.functional import cached_property
 
 
 class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
@@ -46,6 +47,21 @@ class Demand(CreationAndUpdateMixin, PhoneMixin, AddressMixin):
            date.year, date.month, date.day, self.id, self.owner.pk, slugify(self.name)
         )
         super(Demand, self).save()
+    
+    @cached_property
+    def quantity_received(self):
+
+        sum = 0
+        if hasattr(self, 'gifts'):
+            for temp in self.gifts.all():
+                sum = sum + temp.quantity
+        return sum
+    
+    def update_status(self):
+
+        if self.quantity_received >= self.quantity:
+            self.status = Demand.COMPLETED
+            self.save()
 
 
 class Gift(CreationAndUpdateMixin):
