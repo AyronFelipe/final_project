@@ -64,3 +64,10 @@ class DemandSerializer(serializers.ModelSerializer):
                 tag_list.append(lol.tag)
             serializer = TagSerializer(tag_list, many=True)
             return serializer.data
+
+
+class GiftSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Gift
+        fields = '__all__'

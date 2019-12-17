@@ -1,7 +1,7 @@
 from rest_framework import generics, viewsets, permissions
 from .models import *
 from core.models import Tag
-from .serializers import DemandSerializer
+from .serializers import DemandSerializer, GiftSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
@@ -72,3 +72,45 @@ class DemandViewSet(viewsets.ViewSet):
                         DemandTags.objects.create(demand=demand, tag=current_tag)
                     return Response(serializer.data, status=status.HTTP_201_CREATED,)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GiftViewSet(viewsets.ViewSet):
+
+    def list(self, request):
+
+        queryset = Gift.objects.all()
+        serializer = GiftSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, pk=None):
+
+        gift = Gift.objects.get(pk=pk)
+        serializer = GiftSerializer(gift)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def create(self, request):
+
+        data = {}
+        import pdb; pdb.set_trace()
+
+        try:
+            demand = Demand.objects.get(pk=request.POST.get('demand'))
+        except:
+            data['message'] = 'Pedido não encontrado'
+            return Response(data, status=status.HTTP_404_NOT_FOUND)
+        quantity = request.POST.get('quantity', None)
+        unit_measurement_pk = request.POST.get('unit_measurement', None)
+        if not quantity or not unit_measurement_pk:
+            data['message'] = 'Nenhum dos campos pode ficar em branco'
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        unit_measurement = UnitMeasurement.objects.get(pk=unit_measurement_pk)
+
+        Gift.objects.create(
+            demand=demand,
+            owner=request.user,
+            quantity=quantity,
+            unit_measurement=unit_measurement,
+        )
+
+        data['message'] = 'Quantidade doada com sucesso!'
+        return Response(data, status=status.HTTP_200_OK)

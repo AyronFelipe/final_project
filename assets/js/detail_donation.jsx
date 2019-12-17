@@ -88,7 +88,7 @@ export default class DetailDonation extends React.Component{
                         className: 'btn btn-danger'
                     }
                 },
-            })
+            });
         })
     }
 
@@ -314,7 +314,7 @@ export default class DetailDonation extends React.Component{
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <div className="alert alert-info" role="alert">
-                                                            Ao clicar em sim, você entrará na lista dos solicitantes dessa doação. Você receberá e-mails com as atualizações do status de sua solicitação. Aguarde a resposta do dono da doação.
+                                                            Ao clicar em "Salvar solicitação", você entrará na lista dos solicitantes dessa doação. Você receberá e-mails com as atualizações do status de sua solicitação. Aguarde a resposta do dono da doação.
                                                         </div>
                                                         <div className="form-group">
                                                             <label htmlFor="comment">Comentário sobre sua solicitação (opcional)</label>

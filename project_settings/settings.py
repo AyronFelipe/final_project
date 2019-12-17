@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django_filters',
     'webpack_loader',
     'cloudinary',
+    'django_extensions',
     #local apps
     'accounts',
     'core',

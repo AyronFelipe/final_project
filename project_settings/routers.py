@@ -18,3 +18,4 @@ router.register(r'my-donations', donations_viewsets.MyDonationsViewSet, base_nam
 router.register(r'unit-measurements', core_viewsets.UnitMeasurementViewset, base_name='unit_measurement')
 router.register(r'comments', core_viewsets.CommentViewset, base_name='comments')
 router.register(r'demands', demands_viewsets.DemandViewSet, base_name='demands')
+router.register(r'gifts', demands_viewsets.GiftViewSet, base_name='gifts')

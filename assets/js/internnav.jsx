@@ -44,7 +44,7 @@ export default class InternNav extends React.Component {
         });
           
         var channel = pusher.subscribe('my-channel');
-       channel.bind('my-event', (data) => {
+        channel.bind('my-event', (data) => {
             if (pk == data.pk) {
                 $.notify({
                     icon: 'flaticon-alarm-1',

@@ -15,7 +15,27 @@ class DetailDemand extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { demand: [], isLoading: true, owner: [] }
+        this.state = { demand: [], isLoading: true, owner: [], user: [], unities: [], quantity: '', unit_measurement: '' };
+    }
+
+    getLoggedUser = () => {
+        axios.get('/api/logged-user/', config)
+        .then((res) => {
+            this.setState({ user: res.data, isLoading: false });
+        })
+        .catch((error) => {
+            console.log(error.response);
+        });
+    }
+
+    getUnities = () => {
+        axios.get(`/api/unit-measurements/`, config)
+        .then((res) => {
+            this.setState({ unities: res.data });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     getDemand = () => {
@@ -42,8 +62,48 @@ class DetailDemand extends React.Component {
         });
     }
 
+    changeHandler = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        let form = new FormData();
+        form.append('unit_measurement', this.state.unit_measurement);
+        form.append('quantity', this.state.quantity);
+        form.append('demand', this.state.demand.pk);
+
+        axios.post(`/api/gifts/`, form, config)
+        .then((res) => {
+            $('.fechar').click();
+            swal(res.data.message, {
+                icon: "success",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-success'
+                    }
+                },
+            }).then(() => {
+                window.location.href = '/donations/my-demands/';
+            });
+        })
+        .catch((error) => {
+            $('.fechar').click();
+            swal(error.response.data.message, {
+                icon: "error",
+                buttons: {
+                    confirm: {
+                        className: 'btn btn-danger'
+                    }
+                },
+            });
+        })
+    }
+
     componentDidMount = () => {
         this.getDemand();
+        this.getLoggedUser();
+        this.getUnities();
     }
 
     render() {
@@ -87,6 +147,27 @@ class DetailDemand extends React.Component {
                                         <div className="card-header">
                                             <div className="d-flex align-items-center">
                                                 <h2 className="card-title">{ this.state.demand.name }</h2>
+
+                                                { this.state.user.child != undefined ?
+                                                    <React.Fragment>
+                                                        { 
+                                                            this.state.demand.owner_pk == this.state.user.pk ?
+                                                                null
+                                                            :
+                                                                <React.Fragment>
+                                                                    {
+                                                                        this.state.demand.status == 'Ativa' ?
+                                                                            <button type="button" className="btn btn-info ml-auto" data-toggle="modal" data-target="#modal-create-gift">Atender pedido</button>
+                                                                        :
+                                                                            <button type="button" className="btn btn-success ml-auto">Pedido atendido</button>
+    
+                                                                    }
+                                                                </React.Fragment>
+                                                        }
+                                                    </React.Fragment>
+                                                    :
+                                                    <div className="loader loader-lg"></div>
+                                                }
                                             </div>
                                         </div>
                                         <div className="card-body">
@@ -104,7 +185,7 @@ class DetailDemand extends React.Component {
                                                             <div className="loader loader-lg"></div>
                                                         :
                                                             <p>
-                                                                <span>{ this.state.demand.quantity } { this.state.demand.unit_measurement }</span>
+                                                                <span>{ this.state.demand.quantity } { this.state.demand.unit_measurement }s</span>
                                                             </p>
                                                     }
                                                 </div>
@@ -122,7 +203,7 @@ class DetailDemand extends React.Component {
                                                         <div className="loader loader-lg"></div>
                                                         :
                                                         <p>
-                                                            <span>{ this.state.demand.quantity_received } { this.state.demand.unit_measurement }</span>
+                                                            <span>{ this.state.demand.quantity_received } { this.state.demand.unit_measurement }s</span>
                                                         </p>
                                                     }
                                                 </div>
@@ -198,6 +279,54 @@ class DetailDemand extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal fade" id="modal-create-gift">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <form onSubmit={this.handleSubmit} method="POST">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title">Atender pedido { this.state.demand.name }</h5>
+                                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <div className="row">
+                                                    <div className="col-12">
+                                                        <div className="alert alert-info" role="alert">
+                                                            Ao clicar em "Atender pedido", você estará doando a quantidade informada, se a quantidade for menor do que a quantidade solicitada esse pedido continuará em aberto, se for maior ou igual o pedido estará fechado.
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label htmlFor="quantity"><span class="required-label">*</span> Quantidade que deseja atender</label>
+                                                            <input type="number" min="1" placeholder="Quantidade" name="quantity" required={true} className="form-control" onChange={this.changeHandler} />
+                                                        </div>
+                                                        <div className="form-group">
+                                                            <label htmlFor="unit_measurement"><span class="required-label">*</span> Unidade de Medida</label>
+                                                            <select name="unit_measurement" id="unit_measurement" className="form-control" onChange={this.changeHandler}>
+                                                                { this.state.unities == undefined ?
+                                                                    <div className="loader loader-lg"></div>
+                                                                    :
+                                                                    <React.Fragment>
+                                                                        <option value="">----------</option>
+                                                                        { this.state.unities.map((unit) => {
+                                                                            return(
+                                                                                <option value={ unit.pk } key={ unit.pk }>{ unit.name }</option>
+                                                                            )
+                                                                        }) }
+                                                                    </React.Fragment>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="modal-footer">
+                                                <button type="button" className="fechar btn btn-danger" data-dismiss="modal">Cancelar</button>
+                                                <button type="submit" className="btn btn-info">Atender pedido</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
