@@ -235,23 +235,26 @@ export default class Profile extends React.Component {
                                             this.state.comments.length > 0 ?
                                             <React.Fragment>
                                             {
-                                                this.state.comments.map((comment) => 
-                                                    <div className="d-flex" key={comment.pk}>
-                                                        <div className="avatar">
-                                                            <Link to={`/accounts/profile/${comment.commenter_username}/`} >
-                                                                <img src={comment.photo_commenter} alt="..." className="avatar-img rounded-circle" />
-                                                            </Link>
+                                                this.state.comments.map((comment) =>
+                                                    <React.Fragment key={comment.pk}>
+                                                        <div className="d-flex">
+                                                            <div className="avatar">
+                                                                <Link to={`/accounts/profile/${comment.commenter_username}/`} target="_blank">
+                                                                    <img src={comment.photo_commenter} alt="..." className="avatar-img rounded-circle" />
+                                                                </Link>
+                                                            </div>
+                                                            <div className="flex-1 ml-3 pt-1">
+                                                                <Link to={`/accounts/profile/${comment.commenter_username}/`} target="_blank">
+                                                                    <h6 className="text-uppercase fw-bold mb-1">{ comment.commenter_name }</h6>
+                                                                </Link>
+                                                                <span className="text-muted">{ comment.content }</span>
+                                                            </div>
+                                                            <div className="float-right pt-1">
+                                                                <small className="text-muted">{ comment.naturaltime }</small>
+                                                            </div>
                                                         </div>
-                                                        <div className="flex-1 ml-3 pt-1">
-                                                            <Link to={`/accounts/profile/${comment.commenter_username}/`}>
-                                                                <h6 className="text-uppercase fw-bold mb-1">{ comment.commenter_name }</h6>
-                                                            </Link>
-                                                            <span className="text-muted">{ comment.content }</span>
-                                                        </div>
-                                                        <div className="float-right pt-1">
-                                                            <small className="text-muted">{ comment.naturaltime }</small>
-                                                        </div>
-                                                    </div>
+                                                        <div className="separator-dashed"></div>
+                                                    </React.Fragment>
                                                 )
                                             }
                                             </React.Fragment>
