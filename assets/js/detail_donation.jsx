@@ -6,7 +6,7 @@ import { unformatDate2 } from './utils';
 import BeautyStars from 'beauty-stars';
 
 
-const API_KEY = "AIzaSyCq-XgDdK7Ewn_BWMxXpiDVn04y_BHB4yY";
+const API_KEY = "";
 
 const config = {
     headers: { 'Authorization': `Token ${localStorage.token}` }
