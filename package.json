@@ -33,7 +33,7 @@
     "beauty-stars": "^1.0.4",
     "css-loader": "^2.1.1",
     "inputmask": "^3.3.11",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "qs": "^6.9.0",
     "react": "^16.9.0",
