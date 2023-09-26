@@ -35,7 +35,7 @@
     "inputmask": "^3.3.11",
     "jquery": "^3.5.0",
     "moment": "^2.24.0",
-    "qs": "^6.9.0",
+    "qs": "^6.9.7",
     "react": "^16.9.0",
     "react-dnd": "^8.0.3",
     "react-dnd-html5-backend": "^8.0.3",
