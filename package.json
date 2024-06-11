@@ -49,7 +49,7 @@
     "webpack": "^5.76.0",
     "webpack-bundle-tracker": "^0.4.2-beta",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^3.8.1"
+    "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
     "cloudinary-react": "^1.1.4",
